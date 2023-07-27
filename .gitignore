@@ -1,0 +1,4 @@
+.DS_Store
+
+# models should be downloaded previously.
+models/
