@@ -11,6 +11,3 @@ ENV RAY_DATA_STRICT_MODE=0
 # This is used for building vector store.
 COPY ../contents ./contents
 COPY ../pkg ./pkg
-
-# This is because serve run pkg.serve:deployment doesn't work.
-WORKDIR /workspace/pkg
