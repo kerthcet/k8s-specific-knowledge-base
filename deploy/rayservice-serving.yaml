@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
             - name: ray-head
-              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-c429247-dirty
+              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-767fe7b-dirty
               resources:
                 limits:
                   cpu: 2
@@ -73,7 +73,7 @@ spec:
           spec:
             containers:
               - name: ray-worker # must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'
-                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-c429247-dirty
+                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-767fe7b-dirty
                 lifecycle:
                   preStop:
                     exec:
@@ -85,3 +85,18 @@ spec:
                   requests:
                     cpu: "2"
                     memory: "4Gi"
+                volumeMounts:
+                - mountPath: /workspace/data/models
+                  name: models
+                volumeMounts:
+                - mountPath: /workspace/faiss_index
+                  name: models
+            volumes:
+              - name: models
+                hostPath:
+                    # We have downloaded the models in previous.
+                    path: /data/models
+              - name: indexes
+                hostPath:
+                    # FAISS indexes located in host path.
+                    path: /data/index

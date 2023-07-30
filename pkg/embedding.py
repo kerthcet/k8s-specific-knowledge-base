@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict
+import numpy as np
 
 from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
@@ -13,17 +14,17 @@ class Embed:
         # We use GPU for accelerating.
         self.model = SentenceTransformer(EMBEDDING_MODEL, device=device)
 
-    def __call__(self, batch: List[str]):
-        content = batch["text"]
-
+    def __call__(self, batch: Dict[str, np.ndarray]) -> Dict[str, list]:
         # We manually encode using sentence_transformer since LangChain
         # HuggingfaceEmbeddings does not support specifying a batch size yet.
         embeddings = self.model.encode(
-            content,
+            list(batch["text"]),
             batch_size=100,
             device=device,
         ).tolist()
-        return list(zip(content, embeddings))
+
+        batch["embeddings"] = embeddings
+        return batch
 
 
 class LocalEmbedding(Embeddings):

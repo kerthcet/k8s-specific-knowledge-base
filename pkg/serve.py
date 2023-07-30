@@ -7,9 +7,10 @@ from langchain.chains.question_answering import load_qa_chain
 from ray import serve
 import torch
 
-from const import BASE_MODEL
+from const import BASE_MODEL, FAISS_INDEX_PATH
 from embedding import LocalEmbedding
 from pipeline import LocalPipeline
+from dataset import load_data
 
 template = """
 If you don't know the answer, just say that you don't know. Don't try to make
@@ -35,8 +36,12 @@ PROMPT = PromptTemplate(
 )
 class QADeployment:
     def __init__(self) -> None:
+        load_data()
         self.embeddings = LocalEmbedding()
-        self.db = FAISS.load_local(self.embeddings)
+        self.db = FAISS.load_local(
+            folder_path=FAISS_INDEX_PATH,
+            embeddings=self.embeddings,
+            )
 
         self.llm = LocalPipeline.from_model_id(
             model_id=BASE_MODEL,

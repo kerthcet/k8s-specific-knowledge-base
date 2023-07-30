@@ -4,3 +4,6 @@ __pycache__
 
 # models should be downloaded previously.
 models/
+faiss_index/*.faiss
+faiss_index/*.pkl
+post/

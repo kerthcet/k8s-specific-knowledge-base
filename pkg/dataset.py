@@ -6,7 +6,7 @@ from langchain.vectorstores import FAISS
 from ray.data import ActorPoolStrategy, read_text
 from ray.data.datasource import FileExtensionFilter
 
-from const import FAISS_INDEX
+from const import FAISS_INDEX_PATH
 from embedding import Embed, LocalEmbedding
 
 
@@ -21,7 +21,6 @@ def split_text(text: str):
 
 
 def load_data():
-    # Struct as [(text_batch1, embeddings1), (text_batch2, embeddings2), ...]
     text_embeddings = []
 
     # # Loading the books, they're PDFs.
@@ -56,7 +55,7 @@ def load_data():
         num_gpus=1,
     )
     for row in ds.iter_rows():
-        text_embeddings.append(row)
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # # Loading the websites.
     # ds = read_binary_files("../contents/website")
@@ -76,7 +75,7 @@ def load_data():
         # Used for embedding the query.
         embedding=LocalEmbedding(),
         )
-    vector_store.save_local(FAISS_INDEX)
+    vector_store.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
 
 
 if __name__ == "__main__":
