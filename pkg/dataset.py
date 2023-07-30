@@ -40,6 +40,7 @@ def load_data():
 
     dirname = os.path.dirname(os.path.abspath(__file__))
     root_path = os.path.dirname(dirname)
+    print("root_path", root_path)
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),

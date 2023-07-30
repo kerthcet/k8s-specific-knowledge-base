@@ -1,8 +1,9 @@
 from typing import List
 
-import const
 from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
+
+import const
 
 device = None if const.DEVICE == "" else const.DEVICE
 
