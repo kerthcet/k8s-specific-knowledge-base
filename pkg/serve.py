@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from langchain.prompts import PromptTemplate
@@ -32,14 +33,16 @@ PROMPT = PromptTemplate(
 
 @serve.deployment(
     ray_actor_options={"num_gpus": 1},
-    autoscaling_config={"min_replicas": 0, "max_replicas": 10},
+    autoscaling_config={"min_replicas": 1, "max_replicas": 10},
 )
 class QADeployment:
     def __init__(self) -> None:
-        load_data()
+        dirname = os.path.dirname(os.path.abspath(__file__))
+        root_path = os.path.dirname(dirname)
+
         self.embeddings = LocalEmbedding()
         self.db = FAISS.load_local(
-            folder_path=FAISS_INDEX_PATH,
+            folder_path=os.path.join(root_path, FAISS_INDEX_PATH),
             embeddings=self.embeddings,
             )
 

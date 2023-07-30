@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
             - name: ray-head
-              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-767fe7b-dirty
+              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-5b92c55-dirty
               resources:
                 limits:
                   cpu: 2
@@ -73,7 +73,7 @@ spec:
           spec:
             containers:
               - name: ray-worker # must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'
-                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-767fe7b-dirty
+                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-5b92c55-dirty
                 lifecycle:
                   preStop:
                     exec:
