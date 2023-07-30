@@ -5,6 +5,9 @@ WORKDIR /workspace
 COPY ../requirements.txt .
 RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+# Remove this when bumping ray to 2.6
+ENV RAY_DATA_STRICT_MODE=0
+
 # This is used for building vector store.
 COPY ../contents ./contents
 COPY ../pkg ./pkg

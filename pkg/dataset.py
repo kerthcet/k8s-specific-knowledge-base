@@ -1,4 +1,5 @@
 from typing import List
+import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
@@ -16,8 +17,7 @@ def split_text(text: str):
         length_function=len,
     )
     text: List[str] = text_splitter.split_text(text)
-    return text
-    # return [t.replace("\n", "") for t in text]
+    return [t.replace("\n", "") for t in text]
 
 
 def load_data():
@@ -38,14 +38,11 @@ def load_data():
     # )
     # text_embeddings.append([row for row in ds.iter_rows()])
 
-    # for row in ds.iter_rows():
-    #     print(len(row))
-    #     break
-    #     # print(row)
-    #     # break
+    dirname = os.path.dirname(os.path.abspath(__file__))
+    root_path = os.path.dirname(dirname)
 
     # Loading the blogs with the extension of ".md".
-    ds = read_text("../contents/posts",
+    ds = read_text(os.path.join(root_path, "contents/posts"),
                    partition_filter=FileExtensionFilter("md"),
                    parallelism=16,
                    )
