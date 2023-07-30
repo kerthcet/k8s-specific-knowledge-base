@@ -90,13 +90,13 @@ spec:
                   name: models
                 volumeMounts:
                 - mountPath: /workspace/faiss_index
-                  name: models
+                  name: index
             volumes:
               - name: models
                 hostPath:
                     # We have downloaded the models in previous.
                     path: /data/models
-              - name: indexes
+              - name: index
                 hostPath:
                     # FAISS indexes located in host path.
                     path: /data/index
