@@ -86,7 +86,7 @@ spec:
                     cpu: "2"
                     memory: "4Gi"
                 volumeMounts:
-                - mountPath: /workspace/data/models
+                - mountPath: /workspace/models
                   name: models
                 volumeMounts:
                 - mountPath: /workspace/faiss_index

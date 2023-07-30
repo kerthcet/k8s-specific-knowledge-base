@@ -11,7 +11,6 @@ import torch
 from const import BASE_MODEL, FAISS_INDEX_PATH
 from embedding import LocalEmbedding
 from pipeline import LocalPipeline
-from dataset import load_data
 
 template = """
 If you don't know the answer, just say that you don't know. Don't try to make
