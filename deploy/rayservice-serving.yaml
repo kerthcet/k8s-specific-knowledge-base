@@ -1,7 +1,7 @@
 apiVersion: ray.io/v1alpha1
 kind: RayService
 metadata:
-  name: k8s-qa-serving
+  name: k8s-qa-service
 spec:
   serviceUnhealthySecondThreshold: 300 # Config for the health check threshold for service. Default value is 60.
   deploymentUnhealthySecondThreshold: 300 # Config for the health check threshold for deployments. Default value is 60.
@@ -13,7 +13,7 @@ spec:
         import_path: pkg.serve.deployment
         route_prefix: /qa
         runtime_env:
-          working_dir: "https://github.com/ray-project/test_dag/archive/41d09119cbdf8450599f993f51318e9e27c59098.zip"
+          working_dir: "https://github.com/kerthcet/k8s-specific-knowledge-base/blob/main/k8s-specific-knowledge-base.zip"
         deployments:
           - name: QADeployment
             num_replicas: 1
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
             - name: ray-head
-              image: rayproject/ray:2.5.0
+              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-d8243e4-dirty
               resources:
                 limits:
                   cpu: 2
@@ -50,8 +50,9 @@ spec:
                   name: client
                 - containerPort: 8000
                   name: serve
-            - mountPath: /workspace/data/models
-              name: models
+              volumeMounts:
+              - mountPath: /workspace/data/models
+                name: models
           volumes:
             - name: models
               hostPath:
@@ -72,7 +73,7 @@ spec:
           spec:
             containers:
               - name: ray-worker # must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'
-                image: rayproject/ray:2.5.0
+                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-d8243e4-dirty
                 lifecycle:
                   preStop:
                     exec:

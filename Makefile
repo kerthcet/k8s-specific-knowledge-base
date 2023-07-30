@@ -22,7 +22,7 @@ build-serving-image: build-zip
 		--push \
 		./ \
 
-.PHONY: zip
+.PHONY: build-zip
 build-zip:
 	rm -rf ./k8s-specific-knowledge-base.zip
 	tar --exclude='contents/' \

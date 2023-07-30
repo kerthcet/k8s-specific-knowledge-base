@@ -3,7 +3,7 @@ kind: RayJob
 metadata:
   name: k8s-vector-store
 spec:
-  entrypoint: python /workspace/pkg/dataset.py
+  entrypoint: cd /workspace/pkg && python /workspace/pkg/dataset.py
   # ShutdownAfterJobFinishes specifies whether the RayCluster should be deleted after the RayJob finishes. Default is false.
   shutdownAfterJobFinishes: true
   # runtimeEnv decoded to '{
