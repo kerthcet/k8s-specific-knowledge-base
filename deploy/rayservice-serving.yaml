@@ -4,7 +4,7 @@ metadata:
   name: k8s-qa-service
 spec:
   serviceUnhealthySecondThreshold: 300 # Config for the health check threshold for service. Default value is 60.
-  deploymentUnhealthySecondThreshold: 300 # Config for the health check threshold for deployments. Default value is 60.
+  deploymentUnhealthySecondThreshold: 7200 # Config for the health check threshold for deployments. Default value is 60.
   # serveConfigV2 takes a yaml multi-line scalar, which should be a Ray Serve multi-application config. See https://docs.ray.io/en/latest/serve/multi-app.html.
   # Only one of serveConfig and serveConfigV2 should be used.
   serveConfigV2: |

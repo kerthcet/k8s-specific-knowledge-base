@@ -7,7 +7,7 @@ from langchain.chains.question_answering import load_qa_chain
 from ray import serve
 import torch
 
-import const
+from const import BASE_MODEL
 from embedding import LocalEmbedding
 from pipeline import LocalPipeline
 
@@ -39,7 +39,7 @@ class QADeployment:
         self.db = FAISS.load_local(self.embeddings)
 
         self.llm = LocalPipeline.from_model_id(
-            model_id=const.BASE_MODEL,
+            model_id=BASE_MODEL,
             task="text-generation",
             model_kwargs={"device_map": "auto", "torch_dtype": torch.float16},
         )

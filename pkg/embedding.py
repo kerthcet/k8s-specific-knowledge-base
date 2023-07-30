@@ -3,15 +3,15 @@ from typing import List
 from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
 
-import const
+from const import DEVICE, EMBEDDING_MODEL
 
-device = None if const.DEVICE == "" else const.DEVICE
+device = None if DEVICE == "" else DEVICE
 
 
 class Embed:
     def __init__(self):
         # We use GPU for accelerating.
-        self.model = SentenceTransformer(const.EMBEDDING_MODEL, device=device)
+        self.model = SentenceTransformer(EMBEDDING_MODEL, device=device)
 
     def __call__(self, batch: List[str]):
         content = batch["text"]
@@ -29,7 +29,7 @@ class Embed:
 class LocalEmbedding(Embeddings):
     def __init__(self):
         # We use GPU for accelerating.
-        self.model = SentenceTransformer(const.EMBEDDING_MODEL, device=device)
+        self.model = SentenceTransformer(EMBEDDING_MODEL, device=device)
 
     def embed_documents(self, text_batch: List[str]) -> List[List[float]]:
         """Embed a list of documents using a locally running

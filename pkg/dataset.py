@@ -6,7 +6,7 @@ from langchain.vectorstores import FAISS
 from ray.data import ActorPoolStrategy, read_text
 from ray.data.datasource import FileExtensionFilter
 
-import const
+from const import FAISS_INDEX
 from embedding import Embed, LocalEmbedding
 
 
@@ -76,7 +76,7 @@ def load_data():
         # Used for embedding the query.
         embedding=LocalEmbedding(),
         )
-    vector_store.save_local(const.FAISS_INDEX)
+    vector_store.save_local(FAISS_INDEX)
 
 
 if __name__ == "__main__":
