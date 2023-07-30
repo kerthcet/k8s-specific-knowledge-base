@@ -3,8 +3,6 @@ from typing import List
 import const
 from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
-# Embed is mostly used for ds.map_batches() because we want the result
-# as ((text_batch1, embeddings1), (text_batch2, embedding2), ...)
 
 device = None if const.DEVICE == "" else const.DEVICE
 

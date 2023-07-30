@@ -10,7 +10,7 @@ spec:
   serveConfigV2: |
     applications:
       - name: k8s-qa-service
-        import_path: pkg.serve.deployment
+        import_path: serve.deployment
         route_prefix: /qa
         runtime_env:
           working_dir: "https://github.com/kerthcet/k8s-specific-knowledge-base/blob/main/k8s-specific-knowledge-base.zip"

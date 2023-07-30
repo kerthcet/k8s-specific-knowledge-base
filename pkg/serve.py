@@ -1,12 +1,15 @@
+from typing import List
+
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
+from starlette.requests import Request
 from langchain.chains.question_answering import load_qa_chain
 from ray import serve
 import torch
 
+import const
 from embedding import LocalEmbedding
 from pipeline import LocalPipeline
-import const
 
 template = """
 If you don't know the answer, just say that you don't know. Don't try to make
@@ -48,12 +51,14 @@ class QADeployment:
 
     def qa(self, query):
         search_results = self.db.similarity_search(query)
-        print(f"Results from db are: {search_results}")
         result = self.chain({"input_documents": search_results,
                              "question": query})
 
         print(f"Result is: {result}")
         return result["output_text"]
+
+    async def __call__(self, request: Request) -> List[str]:
+        return self.qa(request.query_params["query"])
 
 
 deployment = QADeployment.bind()
