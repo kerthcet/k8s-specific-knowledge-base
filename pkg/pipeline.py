@@ -25,6 +25,7 @@ class LocalPipeline(HuggingFacePipeline):
         model_id: str,
         task: str,
         device: Optional[str] = None,
+        trust_remote_code: Optional[bool] = False,
         model_kwargs: Optional[dict] = None,
         **kwargs: Any,
     ):
@@ -32,6 +33,7 @@ class LocalPipeline(HuggingFacePipeline):
             model=model_id,
             task=task,
             device=device,
+            trust_remote_code=trust_remote_code,
             model_kwargs=model_kwargs,
         )
         return cls(
