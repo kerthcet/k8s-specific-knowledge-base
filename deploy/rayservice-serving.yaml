@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
             - name: ray-head
-              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-5b92c55-dirty
+              image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-7d728a2-dirty
               resources:
                 limits:
                   cpu: 2
@@ -50,13 +50,6 @@ spec:
                   name: client
                 - containerPort: 8000
                   name: serve
-              volumeMounts:
-              - mountPath: /workspace/data/models
-                name: models
-          volumes:
-            - name: models
-              hostPath:
-                  path: /data/models
     workerGroupSpecs:
       # the pod replicas in this group typed worker
       - replicas: 1
@@ -73,7 +66,7 @@ spec:
           spec:
             containers:
               - name: ray-worker # must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'
-                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-5b92c55-dirty
+                image: registry.cn-shanghai.aliyuncs.com/kerthcet-public/rayproject:ml-7d728a2-dirty
                 lifecycle:
                   preStop:
                     exec:
@@ -82,13 +75,14 @@ spec:
                   limits:
                     cpu: "2"
                     memory: "4Gi"
+                    nvidia.com/gpu: "1"
                   requests:
                     cpu: "2"
                     memory: "4Gi"
+                    nvidia.com/gpu: "1"
                 volumeMounts:
                 - mountPath: /workspace/models
                   name: models
-                volumeMounts:
                 - mountPath: /workspace/faiss_index
                   name: index
             volumes:

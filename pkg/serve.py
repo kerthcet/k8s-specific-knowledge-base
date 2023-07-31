@@ -48,7 +48,10 @@ class QADeployment:
         self.llm = LocalPipeline.from_model_id(
             model_id=BASE_MODEL,
             task="text-generation",
-            model_kwargs={"device_map": "auto", "torch_dtype": torch.float16},
+            model_kwargs={"device_map": "auto",
+                          "torch_dtype": torch.float16,
+                          "trust_remote_code": True,
+                          },
         )
         self.chain = load_qa_chain(
             llm=self.llm,
