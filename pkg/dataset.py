@@ -3,7 +3,8 @@ import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from ray.data import ActorPoolStrategy, read_text, read_binary_files
+from ray.data import read_text, read_binary_files
+from ray.data import ActorPoolStrategy, DataContext
 from ray.data.datasource import FileExtensionFilter
 
 from const import FAISS_INDEX_PATH
@@ -22,6 +23,9 @@ def split_text(text: str):
 
 
 def load_data():
+    # Report detailed progress in loading data.
+    DataContext.get_current().execution_options.verbose_progress = True
+
     text_embeddings = []
 
     dirname = os.path.dirname(os.path.abspath(__file__))
