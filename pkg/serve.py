@@ -21,7 +21,7 @@ CONTEXT:
 {context}
 =========
 QUESTION: {question}
-ANSWER: <|ASSISTANT|>"""
+ANSWER: """
 
 PROMPT = PromptTemplate(
     template=template,
@@ -29,8 +29,6 @@ PROMPT = PromptTemplate(
     )
 
 # TODO: integrate with FastAPI
-
-print(PROMPT.format(context="context", question="question"))
 
 
 @serve.deployment(
@@ -53,13 +51,13 @@ class QADeployment:
         self.tokenizer = AutoTokenizer.from_pretrained(
             BASE_MODEL, trust_remote_code=True)
         self.model = AutoModel.from_pretrained(
-            BASE_MODEL, trust_remote_code=True).half().cuda()
+            BASE_MODEL, trust_remote_code=True).quantize(8).half().cuda()
         self.model = self.model.eval()
 
     def qa(self, query: str):
         search_results = self.db.similarity_search(query)
-        content = PROMPT.format(context=search_results, question=query)
-        result, _ = self.model.chat(self.tokenizer, content, history=[])
+        prompt = PROMPT.format(context=search_results, question=query)
+        result, _ = self.model.chat(self.tokenizer, prompt, history=[])
         print(f"Result is: {result}")
         return result
 
