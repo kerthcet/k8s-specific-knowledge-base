@@ -3,11 +3,12 @@ import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from ray.data import ActorPoolStrategy, read_text
+from ray.data import ActorPoolStrategy, read_text, read_binary_files
 from ray.data.datasource import FileExtensionFilter
 
 from const import FAISS_INDEX_PATH
 from embedding import Embed, LocalEmbedding
+from utils import convert_to_text
 
 
 def split_text(text: str):
@@ -23,23 +24,27 @@ def split_text(text: str):
 def load_data():
     text_embeddings = []
 
-    # # Loading the books, they're PDFs.
-    # ds = read_binary_files("../contents/books")
-    # ds.flat_map(convert_to_text)
-    # ds.flat_map(split_text)
-    # ds.map_batches(
-    #     Embed,
-    #     # Large batch size may lead to GPU OOM.
-    #     batch_size=100,
-    #     compute=ActorPoolStrategy(min_size=1, max_size=4,),  # up to 4 GPUs
-    #     num_gpus=1,
-    #     zero_copy_batch=True,
-    # )
-    # text_embeddings.append([row for row in ds.iter_rows()])
-
     dirname = os.path.dirname(os.path.abspath(__file__))
     root_path = os.path.dirname(dirname)
-    print("root_path", root_path)
+
+    # Loading the books, they're PDFs.
+    ds = read_binary_files(os.path.join(root_path, "contents/books"),
+                           partition_filter=FileExtensionFilter("pdf"),
+                           parallelism=16,
+                           )
+    ds.flat_map(convert_to_text)
+    ds.flat_map(split_text)
+
+    ds.map_batches(
+        Embed,
+        # Large batch size may lead to GPU OOM.
+        batch_size=100,
+        compute=ActorPoolStrategy(min_size=1, max_size=1,),  # up to 4 GPUs
+        num_gpus=1,
+        zero_copy_batch=True,
+    )
+    for row in ds.iter_rows():
+        text_embeddings.append((str(row["bytes"]), row["embeddings"]))
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
@@ -53,22 +58,28 @@ def load_data():
         batch_size=100,
         compute=ActorPoolStrategy(min_size=1, max_size=1,),
         num_gpus=1,
+        zero_copy_batch=True,
     )
     for row in ds.iter_rows():
         text_embeddings.append((row["text"], row["embeddings"]))
 
-    # # Loading the websites.
-    # ds = read_binary_files("../contents/website")
-    # ds.flat_map(split_text)
-    # ds.map_batches(
-    #     Embed,
-    #     # Large batch size may lead to GPU OOM.
-    #     batch_size=100,
-    #     compute=ActorPoolStrategy(min_size=1, max_size=4),
-    #     num_gpus=1,
-    #     zero_copy_batch=True,
-    # )
-    # text_embeddings.append([row for row in ds.iter_rows()])
+    # Loading the websites.
+    ds = read_text(os.path.join(root_path, "contents/website"),
+                   partition_filter=FileExtensionFilter("md"),
+                   parallelism=16,
+                   )
+    ds.flat_map(split_text)
+
+    ds.map_batches(
+        Embed,
+        # Large batch size may lead to GPU OOM.
+        batch_size=100,
+        compute=ActorPoolStrategy(min_size=1, max_size=1),
+        num_gpus=1,
+        zero_copy_batch=True,
+    )
+    for row in ds.iter_rows():
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     vector_store = FAISS.from_embeddings(
         text_embeddings,
