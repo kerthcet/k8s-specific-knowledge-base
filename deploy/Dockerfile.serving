@@ -5,6 +5,7 @@ WORKDIR /workspace
 COPY ../requirements.txt .
 RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-ENV RAY_DATA_STRICT_MODE=0
-
 COPY ../pkg ./pkg
+
+# This is because serve run pkg.serve:deployment doesn't work.
+WORKDIR /workspace/pkg

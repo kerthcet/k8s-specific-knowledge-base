@@ -1,4 +1,4 @@
-# (WIP)k8s-specific-knowledge-base
+# k8s-specific-knowledge-base
 
 This is a Question-Answering system based on k8s-specific knowledge build on ChatGLM2-6B, serving by Ray.
 It's not ready for production, but we'll target for this.

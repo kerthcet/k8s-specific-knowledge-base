@@ -13,7 +13,7 @@ build-aio-image: build-zip
 		./ \
 
 .PHONY: build-serving-image
-build-serving-image: build-zip
+build-serving-image: build-serving-image
 	echo $(IMAGE_WITH_TAG)
 	docker buildx build \
 		-f ./deploy/Dockerfile.serving \

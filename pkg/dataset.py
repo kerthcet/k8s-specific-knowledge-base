@@ -34,7 +34,7 @@ def load_data():
     # Loading the books, they're PDFs.
     ds = read_binary_files(os.path.join(root_path, "contents/books"),
                            partition_filter=FileExtensionFilter("pdf"),
-                           parallelism=16,
+                           parallelism=8,
                            )
     ds.flat_map(convert_to_text)
     ds.flat_map(split_text)
@@ -53,7 +53,7 @@ def load_data():
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
                    partition_filter=FileExtensionFilter("md"),
-                   parallelism=16,
+                   parallelism=8,
                    )
     ds.flat_map(split_text)
 
@@ -70,7 +70,7 @@ def load_data():
     # Loading the websites.
     ds = read_text(os.path.join(root_path, "contents/website"),
                    partition_filter=FileExtensionFilter("md"),
-                   parallelism=16,
+                   parallelism=8,
                    )
     ds.flat_map(split_text)
 
