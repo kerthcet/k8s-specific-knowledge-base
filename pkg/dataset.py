@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -12,14 +12,19 @@ from embedding import Embed, LocalEmbedding
 from utils import convert_to_text
 
 
-def split_text(text: str):
+def split_text(text: Dict[str, str]) -> List[Dict[str, str]]:
+    # Use chunk_size of 1000.
+    # We felt that the answer we would be looking for would be
+    # around 200 words, or around 1000 characters.
+    # This parameter can be modified based on your documents and use case.
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=100,
         length_function=len,
     )
-    text: List[str] = text_splitter.split_text(text)
-    return [t.replace("\n", "") for t in text]
+
+    result: List[str] = text_splitter.split_text(text["text"])
+    return [{"text": r} for r in result]
 
 
 def load_data():
@@ -34,29 +39,26 @@ def load_data():
     # Loading the books, they're PDFs.
     ds = read_binary_files(os.path.join(root_path, "contents/books"),
                            partition_filter=FileExtensionFilter("pdf"),
-                           parallelism=8,
                            )
-    ds.flat_map(convert_to_text)
-    ds.flat_map(split_text)
 
-    ds.map_batches(
+    ds = ds.flat_map(convert_to_text)
+    ds = ds.flat_map(split_text)
+    ds = ds.map_batches(
         Embed,
         # Large batch size may lead to GPU OOM.
         batch_size=100,
-        compute=ActorPoolStrategy(min_size=1, max_size=1,),  # up to 4 GPUs
+        compute=ActorPoolStrategy(min_size=1, max_size=1),
         num_gpus=1,
         zero_copy_batch=True,
     )
     for row in ds.iter_rows():
-        text_embeddings.append((str(row["bytes"]), row["embeddings"]))
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
                    partition_filter=FileExtensionFilter("md"),
-                   parallelism=8,
                    )
     ds.flat_map(split_text)
-
     ds = ds.map_batches(
         Embed,
         batch_size=100,
@@ -70,10 +72,8 @@ def load_data():
     # Loading the websites.
     ds = read_text(os.path.join(root_path, "contents/website"),
                    partition_filter=FileExtensionFilter("md"),
-                   parallelism=8,
                    )
     ds.flat_map(split_text)
-
     ds.map_batches(
         Embed,
         # Large batch size may lead to GPU OOM.

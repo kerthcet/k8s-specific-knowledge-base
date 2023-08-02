@@ -5,7 +5,7 @@ metadata:
 spec:
   entrypoint: python dataset.py
   # ShutdownAfterJobFinishes specifies whether the RayCluster should be deleted after the RayJob finishes. Default is false.
-  shutdownAfterJobFinishes: true
+  shutdownAfterJobFinishes: false
   # runtimeEnv decoded to '{
   #    "pip": [
   #        "requests==2.26.0",

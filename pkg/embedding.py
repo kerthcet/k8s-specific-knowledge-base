@@ -18,7 +18,7 @@ class Embed:
         # We manually encode using sentence_transformer since LangChain
         # HuggingfaceEmbeddings does not support specifying a batch size yet.
         embeddings = self.model.encode(
-            list(batch["text"]),
+            batch["text"],
             batch_size=100,
             device=device,
         ).tolist()
