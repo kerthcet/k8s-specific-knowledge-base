@@ -58,7 +58,7 @@ def load_data():
     ds = read_text(os.path.join(root_path, "contents/posts"),
                    partition_filter=FileExtensionFilter("md"),
                    )
-    ds.flat_map(split_text)
+    ds = ds.flat_map(split_text)
     ds = ds.map_batches(
         Embed,
         batch_size=100,
@@ -73,8 +73,8 @@ def load_data():
     ds = read_text(os.path.join(root_path, "contents/website"),
                    partition_filter=FileExtensionFilter("md"),
                    )
-    ds.flat_map(split_text)
-    ds.map_batches(
+    ds = ds.flat_map(split_text)
+    ds = ds.map_batches(
         Embed,
         # Large batch size may lead to GPU OOM.
         batch_size=100,
