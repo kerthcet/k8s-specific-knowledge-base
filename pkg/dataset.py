@@ -31,8 +31,6 @@ def load_data():
     # Report detailed progress in loading data.
     DataContext.get_current().execution_options.verbose_progress = True
 
-    text_embeddings = []
-
     dirname = os.path.dirname(os.path.abspath(__file__))
     root_path = os.path.dirname(dirname)
 
@@ -51,8 +49,15 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
+    text_embeddings1 = []
     for row in ds.iter_rows():
-        text_embeddings.append((row["text"], row["embeddings"]))
+        text_embeddings1.append((row["text"], row["embeddings"]))
+    vector_store1 = FAISS.from_embeddings(
+        text_embeddings1,
+        # Used for embedding the query.
+        embedding=LocalEmbedding(),
+        )
+    vector_store1.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
@@ -66,8 +71,15 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
+    text_embeddings2 = []
     for row in ds.iter_rows():
-        text_embeddings.append((row["text"], row["embeddings"]))
+        text_embeddings2.append((row["text"], row["embeddings"]))
+    vector_store2 = FAISS.from_embeddings(
+        text_embeddings2,
+        # Used for embedding the query.
+        embedding=LocalEmbedding(),
+        )
+    vector_store2.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
 
     # Loading the websites.
     ds = read_text(os.path.join(root_path, "contents/website"),
@@ -82,15 +94,15 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
+    text_embeddings3 = []
     for row in ds.iter_rows():
-        text_embeddings.append((row["text"], row["embeddings"]))
-
-    vector_store = FAISS.from_embeddings(
-        text_embeddings,
+        text_embeddings3.append((row["text"], row["embeddings"]))
+    vector_store3 = FAISS.from_embeddings(
+        text_embeddings3,
         # Used for embedding the query.
         embedding=LocalEmbedding(),
         )
-    vector_store.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
+    vector_store3.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
 
 
 if __name__ == "__main__":
