@@ -3,3 +3,4 @@ transformers==4.31.0
 sentence-transformers==2.2.2
 pypdf==3.13.0
 faiss-cpu==1.7.4
+wandb==0.15.8

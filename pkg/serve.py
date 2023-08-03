@@ -3,6 +3,7 @@ from typing import List
 
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
+from wandb.integration.langchain import WandbTracer
 from starlette.requests import Request
 # from langchain.chains.question_answering import load_qa_chain
 from ray import serve
@@ -39,6 +40,8 @@ PROMPT = PromptTemplate(
 # # https://github.com/kerthcet/k8s-specific-knowledge-base/issues/1
 class QADeployment:
     def __init__(self) -> None:
+        WandbTracer.init({"project": "k8s-specific-knowledge-base"})
+
         dirname = os.path.dirname(os.path.abspath(__file__))
         root_path = os.path.dirname(dirname)
 
@@ -56,9 +59,10 @@ class QADeployment:
 
     def qa(self, query: str):
         search_results = self.db.similarity_search(query)
+        print(f"semantic search results: {search_results}")
         prompt = PROMPT.format(context=search_results, question=query)
         result, _ = self.model.chat(self.tokenizer, prompt, history=[])
-        print(f"Result is: {result}")
+        print(f"Summarize results: {result}")
         return result
 
     # def __init__(self) -> None:
