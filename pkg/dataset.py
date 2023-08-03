@@ -84,6 +84,13 @@ def load_data():
     for row in ds.iter_rows():
         text_embeddings.append((row["text"], row["embeddings"]))
 
+    vector_store = FAISS.from_embeddings(
+        text_embeddings,
+        # Used for embedding the query.
+        embedding=LocalEmbedding(),
+        )
+    vector_store.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
+
 
 if __name__ == "__main__":
     load_data()
