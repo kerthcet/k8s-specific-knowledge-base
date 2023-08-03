@@ -56,7 +56,7 @@ class QADeployment:
 
         search_results = self.db.similarity_search(query, k=5)
         embedding_results = []
-        for r in search_results():
+        for r in search_results:
             embedding_results.append(r.page_content)
 
         prompt = PROMPT.format(
