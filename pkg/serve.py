@@ -14,8 +14,10 @@ from embedding import LocalEmbedding
 # from pipeline import LocalPipeline
 
 template = """
-已知：{context}
-请尽可能详细的回答如下问题，如果不知道，就说不知道：{question}
+你是一个专业的，基于事实的问答机器人，精通 Kubernetes 知识。
+你的回答要详细且准确。
+目前已知：{context}
+请回答：{question}
 """
 
 PROMPT = PromptTemplate(
@@ -53,9 +55,14 @@ class QADeployment:
         print(f"Primitive results: {result}")
 
         search_results = self.db.similarity_search(query, k=5)
-        print(f"Embedding results: {search_results}")
+        embedding_results = []
+        for r in search_results():
+            embedding_results.append(r.page_content)
 
-        prompt = PROMPT.format(context=search_results, question=query)
+        prompt = PROMPT.format(
+            context=" ".join(embedding_results),
+            question=query,
+            )
         print(f"Prompt: {prompt}")
 
         result, _ = self.model.chat(self.tokenizer, prompt, history=[])

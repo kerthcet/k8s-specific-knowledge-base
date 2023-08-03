@@ -24,7 +24,7 @@ def split_text(text: Dict[str, str]) -> List[Dict[str, str]]:
     )
 
     result: List[str] = text_splitter.split_text(text["text"])
-    return [{"text": r} for r in result]
+    return [{"text": r.replace("\n", " ")} for r in result]
 
 
 def load_data():
