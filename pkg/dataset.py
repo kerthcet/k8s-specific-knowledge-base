@@ -49,15 +49,9 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    text_embeddings1 = []
+    text_embeddings = []
     for row in ds.iter_rows():
-        text_embeddings1.append((row["text"], row["embeddings"]))
-    vector_store1 = FAISS.from_embeddings(
-        text_embeddings1,
-        # Used for embedding the query.
-        embedding=LocalEmbedding(),
-        )
-    vector_store1.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
@@ -71,15 +65,8 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    text_embeddings2 = []
     for row in ds.iter_rows():
-        text_embeddings2.append((row["text"], row["embeddings"]))
-    vector_store2 = FAISS.from_embeddings(
-        text_embeddings2,
-        # Used for embedding the query.
-        embedding=LocalEmbedding(),
-        )
-    vector_store2.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # Loading the websites.
     ds = read_text(os.path.join(root_path, "contents/website"),
@@ -94,15 +81,8 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    text_embeddings3 = []
     for row in ds.iter_rows():
-        text_embeddings3.append((row["text"], row["embeddings"]))
-    vector_store3 = FAISS.from_embeddings(
-        text_embeddings3,
-        # Used for embedding the query.
-        embedding=LocalEmbedding(),
-        )
-    vector_store3.save_local(os.path.join(root_path, FAISS_INDEX_PATH))
+        text_embeddings.append((row["text"], row["embeddings"]))
 
 
 if __name__ == "__main__":

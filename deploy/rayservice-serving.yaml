@@ -28,6 +28,7 @@ spec:
       rayStartParams:
         dashboard-host: '0.0.0.0'
         num-gpus: '0'
+        num-cpus: '0'
       #pod template
       template:
         spec:
@@ -37,9 +38,9 @@ spec:
               resources:
                 limits:
                   cpu: 2
-                  memory: "8Gi"
+                  memory: "2Gi"
                 requests:
-                  cpu: 2
+                  cpu: 1
                   memory: "2Gi"
               ports:
                 - containerPort: 6379
