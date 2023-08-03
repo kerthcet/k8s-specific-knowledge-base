@@ -3,7 +3,6 @@ from typing import List
 
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
-from wandb.integration.langchain import WandbTracer
 from starlette.requests import Request
 # from langchain.chains.question_answering import load_qa_chain
 from ray import serve
@@ -15,21 +14,14 @@ from embedding import LocalEmbedding
 # from pipeline import LocalPipeline
 
 template = """
-If you don't know the answer, just say that you don't know. Don't try to make
-up an answer. Please answer the following question using the context provided.
-
-CONTEXT:
-{context}
-=========
-QUESTION: {question}
-ANSWER: """
+已知：{context}
+请尽可能详细的回答如下问题，如果不知道，就说不知道：{question}
+"""
 
 PROMPT = PromptTemplate(
     template=template,
     input_variables=["context", "question"],
     )
-
-# TODO: integrate with FastAPI
 
 
 @serve.deployment(
@@ -40,8 +32,6 @@ PROMPT = PromptTemplate(
 # # https://github.com/kerthcet/k8s-specific-knowledge-base/issues/1
 class QADeployment:
     def __init__(self) -> None:
-        WandbTracer.init({"project": "k8s-specific-knowledge-base"})
-
         dirname = os.path.dirname(os.path.abspath(__file__))
         root_path = os.path.dirname(dirname)
 
@@ -57,10 +47,17 @@ class QADeployment:
             BASE_MODEL, trust_remote_code=True).quantize(8).half().cuda()
         self.model = self.model.eval()
 
+    # TODO: support history.
     def qa(self, query: str):
-        search_results = self.db.similarity_search(query)
-        print(f"semantic search results: {search_results}")
+        result, _ = self.model.chat(self.tokenizer, query, history=[])
+        print(f"Primitive results: {result}")
+
+        search_results = self.db.similarity_search(query, k=5)
+        print(f"Embedding results: {search_results}")
+
         prompt = PROMPT.format(context=search_results, question=query)
+        print(f"Prompt: {prompt}")
+
         result, _ = self.model.chat(self.tokenizer, prompt, history=[])
         print(f"Summarize results: {result}")
         return result
