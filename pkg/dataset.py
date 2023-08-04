@@ -1,4 +1,5 @@
 from typing import List, Dict
+import random
 import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -50,8 +51,14 @@ def load_data():
         zero_copy_batch=True,
     )
     text_embeddings = []
-    for row in ds.iter_rows():
+    for row in ds.iter_batches():
         text_embeddings.append((row["text"], row["embeddings"]))
+
+    for i in range(0, len(text_embeddings)):
+        num = random.randint(0, len(text_embeddings)-1)
+        print(text_embeddings[num])
+        if i == 20:
+            break
 
     # Loading the blogs with the extension of ".md".
     ds = read_text(os.path.join(root_path, "contents/posts"),
@@ -65,8 +72,14 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    for row in ds.iter_rows():
+    for row in ds.iter_batches():
         text_embeddings.append((row["text"], row["embeddings"]))
+
+    for i in range(0, len(text_embeddings)):
+        num = random.randint(0, len(text_embeddings)-1)
+        print(text_embeddings[num])
+        if i == 20:
+            break
 
     # Loading the websites.
     ds = read_text(os.path.join(root_path, "contents/website"),
@@ -81,8 +94,14 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    for row in ds.iter_rows():
+    for row in ds.iter_batches():
         text_embeddings.append((row["text"], row["embeddings"]))
+
+    for i in range(0, len(text_embeddings)):
+        num = random.randint(0, len(text_embeddings)-1)
+        print(text_embeddings[num])
+        if i == 30:
+            break
 
     vector_store = FAISS.from_embeddings(
         text_embeddings,
