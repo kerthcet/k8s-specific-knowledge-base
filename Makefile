@@ -28,5 +28,6 @@ build-zip:
 	tar --exclude='contents/' \
 		--exclude='models/' \
 		--exclude='.git/' \
+		--exclude='faiss_index/' \
 		-zcvf k8s-specific-knowledge-base.zip \
 		./

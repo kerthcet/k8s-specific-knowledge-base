@@ -4,7 +4,8 @@ import os
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from ray.data import read_text, read_binary_files
+# from ray.data import read_text, read_binary_files
+from ray.data import read_binary_files
 from ray.data import ActorPoolStrategy, DataContext
 from ray.data.datasource import FileExtensionFilter
 
@@ -36,6 +37,7 @@ def load_data():
     root_path = os.path.dirname(dirname)
 
     # Loading the books, they're PDFs.
+    print("Loading books.")
     ds = read_binary_files(os.path.join(root_path, "contents/books"),
                            partition_filter=FileExtensionFilter("pdf"),
                            )
@@ -51,7 +53,7 @@ def load_data():
         zero_copy_batch=True,
     )
     text_embeddings = []
-    for row in ds.iter_batches():
+    for row in ds.iter_batches(batch_size=None):
         text_embeddings.append((row["text"], row["embeddings"]))
 
     for i in range(0, len(text_embeddings)):
@@ -60,48 +62,50 @@ def load_data():
         if i == 20:
             break
 
-    # Loading the blogs with the extension of ".md".
-    ds = read_text(os.path.join(root_path, "contents/posts"),
-                   partition_filter=FileExtensionFilter("md"),
-                   )
-    ds = ds.flat_map(split_text)
-    ds = ds.map_batches(
-        Embed,
-        batch_size=100,
-        compute=ActorPoolStrategy(min_size=1, max_size=1,),
-        num_gpus=1,
-        zero_copy_batch=True,
-    )
-    for row in ds.iter_batches():
-        text_embeddings.append((row["text"], row["embeddings"]))
+    # # Loading the blogs with the extension of ".md".
+    # print("Loading posts.")
+    # ds = read_text(os.path.join(root_path, "contents/posts"),
+    #                partition_filter=FileExtensionFilter("md"),
+    #                )
+    # ds = ds.flat_map(split_text)
+    # ds = ds.map_batches(
+    #     Embed,
+    #     batch_size=100,
+    #     compute=ActorPoolStrategy(min_size=1, max_size=1,),
+    #     num_gpus=1,
+    #     zero_copy_batch=True,
+    # )
+    # for row in ds.iter_batches():
+    #     text_embeddings.append((row["text"], row["embeddings"]))
 
-    for i in range(0, len(text_embeddings)):
-        num = random.randint(0, len(text_embeddings)-1)
-        print(text_embeddings[num])
-        if i == 20:
-            break
+    # for i in range(0, len(text_embeddings)):
+    #     num = random.randint(0, len(text_embeddings)-1)
+    #     print(text_embeddings[num])
+    #     if i == 20:
+    #         break
 
-    # Loading the websites.
-    ds = read_text(os.path.join(root_path, "contents/website"),
-                   partition_filter=FileExtensionFilter("md"),
-                   )
-    ds = ds.flat_map(split_text)
-    ds = ds.map_batches(
-        Embed,
-        # Large batch size may lead to GPU OOM.
-        batch_size=100,
-        compute=ActorPoolStrategy(min_size=1, max_size=1),
-        num_gpus=1,
-        zero_copy_batch=True,
-    )
-    for row in ds.iter_batches():
-        text_embeddings.append((row["text"], row["embeddings"]))
+    # # Loading the websites.
+    # print("Loading websites.")
+    # ds = read_text(os.path.join(root_path, "contents/website"),
+    #                partition_filter=FileExtensionFilter("md"),
+    #                )
+    # ds = ds.flat_map(split_text)
+    # ds = ds.map_batches(
+    #     Embed,
+    #     # Large batch size may lead to GPU OOM.
+    #     batch_size=100,
+    #     compute=ActorPoolStrategy(min_size=1, max_size=1),
+    #     num_gpus=1,
+    #     zero_copy_batch=True,
+    # )
+    # for row in ds.iter_batches():
+    #     text_embeddings.append((row["text"], row["embeddings"]))
 
-    for i in range(0, len(text_embeddings)):
-        num = random.randint(0, len(text_embeddings)-1)
-        print(text_embeddings[num])
-        if i == 30:
-            break
+    # for i in range(0, len(text_embeddings)):
+    #     num = random.randint(0, len(text_embeddings)-1)
+    #     print(text_embeddings[num])
+    #     if i == 30:
+    #         break
 
     vector_store = FAISS.from_embeddings(
         text_embeddings,
