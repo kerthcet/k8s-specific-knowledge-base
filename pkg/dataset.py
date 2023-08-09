@@ -78,6 +78,8 @@ def load_data():
         zero_copy_batch=True,
     )
     text_embeddings = []
+    for row in ds.iter_rows():
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # Loading the blogs with the extension of ".md".
     print("Loading posts ...")
@@ -93,6 +95,8 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
+    for row in ds.iter_rows():
+        text_embeddings.append((row["text"], row["embeddings"]))
 
     # Loading the websites.
     print("Loading websites ...")
@@ -109,7 +113,7 @@ def load_data():
         num_gpus=1,
         zero_copy_batch=True,
     )
-    for row in ds.iter_batches():
+    for row in ds.iter_rows():
         text_embeddings.append((row["text"], row["embeddings"]))
 
     vector_store = FAISS.from_embeddings(
