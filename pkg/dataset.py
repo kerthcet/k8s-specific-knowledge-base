@@ -96,9 +96,9 @@ def load_data():
 
     # Loading the websites.
     print("Loading websites ...")
-    ds = read_text(os.path.join(root_path, "contents/website"),
-                   partition_filter=FileExtensionFilter("md"),
-                   )
+    ds = read_binary_files(os.path.join(root_path, "contents/website"),
+                           partition_filter=FileExtensionFilter("md"),
+                           )
     ds = ds.flat_map(convert_md_to_text)
     ds = ds.flat_map(split_markdown)
     ds = ds.map_batches(
