@@ -14,9 +14,9 @@ from embedding import LocalEmbedding
 # from pipeline import LocalPipeline
 
 template = """
-你是一个专业的，基于事实的问答机器人，精通 Kubernetes 知识。
-你的回答要详细且准确。
-目前已知：{context}
+你是一个基于事实的问答机器人, 你的回答详细且准确。
+目前已知：
+{context}
 请回答：{question}
 """
 
@@ -60,7 +60,7 @@ class QADeployment:
             embedding_results.append(r.page_content)
 
         prompt = PROMPT.format(
-            context=" ".join(embedding_results),
+            context="\n".join(embedding_results),
             question=query,
             )
         print(f"Prompt: {prompt}")
