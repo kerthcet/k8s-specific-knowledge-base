@@ -1,28 +1,9 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!-- 
-Mark a node as a control-plane 
--->
 标记节点为控制平面节点
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-Mark a node as a control-plane
--->
 
 标记 Node 节点为控制平面节点
 
@@ -30,12 +11,6 @@ Mark a node as a control-plane
 kubeadm init phase mark-control-plane [flags]
 ```
 
-<!--
-### Examples
-
-# Applies control-plane label and taint to the current node, functionally equivalent to what executed by kubeadm init.
-# Applies control-plane label and taint to a specific node
--->
 
 ### 示例
 
@@ -47,9 +22,6 @@ kubeadm init phase mark-control-plane --config config.yaml
 kubeadm init phase mark-control-plane --node-name myNode
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -65,9 +37,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>Path to a kubeadm configuration file.</p>
--->
 <p>kubeadm 配置文件的路径。</p>
 </td>
 </tr>
@@ -77,9 +46,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>Don't apply any changes; just output what would be done.</p>
--->
 <p>不做任何更改；只输出将要执行的操作。</p>
 </td>
 </tr>
@@ -89,9 +55,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>help for mark-control-plane</p>
--->
 <p>mark-control-plane 操作的帮助命令</p>
 </td>
 </tr>
@@ -101,9 +64,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>Specify the node name.</p>
--->
 <p>指定节点名称。</p>
 </td>
 </tr>
@@ -111,9 +71,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 从父命令继承的选项
 
@@ -129,9 +86,6 @@ kubeadm init phase mark-control-plane --node-name myNode
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>[EXPERIMENTAL] The path to the 'real' host root filesystem.</p>
--->
 <p>[实验] 到 '真实' 主机根文件系统的路径。</p>
 </td>
 </tr>

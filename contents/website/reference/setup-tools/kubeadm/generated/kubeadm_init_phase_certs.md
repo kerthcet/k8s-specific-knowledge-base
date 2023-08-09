@@ -1,28 +1,9 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!--
-Certificate generation
--->
 证书生成
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-This command is not meant to be run on its own. See list of available subcommands.
--->
 
 此命令不应单独运行。请参阅可用子命令列表。
 
@@ -30,9 +11,6 @@ This command is not meant to be run on its own. See list of available subcommand
 kubeadm init phase certs [flags]
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -48,9 +26,6 @@ kubeadm init phase certs [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-help for certs
--->
 <p>
 certs 操作的帮助命令
 </p>
@@ -60,9 +35,6 @@ certs 操作的帮助命令
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 从父指令中继承的选项
 
@@ -78,9 +50,6 @@ certs 操作的帮助命令
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-[EXPERIMENTAL] The path to the 'real' host root filesystem.
--->
 <p>
 [实验] 到 '真实' 主机根文件系统的路径。
 </p>

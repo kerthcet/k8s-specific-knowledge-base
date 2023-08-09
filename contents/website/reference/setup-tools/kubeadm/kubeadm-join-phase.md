@@ -3,23 +3,10 @@ title: kubeadm join phase
 weight: 90
 ---
 
-<!--
-title: kubeadm join phase
-weight: 90
--->
 
-<!--
-`kubeadm join phase` enables you to invoke atomic steps of the join process.
-Hence, you can let kubeadm do some of the work and you can fill in the gaps
-if you wish to apply customization.
--->
 `kubeadm join phase` 使你能够调用 `join` 过程的基本原子步骤。
 因此，如果希望执行自定义操作，可以让 kubeadm 做一些工作，然后由用户来补足剩余操作。
 
-<!--
-`kubeadm join phase` is consistent with the [kubeadm join workflow](/docs/reference/setup-tools/kubeadm/kubeadm-join/#join-workflow),
-and behind the scene both use the same code.
--->
 `kubeadm join phase` 与
 [kubeadm join 工作流程](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-join/#join-workflow)
 一致，后台都使用相同的代码。
@@ -32,9 +19,6 @@ and behind the scene both use the same code.
 
 ## kubeadm join phase preflight {#cmd-join-phase-preflight}
 
-<!--
-Using this phase you can execute preflight checks on a joining node.
--->
 使用此命令可以在即将加入集群的节点上执行启动前检查。
 
 {{< tabs name="tab-preflight" >}}
@@ -43,9 +27,6 @@ Using this phase you can execute preflight checks on a joining node.
 
 ## kubeadm join phase control-plane-prepare {#cmd-join-phase-control-plane-prepare}
 
-<!--
-Using this phase you can prepare a node for serving a control-plane.
--->
 使用此阶段，你可以准备一个作为控制平面的节点。
 
 {{< tabs name="tab-control-plane-prepare" >}}
@@ -59,9 +40,6 @@ Using this phase you can prepare a node for serving a control-plane.
 
 ## kubeadm join phase kubelet-start {#cmd-join-phase-kubelet-start}
 
-<!--
-Using this phase you can write the kubelet settings, certificates and (re)start the kubelet.
--->
 使用此阶段，你可以配置 kubelet 设置、证书和（重新）启动 kubelet。
 
 {{< tabs name="tab-kubelet-start" >}}
@@ -70,9 +48,6 @@ Using this phase you can write the kubelet settings, certificates and (re)start 
 
 ## kubeadm join phase control-plane-join {#cmd-join-phase-control-plane-join}
 
-<!--
-Using this phase you can join a node as a control-plane instance.
--->
 使用此阶段，你可以将节点作为控制平面实例加入。
 
 {{< tabs name="tab-control-plane-join" >}}
@@ -85,12 +60,6 @@ Using this phase you can join a node as a control-plane instance.
 
 ## {{% heading "whatsnext" %}}
 
-<!--
-* [kubeadm init](/docs/reference/setup-tools/kubeadm/kubeadm-init/) to bootstrap a Kubernetes control-plane node
-* [kubeadm join](/docs/reference/setup-tools/kubeadm/kubeadm-join/) to connect a node to the cluster
-* [kubeadm reset](/docs/reference/setup-tools/kubeadm/kubeadm-reset/) to revert any changes made to this host by `kubeadm init` or `kubeadm join`
-* [kubeadm alpha](/docs/reference/setup-tools/kubeadm/kubeadm-alpha/) to try experimental functionality
--->
 * [kubeadm init](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-init/)
   引导 Kubernetes 控制平面节点
 * [kubeadm join](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-join/)

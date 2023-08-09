@@ -10,36 +10,11 @@ card:
   weight: 10
   title: 开始为 K8s 做贡献
 ---
-<!--
-content_type: concept
-title: Contribute to K8s docs
-linktitle: Contribute
-main_menu: true
-no_list: true
-weight: 80
-card:
-  name: contribute
-  weight: 10
-  title: Start contributing to K8s
--->
 
-<!-- overview -->
 
-<!--
-*Kubernetes welcomes improvements from all contributors, new and experienced!*
--->
 **Kubernetes 欢迎来自所有贡献者的改进，无论你是新人和有经验的贡献者！**
 
 {{< note >}}
-<!--
-To learn more about contributing to Kubernetes in general, see the
-[contributor documentation](https://www.kubernetes.dev/docs/).
-
-You can also read the
-{{< glossary_tooltip text="CNCF" term_id="cncf" >}}
-[page](https://contribute.cncf.io/contributors/projects/#kubernetes)
-about contributing to Kubernetes.
--->
 要了解有关为 Kubernetes 做出贡献的更多信息，请参阅
 [贡献者文档](https://www.kubernetes.dev/docs/)。
 
@@ -48,16 +23,6 @@ about contributing to Kubernetes.
 关于为 Kubernetes 做贡献的[页面](https://contribute.cncf.io/contributors/projects/#kubernetes)。
 {{< /note >}}
 
-<!--
-This website is maintained by [Kubernetes SIG Docs](/docs/contribute/#get-involved-with-sig-docs).
-
-Kubernetes documentation contributors:
-
-- Improve existing content
-- Create new content
-- Translate the documentation
-- Manage and publish the documentation parts of the Kubernetes release cycle
--->
 本网站由 [Kubernetes SIG Docs](/zh-cn/docs/contribute/#get-involved-with-SIG-Docs)（文档特别兴趣小组）维护。
 
 Kubernetes 文档项目的贡献者：
@@ -67,19 +32,7 @@ Kubernetes 文档项目的贡献者：
 - 翻译文档
 - 管理并发布 Kubernetes 周期性发行版的文档
 
-<!-- body -->
 
-<!-- 
-## Getting started
-
-Anyone can open an issue about documentation, or contribute a change with a
-pull request (PR) to the
-[`kubernetes/website` GitHub repository](https://github.com/kubernetes/website).
-You need to be comfortable with
-[git](https://git-scm.com/) and
-[GitHub](https://lab.github.com/)
-to work effectively in the Kubernetes community.
--->
 ## 入门 {#getting-started}
 
 任何人都可以提出文档方面的问题（issue），或贡献一个变更，用拉取请求（PR）的方式提交到
@@ -87,16 +40,6 @@ to work effectively in the Kubernetes community.
 当然你需要熟练使用 [git](https://git-scm.com/) 和 [GitHub](https://lab.github.com/)
 才能在 Kubernetes 社区中有效工作。
 
-<!-- 
-To get involved with documentation:
-
-1. Sign the CNCF [Contributor License Agreement](https://github.com/kubernetes/community/blob/master/CLA.md).
-2. Familiarize yourself with the [documentation repository](https://github.com/kubernetes/website)
-   and the website's [static site generator](https://gohugo.io).
-3. Make sure you understand the basic processes for
-   [opening a pull request](/docs/contribute/new-content/open-a-pr/) and
-   [reviewing changes](/docs/contribute/review/reviewing-prs/).
--->
 如何参与文档编制：
 
 1. 签署 CNCF 的[贡献者许可协议](https://github.com/kubernetes/community/blob/master/CLA.md)。
@@ -104,8 +47,6 @@ To get involved with documentation:
 3. 确保理解[发起 PR](/zh-cn/docs/contribute/new-content/open-a-pr/)
    和[审查变更](/zh-cn/docs/contribute/review/reviewing-prs/)的基本流程。
 
-<!-- See https://github.com/kubernetes/website/issues/28808 for live-editor URL to this figure -->
-<!-- You can also cut/paste the mermaid code into the live editor at https://mermaid-js.github.io/mermaid-live-editor to play around with it -->
 
 {{< mermaid >}}
 flowchart TB
@@ -148,11 +89,6 @@ class S,T,U spacewhite
 class first,second,third white
 {{</ mermaid >}}
 
-<!-- 
-Figure 1. Getting started for a new contributor.
-
-Figure 1 outlines a roadmap for new contributors. You can follow some or all of the steps for `Sign up` and `Review`. Now you are ready to open PRs that achieve your contribution objectives with some listed under `Open PR`. Again, questions are always welcome!
--->
 图 1. 新手入门指示。
 
 图 1 概述了新贡献者的路线图。
@@ -161,26 +97,14 @@ Figure 1 outlines a roadmap for new contributors. You can follow some or all of 
 可以通过“发起 PR” 列出的事项实现你的贡献目标。
 再次重申，欢迎随时提出问题！
 
-<!-- 
-Some tasks require more trust and more access in the Kubernetes organization.
-See [Participating in SIG Docs](/docs/contribute/participate/) for more details about
-roles and permissions.
--->
 有些任务要求 Kubernetes 组织内更高的信任级别和访问权限。
 阅读[参与 SIG Docs 工作](/zh-cn/docs/contribute/participate/)，获取角色和权限的更多细节。
 
-<!-- 
-## Your first contribution
-
-You can prepare for your first contribution by reviewing several steps beforehand. Figure 2 outlines the steps and the details follow. 
--->
 ## 第一次贡献 {#your-first-contribution}
 
 你可以提前查阅几个步骤，来准备你的第一次贡献。
 图 2 概述了后续的步骤和细节。
 
-<!-- See https://github.com/kubernetes/website/issues/28808 for live-editor URL to this figure -->
-<!-- You can also cut/paste the mermaid code into the live editor at https://mermaid-js.github.io/mermaid-live-editor to play around with it -->
 
 {{< mermaid >}}
 flowchart LR
@@ -209,25 +133,8 @@ class S,T spacewhite
 class first,second white
 {{</ mermaid >}}
 
-<!-- 
-Figure 2. Preparation for your first contribution.
--->
 图 2. 第一次贡献的准备工作。
 
-<!--
-- Read the [Contribution overview](/docs/contribute/new-content/) to
-  learn about the different ways you can contribute.
-- Check [`kubernetes/website` issues list](https://github.com/kubernetes/website/issues/)
-  for issues that make good entry points.
-- [Open a pull request using GitHub](/docs/contribute/new-content/open-a-pr/#changes-using-github)
-  to existing documentation and learn more about filing issues in GitHub.
-- [Review pull requests](/docs/contribute/review/reviewing-prs/) from other
-  Kubernetes community members for accuracy and language.
-- Read the Kubernetes [content](/docs/contribute/style/content-guide/) and
-  [style guides](/docs/contribute/style/style-guide/) so you can leave informed comments.
-- Learn about [page content types](/docs/contribute/style/page-content-types/)
-  and [Hugo shortcodes](/docs/contribute/style/hugo-shortcodes/).
--->
 - 通读[贡献概述](/zh-cn/docs/contribute/new-content/)，了解参与贡献的不同方式。
 - 查看 [`kubernetes/website` 问题列表](https://github.com/kubernetes/website/issues/)，
   检索最适合作为切入点的问题。
@@ -240,17 +147,6 @@ Figure 2. Preparation for your first contribution.
 - 了解[页面内容类型](/zh-cn/docs/contribute/style/page-content-types/)和
   [Hugo 短代码](/zh-cn/docs/contribute/style/hugo-shortcodes/)。
 
-<!--
-## Next steps
-
-- Learn to [work from a local clone](/docs/contribute/new-content/open-a-pr/#fork-the-repo)
-  of the repository.
-- Document [features in a release](/docs/contribute/new-content/new-features/).
-- Participate in [SIG Docs](/docs/contribute/participate/), and become a
-  [member or reviewer](/docs/contribute/participate/roles-and-responsibilities/).
-
-- Start or help with a [localization](/docs/contribute/localization/).
--->
 ## 下一步 {#next-teps}
 
 - 学习在仓库的[本地克隆中工作](/zh-cn/docs/contribute/new-content/open-a-pr/#fork-the-repo)。
@@ -259,16 +155,6 @@ Figure 2. Preparation for your first contribution.
   并成为[成员或评审者](/zh-cn/docs/contribute/participate/roles-and-responsibilities/)。
 - 开始或帮助[本地化](/zh-cn/docs/contribute/localization/)工作。
 
-<!-- 
-## Get involved with SIG Docs
-
-[SIG Docs](/docs/contribute/participate/) is the group of contributors who
-publish and maintain Kubernetes documentation and the website. Getting
-involved with SIG Docs is a great way for Kubernetes contributors (feature
-development or otherwise) to have a large impact on the Kubernetes project.
-
-SIG Docs communicates with different methods:
--->
 ## 参与 SIG Docs 工作 {#get-involved-with-SIG-Docs}
 
 [SIG Docs](/zh-cn/docs/contribute/participate/) 是负责发布、维护 Kubernetes 文档的贡献者团体。
@@ -276,14 +162,6 @@ SIG Docs communicates with different methods:
 
 SIG Docs 的几种沟通方式：
 
-<!--
-- [Join `#sig-docs` on the Kubernetes Slack instance](https://slack.k8s.io/). Make sure to
-  introduce yourself!
-- [Join the `kubernetes-sig-docs` mailing list](https://groups.google.com/forum/#!forum/kubernetes-sig-docs),
-  where broader discussions take place and official decisions are recorded.
-- Join the [SIG Docs video meeting](https://github.com/kubernetes/community/tree/master/sig-docs) held every two weeks. Meetings are always announced on `#sig-docs` and added to the [Kubernetes community meetings calendar](https://calendar.google.com/calendar/embed?src=cgnt364vd8s86hr2phapfjc6uk%40group.calendar.google.com&ctz=America/Los_Angeles). You'll need to download the [Zoom client](https://zoom.us/download) or dial in using a phone.
-- Join the SIG Docs async Slack standup meeting on those weeks when the in-person Zoom video meeting does not take place. Meetings are always announced on `#sig-docs`. You can contribute to any one of the threads up to 24 hours after meeting announcement. 
--->
 - [加入 Kubernetes 在 Slack 上的 `#sig-docs` 频道](https://slack.k8s.io/)。
   一定记得自我介绍!
 - [加入 `kubernetes-sig-docs` 邮件列表](https://groups.google.com/forum/#!forum/kubernetes-sig-docs)，
@@ -296,14 +174,6 @@ SIG Docs 的几种沟通方式：
   会议总是在 `#sig-docs` 上发出公告。
   你可以在会议公告后 24 小时内为其中任一议题做贡献。
 
-<!--
-## Other ways to contribute
-
-- Visit the [Kubernetes community site](/community/). Participate on Twitter or Stack Overflow, learn about local Kubernetes meetups and events, and more.
-- Read the [contributor cheatsheet](https://www.kubernetes.dev/docs/contributor-cheatsheet/) to get involved with Kubernetes feature development.
-- Visit the contributor site to learn more about [Kubernetes Contributors](https://www.kubernetes.dev/) and [additional contributor resources](https://www.kubernetes.dev/resources/).
-- Submit a [blog post or case study](/docs/contribute/new-content/blogs-case-studies/).
--->
 ## 其他贡献方式 {#other-ways-to-contribute}
 
 - 访问 [Kubernetes 社区网站](/zh-cn/community/)。

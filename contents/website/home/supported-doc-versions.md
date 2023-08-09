@@ -7,26 +7,7 @@ card:
   weight: 10
   title: Kubernetes 文档支持的版本
 ---
-<!--
-title: Available Documentation Versions
-content_type: custom
-layout: supported-versions
-card:
-  name: about
-  weight: 10
-  title: Available Documentation Versions
--->
-<!-- overview -->
 
-<!-- 
-This website contains documentation for the current version of Kubernetes
-and the four previous versions of Kubernetes.
-
-The availability of documentation for a Kubernetes version is separate from whether
-that release is currently supported.
-Read [Support period](/releases/patch-releases/#support-period) to learn about
-which versions of Kubernetes are officially supported, and for how long.
--->
 
 本网站包含当前版本和之前四个版本的 Kubernetes 文档。
 

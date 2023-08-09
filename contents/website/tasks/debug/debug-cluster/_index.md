@@ -4,36 +4,13 @@ description: 调试常见的集群问题。
 weight: 20
 no_list: true
 ---
-<!--
-reviewers:
-- davidopp
-title: "Troubleshooting Clusters"
-description: Debugging common cluster issues.
-weight: 20
-no_list: true
--->
 
-<!-- overview -->
 
-<!--
-This doc is about cluster troubleshooting; we assume you have already ruled out your application as the root cause of the
-problem you are experiencing. See
-the [application troubleshooting guide](/docs/tasks/debug/debug-application/) for tips on application debugging.
-You may also visit the [troubleshooting overview document](/docs/tasks/debug/) for more information.
--->
 本篇文档是介绍集群故障排查的；我们假设对于你碰到的问题，你已经排除了是由应用程序造成的。
 对于应用的调试，请参阅[应用故障排查指南](/zh-cn/docs/tasks/debug/debug-application/)。
 你也可以访问[故障排查](/zh-cn/docs/tasks/debug/)来获取更多的信息。
 
-<!-- body -->
 
-<!--
-## Listing your cluster
-
-The first thing to debug in your cluster is if your nodes are all registered correctly.
-
-Run the following command:
--->
 ## 列举集群节点 {#listing-your-cluster}
 
 调试的第一步是查看所有的节点是否都已正确注册。
@@ -44,11 +21,6 @@ Run the following command:
 kubectl get nodes
 ```
 
-<!--
-And verify that all of the nodes you expect to see are present and that they are all in the `Ready` state.
-
-To get detailed information about the overall health of your cluster, you can run:
--->
 验证你所希望看见的所有节点都能够显示出来，并且都处于 `Ready` 状态。
 
 为了了解你的集群的总体健康状况详情，你可以运行：
@@ -57,17 +29,6 @@ To get detailed information about the overall health of your cluster, you can ru
 kubectl cluster-info dump
 ```
 
-<!-- 
-### Example: debugging a down/unreachable node
-
-Sometimes when debugging it can be useful to look at the status of a node -- for example, because
-you've noticed strange behavior of a Pod that's running on the node, or to find out why a Pod
-won't schedule onto the node. As with Pods, you can use `kubectl describe node` and `kubectl get
-node -o yaml` to retrieve detailed information about nodes. For example, here's what you'll see if
-a node is down (disconnected from the network, or kubelet dies and won't restart, etc.). Notice
-the events that show the node is NotReady, and also notice that the pods are no longer running
-(they are evicted after five minutes of NotReady status).
--->
 ### 示例：调试关闭/无法访问的节点 {#example-debugging-a-down-unreachable-node}
 
 有时在调试时查看节点的状态很有用 —— 例如，因为你注意到在节点上运行的 Pod 的奇怪行为，
@@ -252,26 +213,11 @@ status:
     systemUUID: aa829ca9-73d7-064d-9019-df07404ad448
 ```
 
-<!--
-## Looking at logs
-
-For now, digging deeper into the cluster requires logging into the relevant machines.  Here are the locations
-of the relevant log files.  On systemd-based systems, you may need to use `journalctl` instead of examining log files.
--->
 ## 查看日志 {#looking-at-logs}
 
 目前，深入挖掘集群需要登录相关机器。以下是相关日志文件的位置。
 在基于 systemd 的系统上，你可能需要使用 `journalctl` 而不是检查日志文件。
 
-<!--
-### Control Plane nodes
-
-* `/var/log/kube-apiserver.log` - API Server, responsible for serving the API
-* `/var/log/kube-scheduler.log` - Scheduler, responsible for making scheduling decisions
-* `/var/log/kube-controller-manager.log` - a component that runs most Kubernetes built-in
-  {{<glossary_tooltip text="controllers" term_id="controller">}}, with the notable exception of scheduling
-  (the kube-scheduler handles scheduling).
--->
 ### 控制平面节点 {#control-plane-nodes}
 
 * `/var/log/kube-apiserver.log` —— API 服务器，负责提供 API 服务
@@ -279,35 +225,15 @@ of the relevant log files.  On systemd-based systems, you may need to use `journ
 * `/var/log/kube-controller-manager.log` —— 运行大多数 Kubernetes
   内置{{<glossary_tooltip text="控制器" term_id="controller">}}的组件，除了调度（kube-scheduler 处理调度）。
 
-<!--
-### Worker Nodes
-
-* `/var/log/kubelet.log` - logs from the kubelet, responsible for running containers on the node
-* `/var/log/kube-proxy.log` - logs from `kube-proxy`, which is responsible for directing traffic to Service endpoints
--->
 ### 工作节点 {#worker-nodes}
 
 * `/var/log/kubelet.log` —— 负责在节点运行容器的 `kubelet` 所产生的日志
 * `/var/log/kube-proxy.log` —— 负责将流量转发到服务端点的 `kube-proxy` 所产生的日志
 
-<!-- 
-## Cluster failure modes
-
-This is an incomplete list of things that could go wrong, and how to adjust your cluster setup to mitigate the problems.
--->
 ## 集群故障模式 {#cluster-failure-modes}
 
 这是可能出错的事情的不完整列表，以及如何调整集群设置以缓解问题。
 
-<!-- 
-### Contributing causes
-
-- VM(s) shutdown
-- Network partition within cluster, or between cluster and users
-- Crashes in Kubernetes software
-- Data loss or unavailability of persistent storage (e.g. GCE PD or AWS EBS volume)
-- Operator error, for example misconfigured Kubernetes software or application software
--->
 ### 故障原因 {#contributing-causes}
 
 - 虚拟机关闭
@@ -316,19 +242,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
 - 持久存储（例如 GCE PD 或 AWS EBS 卷）的数据丢失或不可用
 - 操作员错误，例如配置错误的 Kubernetes 软件或应用程序软件
 
-<!--
-### Specific scenarios
-
-- API server VM shutdown or apiserver crashing
-  - Results
-    - unable to stop, update, or start new pods, services, replication controller
-    - existing pods and services should continue to work normally, unless they depend on the Kubernetes API
-- API server backing storage lost
-  - Results
-    - the kube-apiserver component fails to start successfully and become healthy
-    - kubelets will not be able to reach it but will continue to run the same pods and provide the same service proxying
-    - manual recovery or recreation of apiserver state necessary before apiserver is restarted
--->
 ### 具体情况 {#specific-scenarios}
 
 - API 服务器所在的 VM 关机或者 API 服务器崩溃
@@ -340,19 +253,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
     - kube-apiserver 组件未能成功启动并变健康
     - kubelet 将不能访问 API 服务器，但是能够继续运行之前的 Pod 和提供相同的服务代理
     - 在 API 服务器重启之前，需要手动恢复或者重建 API 服务器的状态
-<!--
-- Supporting services (node controller, replication controller manager, scheduler, etc) VM shutdown or crashes
-  - currently those are colocated with the apiserver, and their unavailability has similar consequences as apiserver
-  - in future, these will be replicated as well and may not be co-located
-  - they do not have their own persistent state
-- Individual node (VM or physical machine) shuts down
-  - Results
-    - pods on that Node stop running
-- Network partition
-  - Results
-    - partition A thinks the nodes in partition B are down; partition B thinks the apiserver is down.
-      (Assuming the master VM ends up in partition A.)
--->
 - Kubernetes 服务组件（节点控制器、副本控制器管理器、调度器等）所在的 VM 关机或者崩溃
   - 当前，这些控制器是和 API 服务器在一起运行的，它们不可用的现象是与 API 服务器类似的
   - 将来，这些控制器也会复制为多份，并且可能不在运行于同一节点上
@@ -364,20 +264,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
   - 结果
     - 分区 A 认为分区 B 中所有的节点都已宕机；分区 B 认为 API 服务器宕机
       （假定主控节点所在的 VM 位于分区 A 内）。
-<!--
-- Kubelet software fault
-  - Results
-    - crashing kubelet cannot start new pods on the node
-    - kubelet might delete the pods or not
-    - node marked unhealthy
-    - replication controllers start new pods elsewhere
-- Cluster operator error
-  - Results
-    - loss of pods, services, etc
-    - lost of apiserver backing store
-    - users unable to read API
-    - etc.
--->
 - kubelet 软件故障
   - 结果
     - 崩溃的 kubelet 就不能在其所在的节点上启动新的 Pod
@@ -391,22 +277,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
     - 用户无法读取 API
     - 等等
 
-<!--
-### Mitigations
-
-- Action: Use IaaS provider's automatic VM restarting feature for IaaS VMs
-  - Mitigates: Apiserver VM shutdown or apiserver crashing
-  - Mitigates: Supporting services VM shutdown or crashes
-
-- Action: Use IaaS providers reliable storage (e.g. GCE PD or AWS EBS volume) for VMs with apiserver+etcd
-  - Mitigates: Apiserver backing storage lost
-
-- Action: Use [high-availability](/docs/setup/production-environment/tools/kubeadm/high-availability/) configuration
-  - Mitigates: Control plane node shutdown or control plane components (scheduler, API server, controller-manager) crashing
-    - Will tolerate one or more simultaneous node or component failures
-  - Mitigates: API server backing storage (i.e., etcd's data directory) lost
-    - Assumes HA (highly-available) etcd configuration
--->
 ### 缓解措施 {#mitigations}
 
 - 措施：对于 IaaS 上的 VM，使用 IaaS 的自动 VM 重启功能
@@ -422,20 +292,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
   - 缓解：API 服务器后端存储（例如 etcd 的数据目录）丢失
     - 假定你使用了高可用的 etcd 配置
 
-<!--
-- Action: Snapshot apiserver PDs/EBS-volumes periodically
-  - Mitigates: Apiserver backing storage lost
-  - Mitigates: Some cases of operator error
-  - Mitigates: Some cases of Kubernetes software fault
-
-- Action: use replication controller and services in front of pods
-  - Mitigates: Node shutdown
-  - Mitigates: Kubelet software fault
-
-- Action: applications (containers) designed to tolerate unexpected restarts
-  - Mitigates: Node shutdown
-  - Mitigates: Kubelet software fault
--->
 - 措施：定期对 API 服务器的 PD 或 EBS 卷执行快照操作
   - 缓解：API 服务器后端存储丢失
   - 缓解：一些操作错误的场景
@@ -451,18 +307,6 @@ This is an incomplete list of things that could go wrong, and how to adjust your
 
 ## {{% heading "whatsnext" %}}
 
-<!-- 
-* Learn about the metrics available in the
-  [Resource Metrics Pipeline](/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/)
-* Discover additional tools for
-  [monitoring resource usage](/docs/tasks/debug/debug-cluster/resource-usage-monitoring/)
-* Use Node Problem Detector to
-  [monitor node health](/docs/tasks/debug/debug-cluster/monitor-node-health/)
-* Use `kubectl debug node` to [debug Kubernetes nodes](/docs/tasks/debug/debug-cluster/kubectl-node-debug) 
-* Use `crictl` to [debug Kubernetes nodes](/docs/tasks/debug/debug-cluster/crictl/)
-* Get more information about [Kubernetes auditing](/docs/tasks/debug/debug-cluster/audit/)
-* Use `telepresence` to [develop and debug services locally](/docs/tasks/debug/debug-cluster/local-debugging/)
--->
 * 了解[资源指标管道](/zh-cn/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/)中可用的指标
 * 发现用于[监控资源使用](/zh-cn/docs/tasks/debug/debug-cluster/resource-usage-monitoring/)的其他工具
 * 使用节点问题检测器[监控节点健康](/zh-cn/docs/tasks/debug/debug-cluster/monitor-node-health/)

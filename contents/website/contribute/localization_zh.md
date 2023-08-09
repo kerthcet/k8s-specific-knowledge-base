@@ -3,14 +3,12 @@ title: 中文本地化样式指南
 content_type: concept
 ---
 
-<!-- overview -->
 
 本节详述文档中文本地化过程中须注意的事项。
 这里列举的内容包含了**中文本地化小组**早期给出的指导性建议和后续实践过程中积累的经验。
 在阅读、贡献、评阅中文本地化文档的过程中，如果对本文的指南有任何改进建议，
 都请直接提出 PR。我们欢迎任何形式的补充和更正！
 
-<!-- body -->
 
 ## 一般规定   {#general}
 
@@ -19,19 +17,14 @@ content_type: concept
 ### 英文原文的保留   {#commented-en-text}
 
 为便于译文审查和变更追踪，所有中文本地化 Markdown 文件中都应使用 HTML 注释
-`<!--` 和 `-->` 将英文原文逐段注释起来，后跟对应中文译文。例如：
 
 ```
-<!--
-This is English text ... 
--->
 中文译文对应 ...
 ```
 
 不建议采用下面的方式注释英文段落，除非英文段落非常非常短：
 
 ```
-<!-- This is English text ...  -->
 中文译文对应 ...
 
 ```
@@ -44,13 +37,6 @@ This is English text ...
 段落过长会导致译文很难评阅。但也不必每个段落都单独翻译。例如：
 
 ```
-<!--
-## Overview
-
-### Concept
-
-First paragraph, not very long.
--->
 ## 概述 {#overview}
 
 ### 概念 {#concept}
@@ -61,19 +47,10 @@ First paragraph, not very long.
 以下风格是不必要的：
 
 ```
-<!--
-## Overview
--->
 ## 概述 {#overview}
 
-<!--
-### Concept
--->
 ### 概念 {#concept}
 
-<!--
-First paragraph, not very long.
--->
 第一段落，不太长。
 ```
 
@@ -97,25 +74,13 @@ First paragraph, not very long.
 本地化处理：
 
 ```
-<!--
-1. Prepare something
--->
 1. 准备工作，...
    这里每行缩进 3 个空格
 
-<!--
-1. Followed by a long step with code snippets and notes ...
-   this is a really long item
--->
 2. 这里是第二个编号，但需要显式给出数字，不能沿用英文编号。
    缩进内容同上，3 个空格。
    即使有三个反引号的代码段或者短代码，都按 3 个空格缩进。
 
-<!--
-1. Another long item ...
-   .. continues here
-1. Almost done ...
--->
 3. 继续列表。
 
    如果条目有多个段落，也要
@@ -137,14 +102,6 @@ type: concept
 weight: 30
 ---
 
-<!--
-title: English title
-type: concept
-reviewers:
-  - john
-  - doe
-weight: 30
--->
 ```
 
 这里要注意的是：
@@ -158,9 +115,6 @@ weight: 30
 
 ```
 {{</* note */>}}
-<!--
-English text
--->
 中文译文
 {{</* /note */>}}
 ```
@@ -177,9 +131,6 @@ English text
 如要添加译者署名，可在作者下面一行添加译者相关内容。例如：
 
 ```
-<!--
-**Author**: Alice (Google)
--->
 **作者** ：Alice (Google)
 
 **译者** ：李明 (百度)  
@@ -218,9 +169,6 @@ deployment 来表示名为 "Deployment" 的 API 资源类型和对象实例。
 例如：
 
 ```
-<!--
-Please check [installation caveats](https://acme.com/docs/v1/caveats) ...
--->
 请参阅 [installation caveats](https://acme.com/docs/v1/caveats) ...
 ```
 
@@ -266,9 +214,6 @@ Please check [installation caveats](https://acme.com/docs/v1/caveats) ...
 建议在翻译各级标题时，使用英文方式显式给出链接锚点。例如：
 
 ```
-<!--
-### Create a Pod
--->
 ### 创建 Pod   {#create-a-pod}
 ```
 
@@ -280,10 +225,6 @@ Please check [installation caveats](https://acme.com/docs/v1/caveats) ...
 例如：
 
 ```
-<!--
-For more information, please check [volumes](/docs/concepts/storage/)
-...
--->
 更多的信息可参考[卷](/zh-cn/docs/concepts/storage/)页面。
 ```
 

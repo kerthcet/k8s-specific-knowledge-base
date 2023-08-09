@@ -5,39 +5,17 @@ package: apiserver.config.k8s.io/v1
 auto_generated: true
 ---
 
-<!--
-title: kube-apiserver Encryption Configuration (v1)
-content_type: tool-reference
-package: apiserver.config.k8s.io/v1
-auto_generated: true
--->
 
 <p>
-<!--
-Package v1 is the v1 version of the API.
--->
 包 v1 是 API 的 v1 版本。
 </p>
 
-<!--
-## Resource Types
--->
 ## 资源类型
 
 - [EncryptionConfiguration](#apiserver-config-k8s-io-v1-EncryptionConfiguration)
 
 ## `EncryptionConfiguration`     {#apiserver-config-k8s-io-v1-EncryptionConfiguration}
 
-<!--
-EncryptionConfiguration stores the complete configuration for encryption providers.
-It also allows the use of wildcards to specify the resources that should be encrypted.
-Use <code>&ast;.&lt;group&gt;</code> to encrypt all resources within a group or <code>&ast;.&ast;</code> to encrypt all resources.
-<code>&ast;.</code> can be used to encrypt all resource in the core group. <code>&ast;.&ast;</code> will encrypt all
-resources, even custom resources that are added after API server start.
-Use of wildcards that overlap within the same resource list or across multiple
-entries are not allowed since part of the configuration would be ineffective.
-Resource lists are processed in order, with earlier lists taking precedence.
--->
 <p>
 EncryptionConfiguration 为加密驱动保存完整的配置信息。
 它还允许使用通配符指定应加密的资源。
@@ -47,9 +25,6 @@ EncryptionConfiguration 为加密驱动保存完整的配置信息。
 不允许在同一资源列表内或跨多个条目中使用重叠的通配符，因为部分配置将无效。
 按顺序处理资源列表，列在前面的被优先处理。
 </p>
-<!--
-Example:
--->
 <p>例如：</p>
 <pre><code>kind: EncryptionConfiguration
 apiVersion: apiserver.config.k8s.io/v1
@@ -83,7 +58,6 @@ resources:
         secret: c2VjcmV0IGlzIHNlY3VyZSwgSSB0aGluaw==</code></pre>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>apiVersion</code><br/>string</td><td><code>apiserver.config.k8s.io/v1</code></td></tr>
@@ -93,9 +67,6 @@ resources:
 </td>
 <td>
    <p>
-   <!--
-   resources is a list containing resources, and their corresponding encryption providers.
-   -->
    <code>resources</code> 是一个包含资源及其对应的加密驱动的列表。
    </p>
 </td>
@@ -105,22 +76,15 @@ resources:
 
 ## `AESConfiguration`     {#apiserver-config-k8s-io-v1-AESConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [ProviderConfiguration](#apiserver-config-k8s-io-v1-ProviderConfiguration)
 
 <p>
-<!--
-AESConfiguration contains the API configuration for an AES transformer.
--->
 AESConfiguration 包含 AES 转换器的 API 配置信息。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>keys</code> <B>[必需]</B><br/>
@@ -128,10 +92,6 @@ AESConfiguration 包含 AES 转换器的 API 配置信息。
 </td>
 <td>
    <p>
-   <!--
-   keys is a list of keys to be used for creating the AES transformer.
-   Each key has to be 32 bytes long for AES-CBC and 16, 24 or 32 bytes for AES-GCM.
-   -->
    <code>keys</code> 是一组用于创建 AES 转换器的密钥。
    对于 AES-CBC，每个密钥必须是 32 字节长；对于 AES-GCM，每个密钥可以是 16、24、32 字节长。
    </p>
@@ -142,38 +102,25 @@ AESConfiguration 包含 AES 转换器的 API 配置信息。
 
 ## `IdentityConfiguration`     {#apiserver-config-k8s-io-v1-IdentityConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [ProviderConfiguration](#apiserver-config-k8s-io-v1-ProviderConfiguration)
 
 <p>
-<!--
-IdentityConfiguration is an empty struct to allow identity transformer in provider configuration.
--->
 IdentityConfiguration 是一个空的结构，用来支持在驱动配置中支持标识转换器。
 </p>
 
 ## `KMSConfiguration`     {#apiserver-config-k8s-io-v1-KMSConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [ProviderConfiguration](#apiserver-config-k8s-io-v1-ProviderConfiguration)
 
 <p>
-<!--
-KMSConfiguration contains the name, cache size and path to configuration file for a KMS based envelope transformer.
--->
 KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以及配置文件路径信息。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>apiVersion</code><br/>
@@ -181,9 +128,6 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 </td>
 <td>
    <p>
-   <!--
-   apiVersion of KeyManagementService
-   -->
    KeyManagementService 的 apiVersion
    </p>
 </td>
@@ -193,9 +137,6 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 </td>
 <td>
    <p>
-   <!--
-   name is the name of the KMS plugin to be used.
-   -->
    <code>name</code> 是要使用的 KMS 插件名称。
    </p>
 </td>
@@ -205,10 +146,6 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 </td>
 <td>
    <p>
-   <!--
-   cachesize is the maximum number of secrets which are cached in memory. The default value is 1000.
-   Set to a negative value to disable caching. This field is only allowed for KMS v1 providers.
-   -->
    <code>cachesize</code> 是可在内存中缓存的 Secret 数量上限。默认值是 1000。
    将此字段设置为负值会禁用缓存。此字段仅允许用于 KMS v1 驱动。
    </p>
@@ -219,9 +156,6 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 </td>
 <td>
    <p>
-   <!--
-   endpoint is the gRPC server listening address, for example &quot;unix:///var/run/kms-provider.sock&quot;.
-   -->
    <code>endpoint</code> 是 gRPC 服务器的监听地址，例如 &quot;unix:///var/run/kms-provider.sock&quot;。
    </p>
 </td>
@@ -231,9 +165,6 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 </td>
 <td>
    <p>
-   <!--
-   timeout for gRPC calls to kms-plugin (ex. 5s). The default is 3 seconds.
-   -->
    对 KMS 插件执行 gRPC 调用的超时时长（例如，'5s'）。默认值为 3 秒。
    </p>
 </td>
@@ -243,23 +174,16 @@ KMSConfiguration 包含基于 KMS 的封套转换器的名称、缓存大小以�
 
 ## `Key`     {#apiserver-config-k8s-io-v1-Key}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [AESConfiguration](#apiserver-config-k8s-io-v1-AESConfiguration)
 - [SecretboxConfiguration](#apiserver-config-k8s-io-v1-SecretboxConfiguration)
 
 <p>
-<!--
-Key contains name and secret of the provided key for a transformer.
--->
 Key 中包含为某转换器所提供的键名和对应的私密数据。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>name</code> <B>[必需]</B><br/>
@@ -267,9 +191,6 @@ Key 中包含为某转换器所提供的键名和对应的私密数据。
 </td>
 <td>
    <p>
-   <!--
-   name is the name of the key to be used while storing data to disk.
-   -->
    <code>name</code> 是在向磁盘中存储数据时使用的键名。
    </p>
 </td>
@@ -279,9 +200,6 @@ Key 中包含为某转换器所提供的键名和对应的私密数据。
 </td>
 <td>
    <p>
-   <!--
-   secret is the actual key, encoded in base64.
-   -->
    <code>secret</code> 是实际的密钥，用 base64 编码。
    </p>
 </td>
@@ -291,22 +209,15 @@ Key 中包含为某转换器所提供的键名和对应的私密数据。
 
 ## `ProviderConfiguration`     {#apiserver-config-k8s-io-v1-ProviderConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [ResourceConfiguration](#apiserver-config-k8s-io-v1-ResourceConfiguration)
 
 <p>
-<!--
-ProviderConfiguration stores the provided configuration for an encryption provider.
--->
 ProviderConfiguration 为加密驱动存储配置信息。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>aesgcm</code> <B>[必需]</B><br/>
@@ -314,9 +225,6 @@ ProviderConfiguration 为加密驱动存储配置信息。
 </td>
 <td>
    <p>
-   <!--
-   aesgcm is the configuration for the AES-GCM transformer.
-   -->
    <code>aesgcm</code> 是用于 AES-GCM 转换器的配置。
    </p>
 </td>
@@ -326,9 +234,6 @@ ProviderConfiguration 为加密驱动存储配置信息。
 </td>
 <td>
    <p>
-   <!--
-   aescbc is the configuration for the AES-CBC transformer.
-   -->
    <code>aescbc</code> 是用于 AES-CBC 转换器的配置。
    </p>
 </td>
@@ -338,9 +243,6 @@ ProviderConfiguration 为加密驱动存储配置信息。
 </td>
 <td>
    <p>
-   <!--
-   secretbox is the configuration for the Secretbox based transformer.
-   -->
    <code>secretbox</code> 是用于基于 Secretbox 的转换器的配置。
    </p>
 </td>
@@ -350,9 +252,6 @@ ProviderConfiguration 为加密驱动存储配置信息。
 </td>
 <td>
    <p>
-   <!--
-   identity is the (empty) configuration for the identity transformer.
-   -->
    <code>identity</code> 是用于标识转换器的配置（空）。
    </p>
 </td>
@@ -362,9 +261,6 @@ ProviderConfiguration 为加密驱动存储配置信息。
 </td>
 <td>
    <p>
-   <!--
-   kms contains the name, cache size and path to configuration file for a KMS based envelope transformer.
-   -->
    <code>kms</code> 中包含用于基于 KMS 的封套转换器的名称、缓存大小以及配置文件路径信息。
    </p>
 </td>
@@ -374,22 +270,15 @@ ProviderConfiguration 为加密驱动存储配置信息。
 
 ## `ResourceConfiguration`     {#apiserver-config-k8s-io-v1-ResourceConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [EncryptionConfiguration](#apiserver-config-k8s-io-v1-EncryptionConfiguration)
 
 <p>
-<!--
-ResourceConfiguration stores per resource configuration.
--->
 ResourceConfiguration 中保存资源配置。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>resources</code> <B>[必需]</B><br/>
@@ -397,13 +286,6 @@ ResourceConfiguration 中保存资源配置。
 </td>
 <td>
    <p>
-   <!--
-   resources is a list of kubernetes resources which have to be encrypted. The resource names are derived from <code>resource</code> or <code>resource.group</code> of the group/version/resource.
-   eg: <code>pandas.awesome.bears.example</code> is a custom resource with 'group': <code>awesome.bears.example</code>, 'resource': <code>pandas</code>.
-   Use <code>&ast;.&ast;</code> to encrypt all resources and <code>&ast;.&lt;group&gt;</code>' to encrypt all resources in a specific group.
-   eg: <code>&ast;.awesome.bears.example</code> will encrypt all resources in the group <code>awesome.bears.example</code>.
-   eg: <code>&ast;.</code> will encrypt all resources in the core group (such as pods, configmaps, etc).
-   -->
    <code>resources</code> 是必须要加密的 Kubernetes 资源的列表。
    资源名称来自于组/版本/资源的 <code>resource</code> 或 <code>resource.group</code>。
    例如：<code>pandas.awesome.bears.example</code> 是一个自定义资源，
@@ -419,9 +301,6 @@ ResourceConfiguration 中保存资源配置。
 </td>
 <td>
    <p>
-   <!--
-   providers is a list of transformers to be used for reading and writing the resources to disk.  eg: aesgcm, aescbc, secretbox, identity, kms.
-   -->
    <code>providers</code> 是一个转换器列表，用来将资源写入到磁盘或从磁盘上读出。
    例如：'aesgcm'、'aescbc'、'secretbox'、'identity'、'kms'。
    </p>
@@ -432,22 +311,15 @@ ResourceConfiguration 中保存资源配置。
 
 ## `SecretboxConfiguration`     {#apiserver-config-k8s-io-v1-SecretboxConfiguration}
 
-<!--
-**Appears in:**
--->
 **出现在：**
 
 - [ProviderConfiguration](#apiserver-config-k8s-io-v1-ProviderConfiguration)
 
 <p>
-<!--
-SecretboxConfiguration contains the API configuration for an Secretbox transformer.
--->
 SecretboxConfiguration 包含用于某 Secretbox 转换器的 API 配置。
 </p>
 
 <table class="table">
-<thead><tr><th width="30%"><!--Field-->字段</th><th><!--Description-->描述</th></tr></thead>
 <tbody>
 
 <tr><td><code>keys</code> <B>[必需]</B><br/>
@@ -455,10 +327,6 @@ SecretboxConfiguration 包含用于某 Secretbox 转换器的 API 配置。
 </td>
 <td>
    <p>
-   <!--
-   keys is a list of keys to be used for creating the Secretbox transformer.
-   Each key has to be 32 bytes long.
-   -->
    <code>keys</code> 是一个密钥列表，用来创建 Secretbox 转换器。每个密钥必须是 32 字节长。
    </p>
 </td>

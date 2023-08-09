@@ -10,34 +10,15 @@ weight: 3
 auto_generated: true
 ---
 
-<!--
-api_metadata:
-  apiVersion: ""
-  import: "k8s.io/apimachinery/pkg/apis/meta/v1"
-  kind: "ListMeta"
-content_type: "api_reference"
-description: "ListMeta describes metadata that synthetic resources must have, including lists and various status objects."
-title: "ListMeta"
-weight: 3
-auto_generated: true
--->
 
 
 `import "k8s.io/apimachinery/pkg/apis/meta/v1"`
 
-<!--
-ListMeta describes metadata that synthetic resources must have, including lists and various status objects. A resource may have only one of {ObjectMeta, ListMeta}.
--->
 `ListMeta` 描述了合成资源必须具有的元数据，包括列表和各种状态对象。
 一个资源仅能有 `{ObjectMeta, ListMeta}` 中的一个。
 
 <hr>
 
-<!--
-- **continue** (string)
-
-  continue may be set if the user set a limit on the number of items returned, and indicates that the server has more data available. The value is opaque and may be used to issue another request to the endpoint that served this list to retrieve the next set of available objects. Continuing a consistent list may not be possible if the server configuration has changed or more than a few minutes have passed. The resourceVersion field returned when using this continue value will be identical to the value in the first response, unless you have received this token from an error message.
--->
 
 - **continue** (string)
 
@@ -47,11 +28,6 @@ ListMeta describes metadata that synthetic resources must have, including lists 
   除非你在错误消息中收到此令牌（token），否则使用此 `continue` 值时返回的 `resourceVersion` 
   字段应该和第一个响应中的值是相同的。
 
-<!--
-- **remainingItemCount** (int64)
-
-  remainingItemCount is the number of subsequent items in the list which are not included in this list response. If the list request contained label or field selectors, then the number of remaining items is unknown and the field will be left unset and omitted during serialization. If the list is complete (either because it is not chunking or because this is the last chunk), then there are no more remaining items and this field will be left unset and omitted during serialization. Servers older than v1.15 do not set this field. The intended use of the remainingItemCount is *estimating* the size of a collection. Clients should not rely on the remainingItemCount to be set or to be exact.
--->
 
 - **remainingItemCount** (int64)
 
@@ -61,11 +37,6 @@ ListMeta describes metadata that synthetic resources must have, including lists 
   早于 v1.15 的服务器不设置此字段。`remainingItemCount` 的预期用途是*估计*集合的大小。
   客户端不应依赖于设置准确的 `remainingItemCount`。
 
-<!--
-- **resourceVersion** (string)
-
-  String that identifies the server's internal version of this object that can be used by clients to determine when objects have changed. Value must be treated as opaque by clients and passed unmodified back to the server. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency
--->
 
 - **resourceVersion** (string)
 
@@ -73,9 +44,6 @@ ListMeta describes metadata that synthetic resources must have, including lists 
   该值对客户端是不透明的，并且应该原样传回给服务器。该值由系统填充，只读。
   更多信息： https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency 。
 
-<!--
-  Deprecated: selfLink is a legacy read-only field that is no longer populated by the system.
--->
 
 - **selfLink** (string)
   

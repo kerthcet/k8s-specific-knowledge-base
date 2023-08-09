@@ -1,28 +1,9 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the 
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!--
-Join a machine as a control plane instance
--->
 添加作为控制平面实例的机器
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-Join a machine as a control plane instance
--->
 
 添加作为控制平面实例的机器
 
@@ -30,27 +11,15 @@ Join a machine as a control plane instance
 kubeadm join phase control-plane-join [flags]
 ```
 
-<!--
-### Examples
--->
 
 ### 示例
 
-<!--
-```
-# Joins a machine as a control plane instance
-kubeadm join phase control-plane-join all
-```
--->
 
 ```
 # 将机器作为控制平面实例加入
 kubeadm join phase control-plane-join all
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -66,9 +35,6 @@ kubeadm join phase control-plane-join all
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-help for control-plane-join
--->
 <p>
 control-plane-join 操作的帮助命令
 </p>
@@ -78,9 +44,6 @@ control-plane-join 操作的帮助命令
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 从父命令中继承的选项
 
@@ -96,9 +59,6 @@ control-plane-join 操作的帮助命令
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-[EXPERIMENTAL] The path to the 'real' host root filesystem.
--->
 <p>
 [实验] 到 '真实' 主机根文件系统的路径。
 </p>

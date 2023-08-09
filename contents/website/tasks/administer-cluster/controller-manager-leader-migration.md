@@ -5,36 +5,10 @@ content_type: task
 weight: 250
 ---
 
-<!--
-reviewers:
-- jpbetz
-- cheftako
-title: Migrate Replicated Control Plane To Use Cloud Controller Manager
-linkTitle: "Migrate Replicated Control Plane To Use Cloud Controller Manager"
-content_type: task
-weight: 250
--->
 
-<!-- overview -->
 
 {{< glossary_definition term_id="cloud-controller-manager" length="all">}}
 
-<!--
-## Background
-
-As part of the [cloud provider extraction effort](/blog/2019/04/17/the-future-of-cloud-providers-in-kubernetes/),
-all cloud specific controllers must be moved out of the `kube-controller-manager`. 
-All existing clusters that run cloud controllers in the `kube-controller-manager`
-must migrate to instead run the controllers in a cloud provider specific
-`cloud-controller-manager`.
-
-Leader Migration provides a mechanism in which HA clusters can safely migrate "cloud
-specific" controllers between the `kube-controller-manager` and the
-`cloud-controller-manager` via a shared resource lock between the two components
-while upgrading the replicated control plane. For a single-node control plane, or if
-unavailability of controller managers can be tolerated during the upgrade, Leader
-Migration is not needed and this guide can be ignored.
--->
 ## 背景
 
 作为[云驱动提取工作](/blog/2019/04/17/the-future-of-cloud-providers-in-kubernetes/)
@@ -48,18 +22,6 @@ Migration is not needed and this guide can be ignored.
 对于单节点控制平面，或者在升级过程中可以容忍控制器管理器不可用的情况，则不需要领导者迁移，
 亦可以忽略本指南。
 
-<!--
-Leader Migration can be enabled by setting `--enable-leader-migration` on
-`kube-controller-manager` or `cloud-controller-manager`. Leader Migration only
-applies during the upgrade and can be safely disabled or left enabled after the
-upgrade is complete.
-
-This guide walks you through the manual process of upgrading the control plane from
-`kube-controller-manager` with built-in cloud provider to running both
-`kube-controller-manager` and `cloud-controller-manager`. If you use a tool to deploy
-and manage the cluster, please refer to the documentation of the tool and the cloud
-provider for specific instructions of the migration.
--->
 领导者迁移可以通过在 `kube-controller-manager` 或 `cloud-controller-manager` 上设置
 `--enable-leader-migration` 来启用。
 领导者迁移仅在升级期间适用，并且在升级完成后可以安全地禁用或保持启用状态。
@@ -70,20 +32,6 @@ provider for specific instructions of the migration.
 
 ## {{% heading "prerequisites" %}}
 
-<!--
-It is assumed that the control plane is running Kubernetes version N and to be
-upgraded to version N + 1. Although it is possible to migrate within the same
-version, ideally the migration should be performed as part of an upgrade so that
-changes of configuration can be aligned to each release. The exact versions of N and
-N + 1 depend on each cloud provider. For example, if a cloud provider builds a
-`cloud-controller-manager` to work with Kubernetes 1.24, then N can be 1.23 and N + 1
-can be 1.24.
-
-The control plane nodes should run `kube-controller-manager` with Leader Election
-enabled, which is the default. As of version N, an in-tree cloud provider must be set
-with `--cloud-provider` flag and `cloud-controller-manager` should not yet be
-deployed.
--->
 假定控制平面正在运行 Kubernetes 版本 N，要升级到版本 N+1。
 尽管可以在同一版本内进行迁移，但理想情况下，迁移应作为升级的一部分执行，
 以便可以配置的变更可以与发布版本变化对应起来。
@@ -94,24 +42,6 @@ N 和 N+1 的确切版本值取决于各个云厂商。例如，如果云厂商�
 在版本 N 中，树内云驱动必须设置 `--cloud-provider` 标志，而且 `cloud-controller-manager`
 应该尚未部署。
 
-<!--
-The out-of-tree cloud provider must have built a `cloud-controller-manager` with
-Leader Migration implementation. If the cloud provider imports
-`k8s.io/cloud-provider` and `k8s.io/controller-manager` of version v0.21.0 or later,
-Leader Migration will be available. However, for version before v0.22.0, Leader
-Migration is alpha and requires feature gate `ControllerManagerLeaderMigration` to be
-enabled in `cloud-controller-manager`.
-
-This guide assumes that kubelet of each control plane node starts
-`kube-controller-manager` and `cloud-controller-manager` as static pods defined by
-their manifests. If the components run in a different setting, please adjust the
-steps accordingly.
-
-For authorization, this guide assumes that the cluster uses RBAC. If another
-authorization mode grants permissions to `kube-controller-manager` and
-`cloud-controller-manager` components, please grant the needed access in a way that
-matches the mode.
--->
 树外云驱动必须已经构建了一个实现了领导者迁移的 `cloud-controller-manager`。
 如果云驱动导入了 v0.21.0 或更高版本的 `k8s.io/cloud-provider` 和 `k8s.io/controller-manager`，
 则可以进行领导者迁移。
@@ -125,24 +55,7 @@ matches the mode.
 关于鉴权，本指南假定集群使用 RBAC。如果其他鉴权模式授予 `kube-controller-manager`
 和 `cloud-controller-manager` 组件权限，请以与该模式匹配的方式授予所需的访问权限。
 
-<!-- steps -->
 
-<!--
-### Grant access to Migration Lease
-
-The default permissions of the controller manager allow only accesses to their main
-Lease. In order for the migration to work, accesses to another Lease are required.
-
-You can grant `kube-controller-manager` full access to the leases API by modifying 
-the `system::leader-locking-kube-controller-manager` role. This task guide assumes
-that the name of the migration lease is `cloud-provider-extraction-migration`.
-
-`kubectl patch -n kube-system role 'system::leader-locking-kube-controller-manager' -p '{"rules": [ {"apiGroups":[ "coordination.k8s.io"], "resources": ["leases"], "resourceNames": ["cloud-provider-extraction-migration"], "verbs": ["create", "list", "get", "update"] } ]}' --type=merge`
-
-Do the same to the `system::leader-locking-cloud-controller-manager` role.
-
-`kubectl patch -n kube-system role 'system::leader-locking-cloud-controller-manager' -p '{"rules": [ {"apiGroups":[ "coordination.k8s.io"], "resources": ["leases"], "resourceNames": ["cloud-provider-extraction-migration"], "verbs": ["create", "list", "get", "update"] } ]}' --type=merge`
--->
 ### 授予访问迁移租约的权限
 
 控制器管理器的默认权限仅允许访问其主租约（Lease）对象。为了使迁移正常进行，
@@ -162,17 +75,6 @@ kubectl patch -n kube-system role 'system::leader-locking-kube-controller-manage
 kubectl patch -n kube-system role 'system::leader-locking-cloud-controller-manager' -p '{"rules": [ {"apiGroups":[ "coordination.k8s.io"], "resources": ["leases"], "resourceNames": ["cloud-provider-extraction-migration"], "verbs": ["create", "list", "get", "update"] } ]}' --type=merge
 ```
 
-<!--
-### Initial Leader Migration configuration
-
-Leader Migration optionally takes a configuration file representing the state of
-controller-to-manager assignment. At this moment, with in-tree cloud provider,
-`kube-controller-manager` runs `route`, `service`, and `cloud-node-lifecycle`. The
-following example configuration shows the assignment.
-
-Leader Migration can be enabled without a configuration. Please see
-[Default Configuration](#default-configuration) for details.
--->
 ### 初始领导者迁移配置
 
 领导者迁移可以选择使用一个表示如何将控制器分配给不同管理器的配置文件。
@@ -195,11 +97,6 @@ controllerLeaders:
     component: kube-controller-manager
 ```
 
-<!--
-Alternatively, because the controllers can run under either controller managers,
-setting `component` to `*` for both sides makes the configuration file consistent
-between both parties of the migration.
--->
 或者，由于控制器可以在任一控制器管理器下运行，因此将双方的 `component` 设置为 `*`
 可以使迁移双方的配置文件保持一致。
 
@@ -217,19 +114,6 @@ controllerLeaders:
     component: *
 ```
 
-<!--
-On each control plane node, save the content to `/etc/leadermigration.conf`, and
-update the manifest of `kube-controller-manager` so that the file is mounted inside
-the container at the same location. Also, update the same manifest to add the
-following arguments:
-
-- `--enable-leader-migration` to enable Leader Migration on the controller manager
-- `--leader-migration-config=/etc/leadermigration.conf` to set configuration file
-
-Restart `kube-controller-manager` on each node. At this moment,
-`kube-controller-manager` has leader migration enabled and is ready for the
-migration.
--->
 在每个控制平面节点上，请将如上内容保存到 `/etc/leadermigration.conf` 中，
 并更新 `kube-controller-manager` 清单，以便将文件挂载到容器内的同一位置。
 另外，请更新同一清单，添加以下参数：
@@ -240,15 +124,6 @@ migration.
 在每个节点上重新启动 `kube-controller-manager`。这时，`kube-controller-manager`
 已启用领导者迁移，为迁移准备就绪。
 
-<!--
-### Deploy Cloud Controller Manager
-
-In version N + 1, the desired state of controller-to-manager assignment can be
-represented by a new configuration file, shown as follows. Please note `component`
-field of each `controllerLeaders` changing from `kube-controller-manager` to
-`cloud-controller-manager`. Alternatively, use the wildcard version mentioned above,
-which has the same effect.
--->
 ### 部署云控制器管理器
 
 在版本 N+1 中，如何将控制器分配给不同管理器的预期分配状态可以由新的配置文件表示，
@@ -269,24 +144,6 @@ controllerLeaders:
     component: cloud-controller-manager
 ```
 
-<!--
-When creating control plane nodes of version N + 1, the content should be deployed to
-`/etc/leadermigration.conf`. The manifest of `cloud-controller-manager` should be
-updated to mount the configuration file in the same manner as
-`kube-controller-manager` of version N. Similarly, add `--enable-leader-migration`
-and `--leader-migration-config=/etc/leadermigration.conf` to the arguments of
-`cloud-controller-manager`.
-
-Create a new control plane node of version N + 1 with the updated
-`cloud-controller-manager` manifest, and with the `--cloud-provider` flag set to
-`external` for `kube-controller-manager`. `kube-controller-manager` of version N + 1
-MUST NOT have Leader Migration enabled because, with an external cloud provider, it
-does not run the migrated controllers anymore, and thus it is not involved in the
-migration.
-
-Please refer to [Cloud Controller Manager Administration](/docs/tasks/administer-cluster/running-cloud-controller/)
-for more detail on how to deploy `cloud-controller-manager`.
--->
 当创建版本 N+1 的控制平面节点时，应将如上内容写入到 `/etc/leadermigration.conf`。
 你需要更新 `cloud-controller-manager` 的清单，以与版本 N 的 `kube-controller-manager`
 相同的方式挂载配置文件。
@@ -302,23 +159,6 @@ for more detail on how to deploy `cloud-controller-manager`.
 请参阅[云控制器管理器管理](/zh-cn/docs/tasks/administer-cluster/running-cloud-controller/) 
 了解有关如何部署 `cloud-controller-manager` 的更多细节。
 
-<!--
-### Upgrade Control Plane
-
-The control plane now contains nodes of both version N and N + 1. The nodes of
-version N run `kube-controller-manager` only, and these of version N + 1 run both
-`kube-controller-manager` and `cloud-controller-manager`. The migrated controllers,
-as specified in the configuration, are running under either `kube-controller-manager`
-of version N or `cloud-controller-manager` of version N + 1 depending on which
-controller manager holds the migration lease. No controller will ever be running
-under both controller managers at any time.
-
-In a rolling manner, create a new control plane node of version N + 1 and bring down
-one of version N until the control plane contains only nodes of version N + 1.
-If a rollback from version N + 1 to N is required, add nodes of version N with Leader
-Migration enabled for `kube-controller-manager` back to the control plane, replacing
-one of version N + 1 each time until there are only nodes of version N.
--->
 ### 升级控制平面
 
 现在，控制平面同时包含 N 和 N+1 版本的节点。
@@ -333,20 +173,6 @@ N+1 的 `cloud-controller-manager` 下运行，具体取决于哪个控制器管
 如果需要从 N+1 版本回滚到 N 版本，则将 `kube-controller-manager` 启用了领导者迁移的、
 且版本为 N 的节点添加回控制平面，每次替换 N+1 版本中的一个，直到只有版本 N 的节点为止。
 
-<!--
-### (Optional) Disable Leader Migration {#disable-leader-migration}
-
-Now that the control plane has been upgraded to run both `kube-controller-manager`
-and `cloud-controller-manager` of version N + 1, Leader Migration has finished its
-job and can be safely disabled to save one Lease resource. It is safe to re-enable
-Leader Migration for the rollback in the future.
-
-In a rolling manager, update manifest of `cloud-controller-manager` to unset both 
-`--enable-leader-migration` and `--leader-migration-config=` flag, also remove the
-mount of `/etc/leadermigration.conf`, and finally remove `/etc/leadermigration.conf`. 
-To re-enable Leader Migration, recreate the configuration file and add its mount and
-the flags that enable Leader Migration back to `cloud-controller-manager`.
--->
 ### （可选）禁用领导者迁移 {#disable-leader-migration}
 
 现在，控制平面已经完成升级，同时运行版本 N+1 的 `kube-controller-manager`
@@ -359,18 +185,6 @@ Lease 资源。在将来可以安全地重新启用领导者迁移，以完成�
 要重新启用领导者迁移，请重新创建配置文件，并将其挂载和启用领导者迁移的标志添加回到
 `cloud-controller-manager`。
 
-<!--
-### Default Configuration
-
-Starting Kubernetes 1.22, Leader Migration provides a default configuration suitable
-for the default controller-to-manager assignment.
-The default configuration can be enabled by setting `--enable-leader-migration` but
-without `--leader-migration-config=`.
-
-For `kube-controller-manager` and `cloud-controller-manager`, if there are no flags
-that enable any in-tree cloud provider or change ownership of controllers, the
-default configuration can be used to avoid manual creation of the configuration file.
--->
 ### 默认配置 {#default-configuration}
 
 从 Kubernetes 1.22 开始，领导者迁移提供了一个默认配置，它适用于控制器与管理器间默认的分配关系。
@@ -380,15 +194,6 @@ default configuration can be used to avoid manual creation of the configuration 
 对于 `kube-controller-manager` 和 `cloud-controller-manager`，如果没有用参数来启用树内云驱动或者改变控制器属主，
 则可以使用默认配置来避免手动创建配置文件。
 
-<!--
-### Special case: migrating the Node IPAM controller {#node-ipam-controller-migration}
-
-If your cloud provider provides an implementation of Node IPAM controller, you should
-switch to the implementation in `cloud-controller-manager`. Disable Node IPAM
-controller in `kube-controller-manager` of version N + 1 by adding
-`--controllers=*,-nodeipam` to its flags. Then add `nodeipam` to the list of migrated
-controllers.
--->
 ### 特殊情况：迁移节点 IPAM 控制器 {#node-ipam-controller-migration}
 
 如果你的云供应商提供了节点 IPAM 控制器的实现，你应该切换到 `cloud-controller-manager` 中的实现。
@@ -412,10 +217,6 @@ controllerLeaders:
 ```
 
 ## {{% heading "whatsnext" %}}
-<!--
-- Read the [Controller Manager Leader Migration](https://github.com/kubernetes/enhancements/tree/master/keps/sig-cloud-provider/2436-controller-manager-leader-migration)
-  enhancement proposal.
--->
 - 阅读[领导者迁移控制器管理器](https://github.com/kubernetes/enhancements/tree/master/keps/sig-cloud-provider/2436-controller-manager-leader-migration)
   改进建议提案。
 

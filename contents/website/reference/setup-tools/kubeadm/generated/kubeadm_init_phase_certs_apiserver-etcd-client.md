@@ -1,40 +1,15 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!-- 
-Generate the certificate the apiserver uses to access etcd 
--->
 生成 apiserver 用来访问 etcd 的证书
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-Generate the certificate the apiserver uses to access etcd, and save them into apiserver-etcd-client.crt and apiserver-etcd-client.key files.
--->
 
 生成 apiserver 用于访问 etcd 的证书，并将其保存到 apiserver-etcd-client.crt 和 apiserver-etcd-client.key 文件中。
 
-<!--
-If both files already exist, kubeadm skips the generation step and existing files will be used.
--->
 
 如果两个文件都已存在，则 kubeadm 将跳过生成步骤，使用现有文件。
 
-<!--
-Alpha Disclaimer: this command is currently alpha.
--->
 
 Alpha 免责声明：此命令当前为 Alpha 功能。
 
@@ -42,9 +17,6 @@ Alpha 免责声明：此命令当前为 Alpha 功能。
 kubeadm init phase certs apiserver-etcd-client [flags]
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -57,17 +29,11 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 
 <tr>
 <td colspan="2">
-<!--
---cert-dir string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "/etc/kubernetes/pki"
--->
 --cert-dir string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："/etc/kubernetes/pki"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-<p>The path where to save and store the certificates.</p>
--->
 <p>证书的存储路径。</p>
 </td>
 </tr>
@@ -77,9 +43,6 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-<p>Path to a kubeadm configuration file.</p>
--->
 <p>kubeadm 配置文件的路径。</p>
 </td>
 </tr>
@@ -89,9 +52,6 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-<p>Don't apply any changes; just output what would be done.</p>
--->
 <p>不做任何更改；只输出将要执行的操作。</p>
 </td>
 </tr>
@@ -101,24 +61,17 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-<p>help for apiserver-etcd-client</p>
--->
 <p>apiserver-etcd-client 操作的帮助命令</p>
 </td>
 </tr>
 
 <tr>
 <td colspan="2">
-<!-- kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "stable-1" -->
 --kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："stable-1"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>Choose a specific Kubernetes version for the control plane.</p>
--->
 <p>为控制平面指定特定的 Kubernetes 版本。</p>
 </td>
 </tr>
@@ -126,9 +79,6 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 继承于父命令的选项
 
@@ -144,9 +94,6 @@ kubeadm init phase certs apiserver-etcd-client [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-<p>[EXPERIMENTAL] The path to the 'real' host root filesystem.</p>
--->
 <p>[实验] 到 '真实' 主机根文件系统的路径。</p>
 </td>
 </tr>

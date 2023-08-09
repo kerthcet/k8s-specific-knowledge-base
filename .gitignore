@@ -8,3 +8,4 @@ faiss_index/*.faiss
 faiss_index/*.pkl
 
 tmp/
+_contents/

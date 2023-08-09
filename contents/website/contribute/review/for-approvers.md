@@ -5,30 +5,7 @@ slug: for-approvers
 content_type: concept
 weight: 20
 ---
-<!--
-title: Reviewing for approvers and reviewers
-linktitle: For approvers and reviewers
-slug: for-approvers
-content_type: concept
-weight: 20
--->
 
-<!-- overview -->
-<!--
-SIG Docs [Reviewers](/docs/contribute/participate/#reviewers) and
-[Approvers](/docs/contribute/participate/#approvers) do a few extra things
-when reviewing a change.
-
-Every week a specific docs approver volunteers to triage and review pull requests.
-This person is the "PR Wrangler" for the week. See the
-[PR Wrangler scheduler](https://github.com/kubernetes/website/wiki/PR-Wranglers)
-for more information. To become a PR Wrangler, attend the weekly SIG Docs meeting
-and volunteer. Even if you are not on the schedule for the current week, you can
-still review pull requests (PRs) that are not already under active review.
-
-In addition to the rotation, a bot assigns reviewers and approvers
-for the PR based on the owners for the affected files.
--->
 SIG Docs
 [评阅人（Reviewers）](/zh-cn/docs/contribute/participate/#reviewers)
 和[批准人（Approvers）](/zh-cn/docs/contribute/participate/#approvers)
@@ -43,16 +20,6 @@ SIG Docs
 除了上述的轮值安排，后台机器人也会为基于所影响的文件来为 PR
 指派评阅人和批准人。
 
-<!-- body -->
-<!--
-## Reviewing a PR
-
-Kubernetes documentation follows the
-[Kubernetes code review process](https://github.com/kubernetes/community/blob/master/contributors/guide/owners.md#the-code-review-process).
-
-Everything described in [Reviewing a pull request](/docs/contribute/review/reviewing-prs)
-applies, but Reviewers and Approvers should also do the following:
--->
 ## 评阅 PR
 
 Kubernetes 文档遵循 [Kubernetes 代码评阅流程](https://github.com/kubernetes/community/blob/master/contributors/guide/owners.md#the-code-review-process)。
@@ -60,22 +27,6 @@ Kubernetes 文档遵循 [Kubernetes 代码评阅流程](https://github.com/kuber
 [评阅 PR](/zh-cn/docs/contribute/review/reviewing-prs/) 文档中所描述的所有规程都适用，
 不过评阅人和批准人还要做以下工作：
 
-<!--
-- Using the `/assign` Prow command to assign a specific reviewer to a PR as needed.
-  This is extra important when it comes to requesting technical review from code contributors.
-
-  {{< note >}}
-  Look at the `reviewers` field in the front-matter at the top of a Markdown file to see who can
-  provide technical review.
-  {{< /note >}}
-
-- Making sure the PR follows the [Content](/docs/contribute/style/content-guide/)
-  and [Style](/docs/contribute/style/style-guide/) guides; link the author to the
-  relevant part of the guide(s) if it doesn't.
-- Using the GitHub **Request Changes** option when applicable to suggest changes to the PR author.
-- Changing your review status in GitHub using the `/approve` or `/lgtm` Prow commands,
-  if your suggestions are implemented.
--->
 - 根据需要使用 Prow 命令 `/assign` 指派特定的评阅人。如果某个 PR
   需要来自代码贡献者的技术审核时，这一点非常重要。
 
@@ -88,19 +39,6 @@ Kubernetes 文档遵循 [Kubernetes 代码评阅流程](https://github.com/kuber
 - 适当的时候使用 GitHub **Request Changes** 选项，建议 PR 作者实施所建议的修改。
 - 当你所提供的建议被采纳后，在 GitHub 中使用 `/approve` 或 `/lgtm` Prow 命令，改变评审状态。
 
-<!--
-## Commit into another person's PR
-
-Leaving PR comments is helpful, but there might be times when you need to commit
-into another person's PR instead.
-
-Do not "take over" for another person unless they explicitly ask
-you to, or you want to resurrect a long-abandoned PR. While it may be faster
-in the short term, it deprives the person of the chance to contribute.
-
-The process you use depends on whether you need to edit a file that is already
-in the scope of the PR, or a file that the PR has not yet touched.
--->
 ## 提交到他人的 PR
 
 为 PR 留下评语是很有用的，不过有时候你需要向他人的 PR 提交内容。
@@ -110,14 +48,6 @@ in the scope of the PR, or a file that the PR has not yet touched.
 
 你所要遵循的流程取决于你需要编辑已经在 PR 范畴的文件，还是 PR 尚未触碰的文件。
 
-<!--
-You can't commit into someone else's PR if either of the following things is
-true:
-
-- If the PR author pushed their branch directly to the
-  [https://github.com/kubernetes/website/](https://github.com/kubernetes/website/)
-  repository. Only a reviewer with push access can commit to another user's PR.
--->
 如果处于下列情况之一，你不可以向别人的 PR 提交内容：
 
 - 如果 PR 作者是直接将自己的分支提交到
@@ -125,30 +55,11 @@ true:
   仓库。只有具有推送权限的评阅人才可以向他人的 PR 提交内容。
 
   {{< note >}}
-  <!--
-  Encourage the author to push their branch to their fork before
-  opening the PR next time.
-  -->
   我们应鼓励作者下次将分支推送到自己的克隆副本之后再发起 PR。
   {{< /note >}}
 
-<!--
-- The PR author explicitly disallows edits from approvers.
--->
 - PR 作者明确地禁止批准人编辑他/她的 PR。
 
-<!--
-## Prow commands for reviewing
-
-[Prow](https://github.com/kubernetes/test-infra/blob/master/prow/README.md) is
-the Kubernetes-based CI/CD system that runs jobs against pull requests (PRs). Prow
-enables chatbot-style commands to handle GitHub actions across the Kubernetes
-organization, like [adding and removing labels](#adding-and-removing-issue-labels),
-closing issues, and assigning an approver. Enter Prow commands as GitHub comments
-using the `/<command-name>` format.
-
-The most common prow commands reviewers and approvers use are:
--->
 ## 评阅用的 Prow 命令
 
 [Prow](https://github.com/kubernetes/test-infra/blob/master/prow/README.md)
@@ -160,21 +71,6 @@ Prow 命令。
 
 评阅人和批准人最常用的 Prow 命令有：
 
-<!--
-{{< table caption="Prow commands for reviewing" >}}
-Prow Command | Role Restrictions | Description
-:------------|:------------------|:-----------
-`/lgtm` | Organization members | Signals that you've finished reviewing a PR and are satisfied with the changes.
-`/approve` | Approvers | Approves a PR for merging.
-`/assign` | Anyone | Assigns a person to review or approve a PR
-`/close` | Organization members | Closes an issue or PR.
-`/hold` | Anyone | Adds the `do-not-merge/hold` label, indicating the PR cannot be automatically merged.
-`/hold cancel` | Anyone | Removes the `do-not-merge/hold` label.
-{{< /table >}}
-
-To view the commands that you can use in a PR, see the
-[Prow Command Reference](https://prow.k8s.io/command-help?repo=kubernetes%2Fwebsite).
--->
 {{< table caption="评阅用 Prow 命令" >}}
 Prow 命令 | 角色限制 | 描述
 :------------|:------------------|:-----------
@@ -189,16 +85,6 @@ Prow 命令 | 角色限制 | 描述
 要查看可以在 PR 中使用的命令，请参阅
 [Prow 命令指南](https://prow.k8s.io/command-help?repo=kubernetes%2Fwebsite)。
 
-<!--
-## Triage and categorize issues
-
-In general, SIG Docs follows the
-[Kubernetes issue triage](https://github.com/kubernetes/community/blob/master/contributors/guide/issue-triage.md)
-process and uses the same labels.
-
-This GitHub Issue [filter](https://github.com/kubernetes/website/issues?q=is%3Aissue+is%3Aopen+-label%3Apriority%2Fbacklog+-label%3Apriority%2Fimportant-longterm+-label%3Apriority%2Fimportant-soon+-label%3Atriage%2Fneeds-information+-label%3Atriage%2Fsupport+sort%3Acreated-asc)
-finds issues that might need triage.
--->
 ## 对 Issue 进行诊断和分类
 
 一般而言，SIG Docs 遵从 [Kubernetes issue 判定](https://github.com/kubernetes/community/blob/master/contributors/guide/issue-triage.md) 流程并使用相同的标签。
@@ -207,19 +93,6 @@ finds issues that might need triage.
 [过滤器](https://github.com/kubernetes/website/issues?q=is%3Aissue+is%3Aopen+-label%3Apriority%2Fbacklog+-label%3Apriority%2Fimportant-longterm+-label%3Apriority%2Fimportant-soon+-label%3Atriage%2Fneeds-information+-label%3Atriage%2Fsupport+sort%3Acreated-asc)
 可以用来查找需要评判的 Issues。
 
-<!--
-### Triaging an issue
-
-1. Validate the issue
-
-   - Make sure the issue is about website documentation. Some issues can be closed quickly by
-     answering a question or pointing the reporter to a resource. See the
-     [Support requests or code bug reports](#support-requests-or-code-bug-reports) section for details.
-   - Assess whether the issue has merit.
-   - Add the `triage/needs-information` label if the issue doesn't have enough
-     detail to be actionable or the template is not filled out adequately.
-   - Close the issue if it has both the `lifecycle/stale` and `triage/needs-information` labels.
--->
 
 ### 评判 Issue {#triaging-an-issue}
 
@@ -235,29 +108,6 @@ finds issues that might need triage.
   - 如果 Issue 同时标注了 `lifecycle/stale` 和 `triage/needs-information`
     标签，可以直接关闭。
 
-<!--
-2. Add a priority label (the
-   [Issue Triage Guidelines](https://github.com/kubernetes/community/blob/master/contributors/guide/issue-triage.md#define-priority)
-   define priority labels in detail)
-
-  {{< table caption="Issue labels" >}}
-  Label | Description
-  :------------|:------------------
-  `priority/critical-urgent` | Do this right now.
-  `priority/important-soon` | Do this within 3 months.
-  `priority/important-longterm` | Do this within 6 months.
-  `priority/backlog` | Deferrable indefinitely. Do when resources are available.
-  `priority/awaiting-more-evidence` | Placeholder for a potentially good issue so it doesn't get lost.
-  `help` or `good first issue` | Suitable for someone with very little Kubernetes or SIG Docs experience. See [Help Wanted and Good First Issue Labels](https://kubernetes.dev/docs/guide/help-wanted/) for more information.
-
-  {{< /table >}}
-
-  At your discretion, take ownership of an issue and submit a PR for it
-  (especially if it's quick or relates to work you're already doing).
-
-If you have questions about triaging an issue, ask in `#sig-docs` on Slack or
-the [kubernetes-sig-docs mailing list](https://groups.google.com/forum/#!forum/kubernetes-sig-docs).
--->
 2. 添加优先级标签（
   [Issue 判定指南](https://github.com/kubernetes/community/blob/master/contributors/guide/issue-triage.md#define-priority)中有优先级标签的详细定义)
 
@@ -279,19 +129,6 @@ the [kubernetes-sig-docs mailing list](https://groups.google.com/forum/#!forum/k
 [kubernetes-sig-docs 邮件列表](https://groups.google.com/forum/#!forum/kubernetes-sig-docs)
 中提问。
 
-<!--
-## Adding and removing issue labels
-
-To add a label, leave a comment in one of the following formats:
-
-- `/<label-to-add>` (for example, `/good-first-issue`)
-- `/<label-category> <label-to-add>` (for example, `/triage needs-information` or `/language ja`)
-
-To remove a label, leave a comment in one of the following formats:
-
-- `/remove-<label-to-remove>` (for example, `/remove-help`)
-- `/remove-<label-category> <label-to-remove>` (for example, `/remove-triage needs-information`)
--->
 ## 添加和删除 Issue 标签 {#adding-and-removing-issue-labels}
 
 要添加标签，可以用以下形式对 PR 进行评论：
@@ -304,13 +141,6 @@ To remove a label, leave a comment in one of the following formats:
 - `/remove-<要移除的标签>` （例如，`/remove-help`）
 - `/remove-<标签类别> <要移除的标签>` （例如，`/remove-triage needs-information`）
 
-<!--
-In both cases, the label must already exist. If you try to add a label that does not exist, the command is
-silently ignored.
-
-For a list of all labels, see the [website repository's Labels section](https://github.com/kubernetes/website/labels).
-Not all labels are used by SIG Docs.
--->
 在以上两种情况下，标签都必须合法存在。如果你尝试添加一个尚不存在的标签，
 对应的命令会被悄悄忽略。
 
@@ -318,20 +148,6 @@ Not all labels are used by SIG Docs.
 [Website 仓库的标签节](https://github.com/kubernetes/website/labels)。
 实际上，SIG Docs 并没有使用全部标签。
 
-<!--
-### Issue lifecycle labels
-
-Issues are generally opened and closed quickly.
-However, sometimes an issue is inactive after its opened.
-Other times, an issue may need to remain open for longer than 90 days.
-
-{{< table caption="Issue lifecycle labels" >}}
-Label | Description
-:------------|:------------------
-`lifecycle/stale` | After 90 days with no activity, an issue is automatically labeled as stale. The issue will be automatically closed if the lifecycle is not manually reverted using the `/remove-lifecycle stale` command.
-`lifecycle/frozen` | An issue with this label will not become stale after 90 days of inactivity. A user manually adds this label to issues that need to remain open for much longer than 90 days, such as those with a `priority/important-longterm` label.
-{{< /table >}}
--->
 ### Issue 生命周期标签
 
 Issues 通常都可以快速创建并关闭。
@@ -345,21 +161,6 @@ Issues 通常都可以快速创建并关闭。
 `lifecycle/frozen` | 对应的 Issue 即使超过 90 天仍无人处理也不会进入停滞状态。用户手动添加此标签给一些需要保持打开状态超过 90 天的 Issue，例如那些带有 `priority/important-longterm` 标签的 Issue。
 {{< /table >}}
 
-<!--
-## Handling special issue types
-
-SIG Docs encounters the following types of issues often enough to document how
-to handle them.
-
-### Duplicate issues
-
-If a single problem has one or more issues open for it, combine them into a single issue.
-You should decide which issue to keep open (or
-open a new issue), then move over all relevant information and link related issues.
-Finally, label all other issues that describe the same problem with
-`triage/duplicate` and close them. Only having a single issue to work on reduces confusion
-and avoids duplicate work on the same problem.
--->
 ## 处理特殊的 Issue 类型 {#handling-special-issue-types}
 
 SIG Docs 常常会遇到以下类型的 Issue，因此对其处理方式描述如下。
@@ -372,20 +173,6 @@ SIG Docs 常常会遇到以下类型的 Issue，因此对其处理方式描述�
 最后，将所有其他描述同一问题的 Issue 标记为 `triage/duplicate` 并关闭之。
 保持只有一个 Issue 待处理有助于减少困惑，避免在同一问题上发生重复劳动。
 
-<!--
-### Dead link issues
-
-If the dead link issue is in the API or `kubectl` documentation, assign them
-`/priority critical-urgent` until the problem is fully understood. Assign all
-other dead link issues `/priority important-longterm`, as they must be manually fixed.
-
-### Blog issues
-
-We expect [Kubernetes Blog](/blog/) entries to become
-outdated over time. Therefore, we only maintain blog entries less than a year old.
-If an issue is related to a blog entry that is more than one year old,
-close the issue without fixing.
--->
 ### 失效链接 Issues {#dead-link-issues}
 
 如果失效链接是关于 API 或者 `kubectl` 文档的，可以将其标记为
@@ -400,18 +187,6 @@ close the issue without fixing.
 如果某个 Issue 是与某个超过一年的博客条目有关的，可以直接关闭
 Issue，不必修复。
 
-<!--
-### Support requests or code bug reports
-
-Some docs issues are actually issues with the underlying code, or requests for
-assistance when something, for example a tutorial, doesn't work.
-For issues unrelated to docs, close the issue with the `kind/support` label and a comment
-directing the requester to support venues (Slack, Stack Overflow) and, if
-relevant, the repository to file an issue for bugs with features (`kubernetes/kubernetes`
-is a great place to start).
-
-Sample response to a request for support:
--->
 ### 请求支持或代码缺陷报告  {#support-requests-or-code-bug-reports}
 
 某些文档 Issues 实际上是关于底层代码的 Issue 或者在某方面请求协助的问题，
@@ -438,9 +213,6 @@ https://github.com/kubernetes/kubernetes.
 If this is a documentation issue, please re-open this issue.
 ```
 
-<!--
-Sample code bug report response:
--->
 对代码缺陷 Issue 的回复示例：
 
 ```none
@@ -451,17 +223,6 @@ https://github.com/kubernetes/kubernetes/issues.
 If this is a documentation issue, please re-open this issue.
 ```
 
-<!--
-### Squashing
-
-As an approver, when you review pull requests (PRs), there are various cases
-where you might do the following:
-
-- Advise the contributor to squash their commits.
-- Squash the commits for the contributor.
-- Advise the contributor not to squash yet.
-- Prevent squashing.
--->
 ### 压缩（Squashing）提交
 
 作为一名 Approver，当你评审 PR 时，可能会遇到以下几种情况：
@@ -471,16 +232,6 @@ where you might do the following:
 - 建议贡献者先不要压缩提交。
 - 阻止压缩提交。
 
-<!--
-**Advising contributors to squash**: A new contributor might not know that they
-should squash commits in their pull requests (PRs). If this is the case, advise
-them to do so, provide links to useful information, and offer to arrange help if
-they need it. Some useful links:
-
-- [Opening pull requests and squashing your commits](/docs/contribute/new-content/open-a-pr#squashing-commits)
-  for documentation contributors.
-- [GitHub Workflow](https://www.k8s.dev/docs/guide/github-workflow/), including diagrams, for developers.
--->
 **建议贡献者压缩提交**：新贡献者可能不知道要压缩 PR 中的提交。
 如果是这种情况，Approver 要给出压缩提交的建议，并贴附有用的链接，
 并在贡献者需要帮助时伸出援手。这里有一些有用的链接：
@@ -488,25 +239,9 @@ they need it. Some useful links:
 - 协助文档贡献者[提 PR 和压缩提交](/zh-cn/docs/contribute/new-content/open-a-pr#squashing-commits)。
 - 面向开发者包括插图在内的 [GitHub 工作流程](https://www.k8s.dev/docs/guide/github-workflow/)。
 
-<!--
-**Squashing commits for contributors**: If a contributor might have difficulty
-squashing commits or there is time pressure to merge a PR, you can perform the
-squash for them:
--->
 **协助贡献者压缩提交**：如果贡献者压缩提交遇到难题或合并 PR 的时间紧迫，
 你可以协助贡献者执行压缩提交的操作。
 
-<!--
-- The kubernetes/website repo is
-  [configured to allow squashing for pull request merges](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests).
-  Simply select the *Squash commits* button.
-- In the PR, if the contributor enables maintainers to manage the PR, you can
-  squash their commits and update their fork with the result. Before you squash,
-  advise them to save and push their latest changes to the PR. After you squash,
-  advise them to pull the squashed commit to their local clone.
-- You can get GitHub to squash the commits by using a label so that Tide / GitHub
-  performs the squash or by clicking the *Squash commits* button when you merge the PR.
--->
 - kubernetes/website
   仓库[被配置为允许压缩提交后合并 PR](https://docs.github.com/zh/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests)。
   你只需选择 **Squash commits** 按钮。
@@ -515,15 +250,6 @@ squash for them:
 - 你可以使用标签让 GitHub 压缩提交，这样 Tide / GitHub 就会对提交执行压缩；
   你还可以在合并 PR 时点选 **Squash commits** 按钮。
 
-<!--
-**Advise contributors to avoid squashing**
-
-- If one commit does something broken or unwise, and the last commit reverts this
-  error, don't squash the commits. Even though the "Files changed" tab in the PR
-  on GitHub and the Netlify preview will both look OK, merging this PR might create
-  rebase or merge conflicts for other folks. Intervene as you see fit to avoid that
-  risk to other contributors.
--->
 **建议贡献者避免压缩提交**
 
 - 如果一个提交做了一些破坏性或不明智的修改，那最后一个提交可用于回滚错误，这种情况不要压缩提交。
@@ -531,13 +257,6 @@ squash for them:
   合并这种 PR 可能会在其他 fork 中造成 rebase 或合并冲突。
   你看到这种情况要进行合理的干预，避免对其他贡献者造成麻烦。
 
-<!--
-**Never squash**
-
-- If you're launching a localization or releasing the docs for a new version,
-  you are merging in a branch that's not from a user's fork, _never squash the commits_.
-  Not squashing is essential because you must maintain the commit history for those files.
--->
 **千万不要压缩提交**
 
 - 如果你为新版本发起了一次本地化批量作业或为新版发布许多文档，那你要合并到的分支将与用户 fork 的分支不同，

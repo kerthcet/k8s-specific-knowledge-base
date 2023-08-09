@@ -5,46 +5,18 @@ description: >
 content_type: concept
 weight: 1
 ---
-<!--
-reviewers:
-- zparnold
-title: Overview of Cloud Native Security
-description: >
-  A model for thinking about Kubernetes security in the context of Cloud Native security.
-content_type: concept
-weight: 1
--->
 
-<!-- overview -->
-<!--
-This overview defines a model for thinking about Kubernetes security in the context of Cloud Native security.
--->
 本概述定义了一个模型，用于在 Cloud Native 安全性上下文中考虑 Kubernetes 安全性。
 
-<!--
-This container security model provides suggestions, not proven information security policies.
--->
 {{< warning >}}
 此容器安全模型只提供建议，而不是经过验证的信息安全策略。
 {{< /warning >}}
 
-<!-- body -->
 
-<!--
-## The 4C's of Cloud Native security
-
-You can think about security in layers. The 4C's of Cloud Native security are Cloud,
-Clusters, Containers, and Code.
--->
 ## 云原生安全的 4 个 C    {#the-4c-s-of-cloud-native-security}
 
 你可以分层去考虑安全性，云原生安全的 4 个 C 分别是云（Cloud）、集群（Cluster）、容器（Container）和代码（Code）。
 
-<!--
-This layered approach augments the [defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing))
-computing approach to security, which is widely regarded as a best practice for securing
-software systems.
--->
 {{< note >}}
 这种分层方法增强了[深度防护方法](https://en.wikipedia.org/wiki/Defense_in_depth_(computing))在安全性方面的
 防御能力，该方法被广泛认为是保护软件系统的最佳实践。
@@ -53,40 +25,16 @@ software systems.
 
 {{< figure src="/images/docs/4c.png" title="云原生安全的 4C" >}}
 
-<!--
-Each layer of the Cloud Native security model builds upon the next outermost layer.
-The Code layer benefits from strong base (Cloud, Cluster, Container) security layers.
-You cannot safeguard against poor security standards in the base layers by addressing
-security at the Code level.
--->
 云原生安全模型的每一层都是基于下一个最外层，代码层受益于强大的基础安全层（云、集群、容器）。
 你无法通过在代码层解决安全问题来为基础层中糟糕的安全标准提供保护。
 
-<!--
-## Cloud
--->
 ## 云    {#cloud}
 
-<!--
-In many ways, the Cloud (or co-located servers, or the corporate datacenter) is the
-[trusted computing base](https://en.wikipedia.org/wiki/Trusted_computing_base)
-of a Kubernetes cluster. If the Cloud layer is vulnerable (or
-configured in a vulnerable way) then there is no guarantee that the components built
-on top of this base are secure. Each cloud provider makes security recommendations
-for running workloads securely in their environment.
--->
 在许多方面，云（或者位于同一位置的服务器，或者是公司数据中心）是 Kubernetes 集群中的
 [可信计算基](https://en.wikipedia.org/wiki/Trusted_computing_base)。
 如果云层容易受到攻击（或者被配置成了易受攻击的方式），就不能保证在此基础之上构建的组件是安全的。
 每个云提供商都会提出安全建议，以在其环境中安全地运行工作负载。
 
-<!--
-### Cloud provider security
-
-If you are running a Kubernetes cluster on your own hardware or a different cloud provider,
-consult your documentation for security best practices.
-Here are links to some of the popular cloud providers' security documentation:
--->
 ### 云提供商安全性    {#cloud-provider-security}
 
 如果你是在你自己的硬件或者其他不同的云提供商上运行 Kubernetes 集群，
@@ -109,23 +57,6 @@ VMWare VSphere | https://www.vmware.com/security/hardening-guides |
 
 {{< /table >}}
 
-<!--
-### Infrastructure security {#infrastructure-security}
-
-Suggestions for securing your infrastructure in a Kubernetes cluster:
-
-{{< table caption="Infrastructure security" >}}
-
-Area of Concern for Kubernetes Infrastructure | Recommendation |
---------------------------------------------- | -------------- |
-Network access to API Server (Control plane) | All access to the Kubernetes control plane is not allowed publicly on the internet and is controlled by network access control lists restricted to the set of IP addresses needed to administer the cluster.|
-Network access to Nodes (nodes) | Nodes should be configured to _only_ accept connections (via network access control lists) from the control plane on the specified ports, and accept connections for services in Kubernetes of type NodePort and LoadBalancer. If possible, these nodes should not be exposed on the public internet entirely.
-Kubernetes access to Cloud Provider API | Each cloud provider needs to grant a different set of permissions to the Kubernetes control plane and nodes. It is best to provide the cluster with cloud provider access that follows the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege) for the resources it needs to administer. The [Kops documentation](https://github.com/kubernetes/kops/blob/master/docs/iam_roles.md#iam-roles) provides information about IAM policies and roles.
-Access to etcd | Access to etcd (the datastore of Kubernetes) should be limited to the control plane only. Depending on your configuration, you should attempt to use etcd over TLS. More information can be found in the [etcd documentation](https://github.com/etcd-io/etcd/tree/master/Documentation).
-etcd Encryption | Wherever possible it's a good practice to encrypt all storage at rest, and since etcd holds the state of the entire cluster (including Secrets) its disk should especially be encrypted at rest.
-
-{{< /table >}}
--->
 ### 基础设施安全 {#infrastructure-security}
 
 关于在 Kubernetes 集群中保护你的基础设施的建议：
@@ -142,14 +73,6 @@ etcd 加密 | 在所有可能的情况下，最好对所有存储进行静态数
 
 {{< /table >}}
 
-<!--
-## Cluster
-
-There are two areas of concern for securing Kubernetes:
-
-* Securing the cluster components that are configurable
-* Securing the applications which run in the cluster
--->
 ## 集群    {#cluster}
 
 保护 Kubernetes 有两个方面需要注意：
@@ -157,37 +80,10 @@ There are two areas of concern for securing Kubernetes:
 * 保护可配置的集群组件
 * 保护在集群中运行的应用程序
 
-<!--
-### Components of the Cluster {#cluster-components}
-
-If you want to protect your cluster from accidental or malicious access and adopt
-good information practices, read and follow the advice about
-[securing your cluster](/docs/tasks/administer-cluster/securing-a-cluster/).
--->
 ### 集群组件 {#cluster-components}
 
 如果想要保护集群免受意外或恶意的访问，采取良好的信息管理实践，请阅读并遵循有关[保护集群](/zh-cn/docs/tasks/administer-cluster/securing-a-cluster/)的建议。
 
-<!--
-### Components in the cluster (your application) {#cluster-applications}
-
-Depending on the attack surface of your application, you may want to focus on specific
-aspects of security. For example: If you are running a service (Service A) that is critical
-in a chain of other resources and a separate workload (Service B) which is
-vulnerable to a resource exhaustion attack, then the risk of compromising Service A
-is high if you do not limit the resources of Service B. The following table lists
-areas of security concerns and recommendations for securing workloads running in Kubernetes:
-
-Area of Concern for Workload Security | Recommendation |
------------------------------- | --------------------- |
-RBAC Authorization (Access to the Kubernetes API) | https://kubernetes.io/docs/reference/access-authn-authz/rbac/
-Authentication | https://kubernetes.io/docs/concepts/security/controlling-access/
-Application secrets management (and encrypting them in etcd at rest) | https://kubernetes.io/docs/concepts/configuration/secret/ <br> https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/
-Ensuring that pods meet defined Pod Security Standards | https://kubernetes.io/docs/concepts/security/pod-security-standards/#policy-instantiation
-Quality of Service (and Cluster resource management) | https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/
-Network Policies | https://kubernetes.io/docs/concepts/services-networking/network-policies/
-TLS for Kubernetes Ingress | https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
--->
 ### 集群中的组件（你的应用） {#cluster-applications}
 
 根据你的应用程序的受攻击面，你可能需要关注安全性的特定面，比如：
@@ -205,19 +101,6 @@ RBAC 授权(访问 Kubernetes API) | https://kubernetes.io/zh-cn/docs/reference/
 网络策略 | https://kubernetes.io/zh-cn/docs/concepts/services-networking/network-policies/
 Kubernetes Ingress 的 TLS 支持 | https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress/#tls
 
-<!--
-## Container
-
-Container security is outside the scope of this guide. Here are general recommendations and
-links to explore this topic:
-
-Area of Concern for Containers | Recommendation |
------------------------------- | -------------- |
-Container Vulnerability Scanning and OS Dependency Security | As part of an image build step, you should scan your containers for known vulnerabilities.
-Image Signing and Enforcement | Sign container images to maintain a system of trust for the content of your containers.
-Disallow privileged users | When constructing containers, consult your documentation for how to create users inside of the containers that have the least level of operating system privilege necessary in order to carry out the goal of the container.
-Use container runtime with stronger isolation | Select [container runtime classes](/docs/concepts/containers/runtime-class/) that provide stronger isolation.
--->
 ## 容器    {#container}
 
 容器安全性不在本指南的探讨范围内。下面是一些探索此主题的建议和连接：
@@ -228,32 +111,10 @@ Use container runtime with stronger isolation | Select [container runtime classe
 镜像签名和执行 | 对容器镜像进行签名，以维护对容器内容的信任。
 禁止特权用户 | 构建容器时，请查阅文档以了解如何在具有最低操作系统特权级别的容器内部创建用户，以实现容器的目标。
 使用带有较强隔离能力的容器运行时 | 选择提供较强隔离能力的[容器运行时类](/zh-cn/docs/concepts/containers/runtime-class/)。
-<!--
-## Code
-
-Application code is one of the primary attack surfaces over which you have the most control.
-While securing application code is outside of the Kubernetes security topic, here
-are recommendations to protect application code:
--->
 ## 代码    {#code}
 
 应用程序代码是你最能够控制的主要攻击面之一，虽然保护应用程序代码不在 Kubernetes 安全主题范围内，但以下是保护应用程序代码的建议：
 
-<!--
-### Code security
-
-{{< table caption="Code security" >}}
-
-Area of Concern for Code | Recommendation |
--------------------------| -------------- |
-Access over TLS only | If your code needs to communicate by TCP, perform a TLS handshake with the client ahead of time. With the exception of a few cases, encrypt everything in transit. Going one step further, it's a good idea to encrypt network traffic between services. This can be done through a process known as mutual TLS authentication or [mTLS](https://en.wikipedia.org/wiki/Mutual_authentication) which performs a two sided verification of communication between two certificate holding services. |
-Limiting port ranges of communication | This recommendation may be a bit self-explanatory, but wherever possible you should only expose the ports on your service that are absolutely essential for communication or metric gathering. |
-3rd Party Dependency Security | It is a good practice to regularly scan your application's third party libraries for known security vulnerabilities. Each programming language has a tool for performing this check automatically. |
-Static Code Analysis | Most languages provide a way for a snippet of code to be analyzed for any potentially unsafe coding practices. Whenever possible you should perform checks using automated tooling that can scan codebases for common security errors. Some of the tools can be found at: https://owasp.org/www-community/Source_Code_Analysis_Tools |
-Dynamic probing attacks | There are a few automated tools that you can run against your service to try some of the well known service attacks. These include SQL injection, CSRF, and XSS. One of the most popular dynamic analysis tools is the [OWASP Zed Attack proxy](https://owasp.org/www-project-zap/) tool. |
-
-{{< /table >}}
--->
 ### 代码安全性    {#code-security}
 
 {{< table caption="代码安全" >}}
@@ -270,18 +131,6 @@ Dynamic probing attacks | There are a few automated tools that you can run again
 
 ## {{% heading "whatsnext" %}}
 
-<!--
-Learn about related Kubernetes security topics:
-
-* [Pod security standards](/docs/concepts/security/pod-security-standards/)
-* [Network policies for Pods](/docs/concepts/services-networking/network-policies/)
-* [Controlling Access to the Kubernetes API](/docs/concepts/security/controlling-access)
-* [Securing your cluster](/docs/tasks/administer-cluster/securing-a-cluster/)
-* [Data encryption in transit](/docs/tasks/tls/managing-tls-in-a-cluster/) for the control plane
-* [Data encryption at rest](/docs/tasks/administer-cluster/encrypt-data/)
-* [Secrets in Kubernetes](/docs/concepts/configuration/secret/)
-* [Runtime class](/docs/concepts/containers/runtime-class)
--->
 学习了解相关的 Kubernetes 安全主题：
 
 * [Pod 安全标准](/zh-cn/docs/concepts/security/pod-security-standards/)

@@ -1,28 +1,9 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the 
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!--
-Install all the addons
--->
 安装所有插件
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-Install all the addons
--->
 
 安装所有插件（addon）
 
@@ -30,9 +11,6 @@ Install all the addons
 kubeadm init phase addon all [flags]
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -48,9 +26,6 @@ kubeadm init phase addon all [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-The IP address the API Server will advertise it's listening on. If not set the default network interface will be used.
--->
 <p>
 API 服务器所公布的其正在监听的 IP 地址。如果未设置，则将使用默认网络接口。
 </p>
@@ -59,17 +34,11 @@ API 服务器所公布的其正在监听的 IP 地址。如果未设置，则将
 
 <tr>
 <td colspan="2">
-<!--
---apiserver-bind-port int32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 6443
--->
 --apiserver-bind-port int32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值：6443
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Port for the API Server to bind to.
--->
 <p>
 API 服务器绑定的端口。
 </p>
@@ -81,9 +50,6 @@ API 服务器绑定的端口。
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Path to a kubeadm configuration file.
--->
 <p>
 kubeadm 配置文件的路径。
 </p>
@@ -95,9 +61,6 @@ kubeadm 配置文件的路径。
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Specify a stable IP address or DNS name for the control plane.
--->
 <p>
 为控制平面指定一个稳定的 IP 地址或 DNS 名称。
 </p>
@@ -109,9 +72,6 @@ Specify a stable IP address or DNS name for the control plane.
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Don't apply any changes; just output what would be done.
--->
 <p>
 不做任何更改；只输出将要执行的操作。
 </p>
@@ -123,9 +83,6 @@ Don't apply any changes; just output what would be done.
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-A set of key=value pairs that describe feature gates for various features. Options are:<br/>EtcdLearnerMode=true|false (ALPHA - default=false)<br/>PublicKeysECDSA=true|false (ALPHA - default=false)<br/>RootlessControlPlane=true|false (ALPHA - default=false)
--->
 一组键值对（key=value），描述了各种特征。选项包括：
 <br/>EtcdLearnerMode=true|false (ALPHA - 默认值=false)
 <br/>PublicKeysECDSA=true|false (ALPHA - 默认值=false)
@@ -138,9 +95,6 @@ A set of key=value pairs that describe feature gates for various features. Optio
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-help for all
--->
 <p>
 all 操作的帮助命令
 </p>
@@ -149,17 +103,11 @@ all 操作的帮助命令
 
 <tr>
 <td colspan="2">
-<!--
---image-repository string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "registry.k8s.io"
--->
 --image-repository string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："registry.k8s.io"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Choose a container registry to pull control plane images from
--->
 <p>
 选择用于拉取控制平面镜像的容器仓库
 </p>
@@ -168,17 +116,11 @@ Choose a container registry to pull control plane images from
 
 <tr>
 <td colspan="2">
-<!--
---kubeconfig string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "/etc/kubernetes/admin.conf"
--->
 --kubeconfig string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："/etc/kubernetes/admin.conf"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-The kubeconfig file to use when talking to the cluster. If the flag is not set, a set of standard locations can be searched for an existing kubeconfig file.
--->
 <p>
 与集群通信时使用的 kubeconfig 文件。如果未设置该参数，则可以在一组标准位置中搜索现有的 kubeconfig 文件。
 </p>
@@ -187,17 +129,11 @@ The kubeconfig file to use when talking to the cluster. If the flag is not set, 
 
 <tr>
 <td colspan="2">
-<!--
---kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "stable-1"
--->
 --kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："stable-1"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Choose a specific Kubernetes version for the control plane.
--->
 <p>
 为控制平面选择特定的 Kubernetes 版本。
 </p>
@@ -209,9 +145,6 @@ Choose a specific Kubernetes version for the control plane.
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Specify range of IP addresses for the pod network. If set, the control plane will automatically allocate CIDRs for every node.
--->
 <p>
 指定 Pod 网络的 IP 地址范围。如果已设置，控制平面将自动为每个节点分配 CIDR。
 </p>
@@ -220,17 +153,11 @@ Specify range of IP addresses for the pod network. If set, the control plane wil
 
 <tr>
 <td colspan="2">
-<!--
---service-cidr string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "10.96.0.0/12"
--->
 --service-cidr string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："10.96.0.0/12"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Use alternative range of IP address for service VIPs.
--->
 <p>
 为服务 VIP 使用 IP 地址的其他范围。
 </p>
@@ -239,17 +166,11 @@ Use alternative range of IP address for service VIPs.
 
 <tr>
 <td colspan="2">
-<!--
---service-dns-domain string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "cluster.local"
--->
 --service-dns-domain string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："cluster.local"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Use alternative domain for services, e.g. &quot;myorg.internal&quot;.
--->
 为服务使用其他域名，例如 &quot;myorg.internal&quot;。
 </td>
 </tr>
@@ -257,9 +178,6 @@ Use alternative domain for services, e.g. &quot;myorg.internal&quot;.
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 继承于父命令的选项
 
@@ -275,9 +193,6 @@ Use alternative domain for services, e.g. &quot;myorg.internal&quot;.
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-[EXPERIMENTAL] The path to the 'real' host root filesystem.
--->
 <p>
 [实验] 到 '真实' 主机根文件系统的路径。
 </p>

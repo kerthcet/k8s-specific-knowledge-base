@@ -4,26 +4,12 @@ content_type: task
 min-kubernetes-server-version: v1.24
 weight: 420
 ---
-<!--
-title: Verify Signed Container Images
-content_type: task
-min-kubernetes-server-version: v1.24
-weight: 420
--->
 
-<!-- overview -->
 
 {{< feature-state state="alpha" for_k8s_version="v1.24" >}}
 
 ## {{% heading "prerequisites" %}}
 
-<!--
-You will need to have the following tools installed:
-
-- `cosign` ([install guide](https://docs.sigstore.dev/cosign/installation/))
-- `curl` (often provided by your operating system)
-- `jq` ([download jq](https://stedolan.github.io/jq/download/))
--->
 你需要安装以下工具：
 
 - `cosign`（[安装指南](https://docs.sigstore.dev/cosign/installation/)）
@@ -31,13 +17,6 @@ You will need to have the following tools installed:
 - `jq`（[下载 jq](https://stedlan.github.io/jq/download/)）
 
 
-<!-- 
-## Verifying binary signatures
-
-The Kubernetes release process signs all binary artifacts (tarballs, SPDX files,
-standalone binaries) by using cosign's keyless signing. To verify a particular
-binary, retrieve it together with its signature and certificate: 
--->
 
 ## 验证二进制签名 {#verifying-binary-signatures}
 
@@ -60,9 +39,6 @@ for FILE in "${FILES[@]}"; do
 done
 ```
 
-<!--
-Then verify the blob by using `cosign verify-blob`:
--->
 然后使用 `cosign verify-blob` 验证二进制文件：
 
 ```shell
@@ -74,15 +50,6 @@ cosign verify-blob "$BINARY" \
 ```
 
 {{< note >}}
-<!-- 
-Cosign 2.0 requires the `--certificate-identity` and `--certificate-oidc-issuer` options.
-
-To learn more about keyless signing, please refer to [Keyless Signatures](https://docs.sigstore.dev/cosign/keyless).
-
-Previous versions of Cosign required that you set `COSIGN_EXPERIMENTAL=1`.
-
-For additional information, plase refer to the [sigstore Blog](https://blog.sigstore.dev/cosign-2-0-released/)
--->
 Cosign 2.0 需要指定 `--certificate-identity` 和 `--certificate-oidc-issuer` 选项。
 
 想要进一步了解无密钥签名，请参考
@@ -94,15 +61,6 @@ Cosign 的早期版本还需要设置 `COSIGN_EXPERIMENTAL=1`。
 [sigstore Blog](https://blog.sigstore.dev/cosign-2-0-released/)
 {{< /note >}}
 
-<!--
-## Verifying image signatures
-
-For a complete list of images that are signed please refer
-to [Releases](/releases/download/).
-
-Pick one image from this list and verify its signature using
-the `cosign verify` command:
--->
 ## 验证镜像签名 {#verifying-image-signatures}
 
 完整的镜像签名列表请参见[发行版本](/zh-cn/releases/download/)。
@@ -116,12 +74,6 @@ cosign verify registry.k8s.io/kube-apiserver-amd64:v{{< skew currentPatchVersion
   | jq .
 ```
 
-<!--
-### Verifying images for all control plane components
-
-To verify all signed control plane images for the latest stable version
-(v{{< skew currentPatchVersion >}}), please run the following commands:
--->
 ### 验证所有控制平面组件镜像  {#verifying-images-for-all-control-plane-components}
 
 验证最新稳定版（v{{< skew currentPatchVersion >}}）所有已签名的控制平面组件镜像，
@@ -142,14 +94,6 @@ do
 done < "$input"
 ```
 
-<!--
-Once you have verified an image, you can specify that image by its digest in your Pod
-manifests as per this example:
-
-For more information, please refer
-to the [Image Pull Policy](/docs/concepts/containers/images/#image-pull-policy)
-section.
--->
 当你完成某个镜像的验证时，可以在你的 Pod 清单通过摘要值来指定该镜像，例如：
 
 ```console
@@ -158,20 +102,6 @@ registry-url/image-name@sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c1972
 
 要了解更多信息，请参考[镜像拉取策略](/zh-cn/docs/concepts/containers/images/#image-pull-policy)章节。
 
-<!--
-## Verifying Image Signatures with Admission Controller
-
-For non-control plane images (for example
-[conformance image](https://github.com/kubernetes/kubernetes/blob/master/test/conformance/image/README.md)),
-signatures can also be verified at deploy time using
-[sigstore policy-controller](https://docs.sigstore.dev/policy-controller/overview)
-admission controller. 
-
-Here are some helpful resources to get started with `policy-controller`:
-
-* [Installation](https://github.com/sigstore/helm-charts/tree/main/charts/policy-controller)
-* [Configuration Options](https://github.com/sigstore/policy-controller/tree/main/config)
--->
 ## 使用准入控制器验证镜像签名   {#verifying-image-signatures-with-admission-controller}
 
 有一些非控制平面镜像

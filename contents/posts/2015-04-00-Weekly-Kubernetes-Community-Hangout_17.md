@@ -4,29 +4,9 @@ date: 2015-04-17
 slug: weekly-kubernetes-community-hangout_17
 ---
 
-<!--
----
-title: " Weekly Kubernetes Community Hangout Notes - April 17 2015 "
-date: 2015-04-17
-slug: weekly-kubernetes-community-hangout_17
-url: /zh/blog/2015/04/Weekly-Kubernetes-Community-Hangout_17
----
--->
 
-<!--
-Every week the Kubernetes contributing community meet virtually over Google Hangouts. We want anyone who's interested to know what's discussed in this forum.
--->
 每个星期，Kubernetes 贡献者社区几乎都会在谷歌 Hangouts 上聚会。我们希望任何对此感兴趣的人都能了解这个论坛的讨论内容。
 
-<!--
-Agenda
-
-* Mesos Integration
-* High Availability (HA)
-* Adding performance and profiling details to e2e to track regressions
-* Versioned clients
-
--->
 议程
 
 * Mesos 集成
@@ -34,22 +14,8 @@ Agenda
 * 向 e2e 添加性能和分析详细信息以跟踪回归
 * 客户端版本化
 
-<!--
-Notes
--->
 笔记
 
-<!--
-
-* Mesos integration
-
-    * Mesos integration proposal:
-
-    * No blockers to integration.
-
-    * Documentation needs to be updated.
-
--->
 
 * Mesos 集成
 
@@ -59,19 +25,6 @@ Notes
 
     * 文档需要更新。
 
-<!--
-
-* HA
-
-    * Proposal should land today.
-
-    * Etcd cluster.
-
-    * Load-balance apiserver.
-
-    * Cold standby for controller manager and other master components.
-
--->
 
 * HA
 
@@ -83,19 +36,6 @@ Notes
 
     * 控制器管理器和其他主组件的冷备用。
 
-<!--
-
-* Adding performance and profiling details to e2e to track regression
-
-    * Want red light for performance regression
-
-    * Need a public DB to post the data
-
-        * See
-
-    * Justin working on multi-platform e2e dashboard
-
--->
 
 * 向 e2e 添加性能和分析详细信息以跟踪回归
 
@@ -107,23 +47,6 @@ Notes
 
     * Justin 致力于多平台 e2e 仪表盘
 
-<!--
-
-* Versioned clients
-
-    *
-
-    *
-
-    * Client library currently uses internal API objects.
-
-    * Nobody reported that frequent changes to types.go have been painful, but we are worried about it.
-
-    * Structured types are useful in the client. Versioned structs would be ok.
-
-    * If start with json/yaml (kubectl), shouldn’t convert to structured types. Use swagger.
-
--->
 
 * 客户端版本化
 
@@ -139,18 +62,6 @@ Notes
 
     * 如果从 json/yaml (kubectl) 开始，则不应转换为结构化类型。使用 swagger。
 
-<!--
-
-* Security context
-
-    *
-
-    * Administrators can restrict who can run privileged containers or require specific unix uids
-
-    * Kubelet will be able to get pull credentials from apiserver
-
-    * Policy proposal coming in the next week or so
--->
 
 * Security context
 
@@ -162,21 +73,6 @@ Notes
 
     * 政策提案将于下周左右出台
 
-<!--
-
-* Discussing upstreaming of users, etc. into Kubernetes, at least as optional
-* 1.0 Roadmap
-
-    * Focus is performance, stability, cluster upgrades
-
-    * TJ has been making some edits to [roadmap.md][4] but hasn’t sent out a PR yet
-* Kubernetes UI
-
-    * Dependencies broken out into third-party
-
-    * @lavalamp is reviewer
-
--->
 
 * 讨论用户的上游，等等进入Kubernetes，至少是可选的
 * 1.0 路线图

@@ -1,28 +1,9 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the 
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
 
-<!-- 
-Upload the kubeadm and kubelet configuration to a ConfigMap
--->
 上传 kubeadm 和 kubelet 配置到 ConfigMap 中
 
-<!--
-### Synopsis
--->
 
 ### 概要
 
-<!--
-This command is not meant to be run on its own. See list of available subcommands.
--->
 
 此命令并非设计用来单独运行。请参阅可用的子命令列表。
 
@@ -30,9 +11,6 @@ This command is not meant to be run on its own. See list of available subcommand
 kubeadm init phase upload-config [flags]
 ```
 
-<!--
-### Options
--->
 
 ### 选项
 
@@ -48,9 +26,6 @@ kubeadm init phase upload-config [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>help for upload-config</p>
--->
 <p>upload-config 操作的帮助命令</p>
 </td>
 </tr>
@@ -58,9 +33,6 @@ kubeadm init phase upload-config [flags]
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 
 ### 从父命令中继承的选项
 
@@ -76,9 +48,6 @@ kubeadm init phase upload-config [flags]
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-<p>[EXPERIMENTAL] The path to the 'real' host root filesystem.</p>
--->
 <p>[实验] 到 '真实' 主机根文件系统的路径。</p>
 </td>
 </tr>

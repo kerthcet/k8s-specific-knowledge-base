@@ -5,29 +5,9 @@ description: >
 content_type: concept
 weight: 20
 ---
-<!--
-title: Device Plugins
-description: >
-  Device plugins let you configure your cluster with support for devices or resources that require
-  vendor-specific setup, such as GPUs, NICs, FPGAs, or non-volatile main memory.
-content_type: concept
-weight: 20
--->
 
-<!-- overview -->
 {{< feature-state for_k8s_version="v1.26" state="stable" >}}
 
-<!--
-Kubernetes provides a [device plugin framework](https://git.k8s.io/design-proposals-archive/resource-management/device-plugin.md)
-that you can use to advertise system hardware resources to the
-{{< glossary_tooltip term_id="kubelet" >}}.
-
-Instead of customizing the code for Kubernetes itself, vendors can implement a
-device plugin that you deploy either manually or as a {{< glossary_tooltip term_id="daemonset" >}}.
-The targeted devices include GPUs, high-performance NICs, FPGAs, InfiniBand adapters,
-and other similar computing resources that may require vendor specific initialization
-and setup.
--->
 Kubernetes 提供了一个
 [设备插件框架](https://git.k8s.io/design-proposals-archive/resource-management/device-plugin.md)，
 你可以用它来将系统硬件资源发布到 {{< glossary_tooltip term_id="kubelet" >}}。
@@ -36,16 +16,9 @@ Kubernetes 提供了一个
 来部署，而不必定制 Kubernetes 本身的代码。目标设备包括 GPU、高性能 NIC、FPGA、
 InfiniBand 适配器以及其他类似的、可能需要特定于供应商的初始化和设置的计算资源。
 
-<!-- body -->
 
-<!--
-## Device plugin registration
--->
 ## 注册设备插件    {#device-plugin-registration}
 
-<!--
-The kubelet exports a `Registration` gRPC service:
--->
 `kubelet` 提供了一个 `Registration` 的 gRPC 服务：
 
 ```gRPC
@@ -54,24 +27,6 @@ service Registration {
 }
 ```
 
-<!--
-A device plugin can register itself with the kubelet through this gRPC service.
-During the registration, the device plugin needs to send:
-
-* The name of its Unix socket.
-* The Device Plugin API version against which it was built.
-* The `ResourceName` it wants to advertise. Here `ResourceName` needs to follow the
-  [extended resource naming scheme](/docs/concepts/configuration/manage-resources-containers/#extended-resources)
-  as `vendor-domain/resourcetype`.
-  (For example, an NVIDIA GPU is advertised as `nvidia.com/gpu`.)
-
-Following a successful registration, the device plugin sends the kubelet the
-list of devices it manages, and the kubelet is then in charge of advertising those
-resources to the API server as part of the kubelet node status update.
-For example, after a device plugin registers `hardware-vendor.example/foo` with the kubelet
-and reports two healthy devices on a node, the node status is updated
-to advertise that the node has 2 "Foo" devices installed and available.
--->
 设备插件可以通过此 gRPC 服务在 kubelet 进行注册。在注册期间，设备插件需要发送下面几样内容：
 
 * 设备插件的 Unix 套接字。
@@ -87,14 +42,6 @@ to advertise that the node has 2 "Foo" devices installed and available.
 并报告了节点上的两个运行状况良好的设备后，节点状态将更新以通告该节点已安装 2 个
 "Foo" 设备并且是可用的。
 
-<!--
-Then, users can request devices as part of a Pod specification
-(see [`container`](/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container)).
-Requesting extended resources is similar to how you manage requests and limits for
-other resources, with the following differences:
-* Extended resources are only supported as integer resources and cannot be overcommitted.
-* Devices cannot be shared between containers.
--->
 然后，用户可以请求设备作为 Pod 规范的一部分，
 参见 [Container](/zh-cn/docs/reference/kubernetes-api/workload-resources/pod-v1/#Container)。
 请求扩展资源类似于管理请求和限制的方式，
@@ -103,15 +50,8 @@ other resources, with the following differences:
 * 扩展资源仅可作为整数资源使用，并且不能被过量使用
 * 设备不能在容器之间共享
 
-<!--
-### Example {#example-pod}
--->
 ### 示例 {#example-pod}
 
-<!--
-Suppose a Kubernetes cluster is running a device plugin that advertises resource `hardware-vendor.example/foo`
-on certain nodes. Here is an example of a pod requesting this resource to run a demo workload:
--->
 假设 Kubernetes 集群正在运行一个设备插件，该插件在一些节点上公布的资源为 `hardware-vendor.example/foo`。
 下面就是一个 Pod 示例，请求此资源以运行一个工作负载的示例：
 
@@ -135,17 +75,6 @@ spec:
 # 如果该节点中有 2 个以上的设备可用，其余的可供其他 Pod 使用
 ```
 
-<!--
-## Device plugin implementation
-
-The general workflow of a device plugin includes the following steps:
-
-1. Initialization. During this phase, the device plugin performs vendor-specific
-   initialization and setup to make sure the devices are in a ready state.
-
-1. The plugin starts a gRPC service, with a Unix socket under the host path
-   `/var/lib/kubelet/device-plugins/`, that implements the following interfaces:
--->
 ## 设备插件的实现    {#device-plugin-implementation}
 
 设备插件的常规工作流程包括以下几个步骤：
@@ -155,36 +84,6 @@ The general workflow of a device plugin includes the following steps:
 2. 插件使用主机路径 `/var/lib/kubelet/device-plugins/` 下的 UNIX 套接字启动一个
    gRPC 服务，该服务实现以下接口：
 
-   <!--
-   ```gRPC
-   service DevicePlugin {
-         // GetDevicePluginOptions returns options to be communicated with Device Manager.
-         rpc GetDevicePluginOptions(Empty) returns (DevicePluginOptions) {}
-
-         // ListAndWatch returns a stream of List of Devices
-         // Whenever a Device state change or a Device disappears, ListAndWatch
-         // returns the new list
-         rpc ListAndWatch(Empty) returns (stream ListAndWatchResponse) {}
-
-         // Allocate is called during container creation so that the Device
-         // Plugin can run device specific operations and instruct Kubelet
-         // of the steps to make the Device available in the container
-         rpc Allocate(AllocateRequest) returns (AllocateResponse) {}
-
-         // GetPreferredAllocation returns a preferred set of devices to allocate
-         // from a list of available ones. The resulting preferred allocation is not
-         // guaranteed to be the allocation ultimately performed by the
-         // devicemanager. It is only designed to help the devicemanager make a more
-         // informed allocation decision when possible.
-         rpc GetPreferredAllocation(PreferredAllocationRequest) returns (PreferredAllocationResponse) {}
-
-         // PreStartContainer is called, if indicated by Device Plugin during registeration phase,
-         // before each container start. Device plugin can run device specific operations
-         // such as resetting the device before making devices available to the container.
-         rpc PreStartContainer(PreStartContainerRequest) returns (PreStartContainerResponse) {}
-   }
-   ```
-   -->
    ```gRPC
    service DevicePlugin {
          // GetDevicePluginOptions 返回与设备管理器沟通的选项。
@@ -212,79 +111,31 @@ The general workflow of a device plugin includes the following steps:
    ```
 
    {{< note >}}
-   <!--
-   Plugins are not required to provide useful implementations for
-   `GetPreferredAllocation()` or `PreStartContainer()`. Flags indicating
-   the availability of these calls, if any, should be set in the `DevicePluginOptions`
-   message sent back by a call to `GetDevicePluginOptions()`. The `kubelet` will
-   always call `GetDevicePluginOptions()` to see which optional functions are
-   available, before calling any of them directly.
-   -->
    插件并非必须为 `GetPreferredAllocation()` 或 `PreStartContainer()` 提供有用的实现逻辑，
    调用 `GetDevicePluginOptions()` 时所返回的 `DevicePluginOptions`
    消息中应该设置一些标志，表明这些调用（如果有）是否可用。`kubelet` 在直接调用这些函数之前，总会调用
    `GetDevicePluginOptions()` 来查看哪些可选的函数可用。
    {{< /note >}}
 
-<!--
-1. The plugin registers itself with the kubelet through the Unix socket at host
-   path `/var/lib/kubelet/device-plugins/kubelet.sock`.
--->
 3. 插件通过位于主机路径 `/var/lib/kubelet/device-plugins/kubelet.sock` 下的 UNIX 套接字
    向 kubelet 注册自身。
 
    {{< note >}}
-   <!--
-   The ordering of the workflow is important. A plugin MUST start serving gRPC
-   service before registering itself with kubelet for successful registration.
-   -->
    工作流程的顺序很重要。插件必须在向 kubelet 注册自己之前开始提供 gRPC 服务，才能保证注册成功。
    {{< /note >}}
 
-<!--
-1. After successfully registering itself, the device plugin runs in serving mode, during which it keeps
-   monitoring device health and reports back to the kubelet upon any device state changes.
-   It is also responsible for serving `Allocate` gRPC requests. During `Allocate`, the device plugin may
-   do device-specific preparation; for example, GPU cleanup or QRNG initialization.
-   If the operations succeed, the device plugin returns an `AllocateResponse` that contains container
-   runtime configurations for accessing the allocated devices. The kubelet passes this information
-   to the container runtime.
--->
 4. 成功注册自身后，设备插件将以提供服务的模式运行，在此期间，它将持续监控设备运行状况，
    并在设备状态发生任何变化时向 kubelet 报告。它还负责响应 `Allocate` gRPC 请求。
    在 `Allocate` 期间，设备插件可能还会做一些特定于设备的准备；例如 GPU 清理或 QRNG 初始化。
    如果操作成功，则设备插件将返回 `AllocateResponse`，其中包含用于访问被分配的设备容器运行时的配置。
    kubelet 将此信息传递到容器运行时。
 
-<!--
-### Handling kubelet restarts
-
-A device plugin is expected to detect kubelet restarts and re-register itself with the new
-kubelet instance. A new kubelet instance deletes all the existing Unix sockets under
-`/var/lib/kubelet/device-plugins` when it starts. A device plugin can monitor the deletion
-of its Unix socket and re-register itself upon such an event.
--->
 ### 处理 kubelet 重启   {#handling-kubelet-restarts}
 
 设备插件应能监测到 kubelet 重启，并且向新的 kubelet 实例来重新注册自己。
 新的 kubelet 实例启动时会删除 `/var/lib/kubelet/device-plugins` 下所有已经存在的 Unix 套接字。
 设备插件需要能够监控到它的 Unix 套接字被删除，并且当发生此类事件时重新注册自己。
 
-<!--
-## Device plugin deployment
-
-You can deploy a device plugin as a DaemonSet, as a package for your node's operating system,
-or manually.
-
-The canonical directory `/var/lib/kubelet/device-plugins` requires privileged access,
-so a device plugin must run in a privileged security context.
-If you're deploying a device plugin as a DaemonSet, `/var/lib/kubelet/device-plugins`
-must be mounted as a {{< glossary_tooltip term_id="volume" >}}
-in the plugin's [PodSpec](/docs/reference/generated/kubernetes-api/{{< param "version" >}}/#podspec-v1-core).
-
-If you choose the DaemonSet approach you can rely on Kubernetes to: place the device plugin's
-Pod onto Nodes, to restart the daemon Pod after failure, and to help automate upgrades.
--->
 ## 设备插件部署   {#device-plugin-depoloyments}
 
 你可以将你的设备插件作为节点操作系统的软件包来部署、作为 DaemonSet 来部署或者手动部署。
@@ -298,16 +149,6 @@ Pod onto Nodes, to restart the daemon Pod after failure, and to help automate up
 如果你选择 DaemonSet 方法，你可以通过 Kubernetes 进行以下操作：
 将设备插件的 Pod 放置在节点上，在出现故障后重新启动守护进程 Pod，来进行自动升级。
 
-<!--
-## API compatibility
-
-Previously, the versioning scheme required the Device Plugin's API version to match
-exactly the Kubelet's version. Since the graduation of this feature to Beta in v1.12
-this is no longer a hard requirement. The API is versioned and has been stable since
-Beta graduation of this feature. Because of this, kubelet upgrades should be seamless
-but there still may be changes in the API before stabilization making upgrades not
-guaranteed to be non-breaking.
--->
 ## API 兼容性   {#api-compatibility}
 
 之前版本控制方案要求设备插件的 API 版本与 Kubelet 的版本完全匹配。
@@ -316,72 +157,30 @@ API 是版本化的，并且自此特性进阶 Beta 后一直表现稳定。
 因此，kubelet 升级应该是无缝的，但在稳定之前 API 仍然可能会有变更，还不能保证升级不会中断。
 
 {{< note >}}
-<!--
-Although the Device Manager component of Kubernetes is a generally available feature,
-the _device plugin API_ is not stable. For information on the device plugin API and
-version compatibility, read [Device Plugin API versions](/docs/reference/node/device-plugin-api-versions/).
--->
 尽管 Kubernetes 的设备管理器（Device Manager）组件是正式发布的特性，
 但**设备插件 API** 还不稳定。有关设备插件 API 和版本兼容性的信息，
 请参阅[设备插件 API 版本](/zh-cn/docs/reference/node/device-plugin-api-versions/)。
 {{< /note >}}
 
-<!--
-As a project, Kubernetes recommends that device plugin developers:
-
-* Watch for Device Plugin API changes in the future releases.
-* Support multiple versions of the device plugin API for backward/forward compatibility.
--->
 作为一个项目，Kubernetes 建议设备插件开发者：
 
 * 注意未来版本中设备插件 API 的变更。
 * 支持多个版本的设备插件 API，以实现向后/向前兼容性。
 
-<!--
-To run device plugins on nodes that need to be upgraded to a Kubernetes release with
-a newer device plugin API version, upgrade your device plugins to support both versions
-before upgrading these nodes. Taking that approach will ensure the continuous functioning
-of the device allocations during the upgrade.
--->
 若在需要升级到具有较新设备插件 API 版本的某个 Kubernetes 版本的节点上运行这些设备插件，
 请在升级这些节点之前先升级设备插件以支持这两个版本。
 采用该方法将确保升级期间设备分配的连续运行。
 
-<!--
-## Monitoring device plugin resources
--->
 ## 监控设备插件资源   {#monitoring-device-plugin-resources}
 
 {{< feature-state for_k8s_version="v1.15" state="beta" >}}
 
-<!--
-In order to monitor resources provided by device plugins, monitoring agents need to be able to
-discover the set of devices that are in-use on the node and obtain metadata to describe which
-container the metric should be associated with. [Prometheus](https://prometheus.io/) metrics
-exposed by device monitoring agents should follow the
-[Kubernetes Instrumentation Guidelines](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/instrumentation.md),
-identifying containers using `pod`, `namespace`, and `container` prometheus labels.
--->
 为了监控设备插件提供的资源，监控代理程序需要能够发现节点上正在使用的设备，
 并获取元数据来描述哪个指标与容器相关联。
 设备监控代理暴露给 [Prometheus](https://prometheus.io/) 的指标应该遵循
 [Kubernetes Instrumentation Guidelines](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/instrumentation.md)，
 使用 `pod`、`namespace` 和 `container` 标签来标识容器。
 
-<!--
-The kubelet provides a gRPC service to enable discovery of in-use devices, and to provide metadata
-for these devices:
-
-```gRPC
-// PodResourcesLister is a service provided by the kubelet that provides information about the
-// node resources consumed by pods and containers on the node
-service PodResourcesLister {
-    rpc List(ListPodResourcesRequest) returns (ListPodResourcesResponse) {}
-    rpc GetAllocatableResources(AllocatableResourcesRequest) returns (AllocatableResourcesResponse) {}
-    rpc Get(GetPodResourcesRequest) returns (GetPodResourcesResponse) {}
-}
-```
--->
 kubelet 提供了 gRPC 服务来使得正在使用中的设备被发现，并且还为这些设备提供了元数据：
 
 ```gRPC
@@ -394,26 +193,12 @@ service PodResourcesLister {
 }
 ```
 
-<!--
-### `List` gRPC endpoint {#grpc-endpoint-list}
--->
 ### `List` gRPC 端点 {#grpc-endpoint-list}
 
-<!--
-The `List` endpoint provides information on resources of running pods, with details such as the
-id of exclusively allocated CPUs, device id as it was reported by device plugins and id of
-the NUMA node where these devices are allocated. Also, for NUMA-based machines, it contains the
-information about memory and hugepages reserved for a container.
--->
 这一 `List` 端点提供运行中 Pod 的资源信息，包括类似独占式分配的
 CPU ID、设备插件所报告的设备 ID 以及这些设备分配所处的 NUMA 节点 ID。
 此外，对于基于 NUMA 的机器，它还会包含为容器保留的内存和大页的信息。
 
-<!--
-Starting from Kubernetes v1.27, the `List` endpoint can provide information on resources
-of running pods allocated in `ResourceClaims` by the `DynamicResourceAllocation` API. To enable
-this feature `kubelet` must be started with the following flags:
--->
 从 Kubernetes v1.27 开始，`List` 端点可以通过 `DynamicResourceAllocation` API 提供在
 `ResourceClaims` 中分配的当前运行 Pod 的资源信息。
 要启用此特性，必须使用以下标志启动 `kubelet`：
@@ -422,76 +207,6 @@ this feature `kubelet` must be started with the following flags:
 --feature-gates=DynamicResourceAllocation=true,KubeletPodResourcesDynamiceResources=true
 ```
 
-<!--
-```gRPC
-// ListPodResourcesResponse is the response returned by List function
-message ListPodResourcesResponse {
-    repeated PodResources pod_resources = 1;
-}
-
-// PodResources contains information about the node resources assigned to a pod
-message PodResources {
-    string name = 1;
-    string namespace = 2;
-    repeated ContainerResources containers = 3;
-}
-
-// ContainerResources contains information about the resources assigned to a container
-message ContainerResources {
-    string name = 1;
-    repeated ContainerDevices devices = 2;
-    repeated int64 cpu_ids = 3;
-    repeated ContainerMemory memory = 4;
-    repeated DynamicResource dynamic_resources = 5;
-}
-
-// ContainerMemory contains information about memory and hugepages assigned to a container
-message ContainerMemory {
-    string memory_type = 1;
-    uint64 size = 2;
-    TopologyInfo topology = 3;
-}
-
-// Topology describes hardware topology of the resource
-message TopologyInfo {
-        repeated NUMANode nodes = 1;
-}
-
-// NUMA representation of NUMA node
-message NUMANode {
-        int64 ID = 1;
-}
-
-// ContainerDevices contains information about the devices assigned to a container
-message ContainerDevices {
-    string resource_name = 1;
-    repeated string device_ids = 2;
-    TopologyInfo topology = 3;
-}
-
-// DynamicResource contains information about the devices assigned to a container by Dynamic Resource Allocation
-message DynamicResource {
-    string class_name = 1;
-    string claim_name = 2;
-    string claim_namespace = 3;
-    repeated ClaimResource claim_resources = 4;
-}
-
-// ClaimResource contains per-plugin resource information
-message ClaimResource {
-    repeated CDIDevice cdi_devices = 1 [(gogoproto.customname) = "CDIDevices"];
-}
-
-// CDIDevice specifies a CDI device information
-message CDIDevice {
-    // Fully qualified CDI device name
-    // for example: vendor.com/gpu=gpudevice1
-    // see more details in the CDI specification:
-    // https://github.com/container-orchestrated-devices/container-device-interface/blob/main/SPEC.md
-    string name = 1;
-}
-```
--->
 ```gRPC
 // ListPodResourcesResponse 是 List 函数的响应
 message ListPodResourcesResponse {
@@ -562,15 +277,6 @@ message CDIDevice {
 ```
 
 {{< note >}}
-<!--
-cpu_ids in the `ContainerResources` in the `List` endpoint correspond to exclusive CPUs allocated
-to a particular container. If the goal is to evaluate CPUs that belong to the shared pool, the `List`
-endpoint needs to be used in conjunction with the `GetAllocatableResources` endpoint as explained
-below:
-1. Call `GetAllocatableResources` to get a list of all the allocatable CPUs
-2. Call `GetCpuIds` on all `ContainerResources` in the system
-3. Subtract out all of the CPUs from the `GetCpuIds` calls from the `GetAllocatableResources` call
--->
 `List` 端点中的 `ContainerResources` 中的 cpu_ids 对应于分配给某个容器的专属 CPU。
 如果要统计共享池中的 CPU，`List` 端点需要与 `GetAllocatableResources` 端点一起使用，如下所述:
 
@@ -579,32 +285,14 @@ below:
 3. 用 `GetAllocatableResources` 获取的 CPU 数减去 `GetCpuIds` 获取的 CPU 数。
 {{< /note >}}
 
-<!--
-### `GetAllocatableResources` gRPC endpoint {#grpc-endpoint-getallocatableresources}
--->
 ### `GetAllocatableResources` gRPC 端点 {#grpc-endpoint-getallocatableresources}
 
 {{< feature-state state="beta" for_k8s_version="v1.23" >}}
 
-<!--
-GetAllocatableResources provides information on resources initially available on the worker node.
-It provides more information than kubelet exports to APIServer.
--->
 端点 `GetAllocatableResources` 提供工作节点上原始可用的资源信息。
 此端点所提供的信息比导出给 API 服务器的信息更丰富。
 
 {{< note >}}
-<!--
-`GetAllocatableResources` should only be used to evaluate [allocatable](/docs/tasks/administer-cluster/reserve-compute-resources/#node-allocatable)
-resources on a node. If the goal is to evaluate free/unallocated resources it should be used in
-conjunction with the List() endpoint. The result obtained by `GetAllocatableResources` would remain
-the same unless the underlying resources exposed to kubelet change. This happens rarely but when
-it does (for example: hotplug/hotunplug, device health changes), client is expected to call
-`GetAlloctableResources` endpoint.
-
-However, calling `GetAllocatableResources` endpoint is not sufficient in case of cpu and/or memory
-update and Kubelet needs to be restarted to reflect the correct resource capacity and allocatable.
--->
 `GetAllocatableResources` 应该仅被用于评估一个节点上的[可分配的](/zh-cn/docs/tasks/administer-cluster/reserve-compute-resources/#node-allocatable)资源。
 如果目标是评估空闲/未分配的资源，此调用应该与 List() 端点一起使用。
 除非暴露给 kubelet 的底层资源发生变化，否则 `GetAllocatableResources` 得到的结果将保持不变。
@@ -623,13 +311,6 @@ message AllocatableResourcesResponse {
 }
 ```
 
-<!--
-Starting from Kubernetes v1.23, the `GetAllocatableResources` is enabled by default.
-You can disable it by turning off the `KubeletPodResourcesGetAllocatable`
-[feature gate](/docs/reference/command-line-tools-reference/feature-gates/).
-
-Preceding Kubernetes v1.23, to enable this feature `kubelet` must be started with the following flag:
--->
 从 Kubernetes v1.23 开始，`GetAllocatableResources` 被默认启用。
 你可以通过关闭 `KubeletPodResourcesGetAllocatable`
 [特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)来禁用。
@@ -640,30 +321,11 @@ Preceding Kubernetes v1.23, to enable this feature `kubelet` must be started wit
 --feature-gates=KubeletPodResourcesGetAllocatable=true
 ```
 
-<!--
-`ContainerDevices` do expose the topology information declaring to which NUMA cells the device is
-affine. The NUMA cells are identified using a opaque integer ID, which value is consistent to
-what device plugins report
-[when they register themselves to the kubelet](/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#device-plugin-integration-with-the-topology-manager).
--->
 `ContainerDevices` 会向外提供各个设备所隶属的 NUMA 单元这类拓扑信息。
 NUMA 单元通过一个整数 ID 来标识，其取值与设备插件所报告的一致。
 [设备插件注册到 kubelet 时](/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/)
 会报告这类信息。
 
-<!--
-The gRPC service is served over a unix socket at `/var/lib/kubelet/pod-resources/kubelet.sock`.
-Monitoring agents for device plugin resources can be deployed as a daemon, or as a DaemonSet.
-The canonical directory `/var/lib/kubelet/pod-resources` requires privileged access, so monitoring
-agents must run in a privileged security context. If a device monitoring agent is running as a
-DaemonSet, `/var/lib/kubelet/pod-resources` must be mounted as a
-{{< glossary_tooltip term_id="volume" >}} in the device monitoring agent's
-[PodSpec](/docs/reference/generated/kubernetes-api/{{< param "version" >}}/#podspec-v1-core).
-
-Support for the `PodResourcesLister service` requires `KubeletPodResources`
-[feature gate](/docs/reference/command-line-tools-reference/feature-gates/) to be enabled.
-It is enabled by default starting with Kubernetes 1.15 and is v1 since Kubernetes 1.20.
--->
 gRPC 服务通过 `/var/lib/kubelet/pod-resources/kubelet.sock` 的 UNIX 套接字来提供服务。
 设备插件资源的监控代理程序可以部署为守护进程或者 DaemonSet。
 规范的路径 `/var/lib/kubelet/pod-resources` 需要特权来进入，
@@ -677,30 +339,13 @@ gRPC 服务通过 `/var/lib/kubelet/pod-resources/kubelet.sock` 的 UNIX 套接�
 [特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)。
 从 Kubernetes 1.15 开始默认启用，自从 Kubernetes 1.20 开始为 v1。
 
-<!--
-### `Get` gRPC endpoint {#grpc-endpoint-get}
--->
 ### `Get` gRPC 端点   {#grpc-endpoint-get}
 
 {{< feature-state state="alpha" for_k8s_version="v1.27" >}}
 
-<!--
-The `Get` endpoint provides information on resources of a running Pod. It exposes information
-similar to those described in the `List` endpoint. The `Get` endpoint requires `PodName`
-and `PodNamespace` of the running Pod.
--->
 `Get` 端点提供了当前运行 Pod 的资源信息。它会暴露与 `List` 端点中所述类似的信息。
 `Get` 端点需要当前运行 Pod 的 `PodName` 和 `PodNamespace`。
 
-<!--
-```gRPC
-// GetPodResourcesRequest contains information about the pod
-message GetPodResourcesRequest {
-    string pod_name = 1;
-    string pod_namespace = 2;
-}
-```
--->
 ```gRPC
 // GetPodResourcesRequest 包含 Pod 相关信息
 message GetPodResourcesRequest {
@@ -709,20 +354,12 @@ message GetPodResourcesRequest {
 }
 ```
 
-<!--
-To enable this feature, you must start your kubelet services with the following flag:
--->
 要启用此特性，你必须使用以下标志启动 kubelet 服务：
 
 ```
 --feature-gates=KubeletPodResourcesGet=true
 ```
 
-<!--
-The `Get` endpoint can provide Pod information related to dynamic resources
-allocated by the dynamic resource allocation API. To enable this feature, you must
-ensure your kubelet services are started with the following flags:
--->
 `Get` 端点可以提供与动态资源分配 API 所分配的动态资源相关的 Pod 信息。
 要启用此特性，你必须确保使用以下标志启动 kubelet 服务：
 
@@ -730,18 +367,10 @@ ensure your kubelet services are started with the following flags:
 --feature-gates=KubeletPodResourcesGet=true,DynamicResourceAllocation=true,KubeletPodResourcesDynamiceResources=true
 ```
 
-<!--
-## Device plugin integration with the Topology Manager
--->
 ## 设备插件与拓扑管理器的集成   {#device-plugin-integration-with-the-topology-manager}
 
 {{< feature-state for_k8s_version="v1.27" state="stable" >}}
 
-<!--
-The Topology Manager is a Kubelet component that allows resources to be co-ordinated in a Topology
-aligned manner. In order to do this, the Device Plugin API was extended to include a
-`TopologyInfo` struct.
--->
 拓扑管理器是 Kubelet 的一个组件，它允许以拓扑对齐方式来调度资源。
 为了做到这一点，设备插件 API 进行了扩展来包括一个 `TopologyInfo` 结构体。
 
@@ -755,20 +384,6 @@ message NUMANode {
 }
 ```
 
-<!--
-Device Plugins that wish to leverage the Topology Manager can send back a populated TopologyInfo
-struct as part of the device registration, along with the device IDs and the health of the device.
-The device manager will then use this information to consult with the Topology Manager and make
-resource assignment decisions.
-
-`TopologyInfo` supports setting a `nodes` field to either `nil` or a list of NUMA nodes. This
-allows the Device Plugin to advertise a device that spans multiple NUMA nodes.
-
-Setting `TopologyInfo` to `nil` or providing an empty list of NUMA nodes for a given device
-indicates that the Device Plugin does not have a NUMA affinity preference for that device.
-
-An example `TopologyInfo` struct populated for a device by a Device Plugin:
--->
 设备插件希望拓扑管理器可以将填充的 TopologyInfo 结构体作为设备注册的一部分以及设备 ID
 和设备的运行状况发送回去。然后设备管理器将使用此信息来咨询拓扑管理器并做出资源分配决策。
 
@@ -784,28 +399,10 @@ NUMA 节点列表表示设备插件没有该设备的 NUMA 亲和偏好。
 pluginapi.Device{ID: "25102017", Health: pluginapi.Healthy, Topology:&pluginapi.TopologyInfo{Nodes: []*pluginapi.NUMANode{&pluginapi.NUMANode{ID: 0,},}}}
 ```
 
-<!--
-## Device plugin examples {#examples}
--->
 ## 设备插件示例 {#examples}
 
 {{% thirdparty-content %}}
 
-<!--
-Here are some examples of device plugin implementations:
-
-* The [AMD GPU device plugin](https://github.com/RadeonOpenCompute/k8s-device-plugin)
-* The [Intel device plugins](https://github.com/intel/intel-device-plugins-for-kubernetes) for
-  Intel GPU, FPGA, QAT, VPU, SGX, DSA, DLB and IAA devices
-* The [KubeVirt device plugins](https://github.com/kubevirt/kubernetes-device-plugins) for
-  hardware-assisted virtualization
-* The [NVIDIA GPU device plugin for Container-Optimized OS](https://github.com/GoogleCloudPlatform/container-engine-accelerators/tree/master/cmd/nvidia_gpu)
-* The [RDMA device plugin](https://github.com/hustcat/k8s-rdma-device-plugin)
-* The [SocketCAN device plugin](https://github.com/collabora/k8s-socketcan)
-* The [Solarflare device plugin](https://github.com/vikaschoudhary16/sfc-device-plugin)
-* The [SR-IOV Network device plugin](https://github.com/intel/sriov-network-device-plugin)
-* The [Xilinx FPGA device plugins](https://github.com/Xilinx/FPGA_as_a_Service/tree/master/k8s-device-plugin) for Xilinx FPGA devices
--->
 下面是一些设备插件实现的示例：
 
 * [AMD GPU 设备插件](https://github.com/RadeonOpenCompute/k8s-device-plugin)
@@ -821,15 +418,6 @@ Here are some examples of device plugin implementations:
 
 ## {{% heading "whatsnext" %}}
 
-<!--
-* Learn about [scheduling GPU resources](/docs/tasks/manage-gpus/scheduling-gpus/) using device
-  plugins
-* Learn about [advertising extended resources](/docs/tasks/administer-cluster/extended-resource-node/)
-  on a node
-* Learn about the [Topology Manager](/docs/tasks/administer-cluster/topology-manager/)
-* Read about using [hardware acceleration for TLS ingress](/blog/2019/04/24/hardware-accelerated-ssl/tls-termination-in-ingress-controllers-using-kubernetes-device-plugins-and-runtimeclass/)
-  with Kubernetes
--->
 * 查看[调度 GPU 资源](/zh-cn/docs/tasks/manage-gpus/scheduling-gpus/)来学习使用设备插件
 * 查看在节点上如何[公布扩展资源](/zh-cn/docs/tasks/administer-cluster/extended-resource-node/)
 * 学习[拓扑管理器](/zh-cn/docs/tasks/administer-cluster/topology-manager/)

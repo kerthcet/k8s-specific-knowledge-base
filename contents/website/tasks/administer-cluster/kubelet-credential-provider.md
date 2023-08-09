@@ -6,42 +6,15 @@ min-kubernetes-server-version: v1.26
 weight: 120
 ---
 
-<!-- 
-title: Configure a kubelet image credential provider
-reviewers:
-- liggitt
-- cheftako
-description: Configure the kubelet's image credential provider plugin
-content_type: task
-min-kubernetes-server-version: v1.26
-weight: 120
--->
 
 {{< feature-state for_k8s_version="v1.26" state="stable" >}}
 
-<!-- overview -->
 
-<!-- 
-Starting from Kubernetes v1.20, the kubelet can dynamically retrieve credentials for a container image registry
-using exec plugins. The kubelet and the exec plugin communicate through stdio (stdin, stdout, and stderr) using
-Kubernetes versioned APIs. These plugins allow the kubelet to request credentials for a container registry dynamically
-as opposed to storing static credentials on disk. For example, the plugin may talk to a local metadata server to retrieve
-short-lived credentials for an image that is being pulled by the kubelet.
--->
 从 Kubernetes v1.20 开始，kubelet 可以使用 exec 插件动态获得针对某容器镜像库的凭据。
 kubelet 使用 Kubernetes 版本化 API 通过标准输入输出（标准输入、标准输出和标准错误）和
 exec 插件通信。这些插件允许 kubelet 动态请求容器仓库的凭据，而不是将静态凭据存储在磁盘上。
 例如，插件可能会与本地元数据服务器通信，以获得 kubelet 正在拉取的镜像的短期凭据。
 
-<!-- 
-You may be interested in using this capability if any of the below are true:
-
-* API calls to a cloud provider service are required to retrieve authentication information for a registry.
-* Credentials have short expiration times and requesting new credentials frequently is required.
-* Storing registry credentials on disk or in imagePullSecrets is not acceptable.
-
-This guide demonstrates how to configure the kubelet's image credential provider plugin mechanism.
--->
 如果以下任一情况属实，你可能对此功能感兴趣：
 
 * 需要调用云提供商的 API 来获得镜像库的身份验证信息。
@@ -52,12 +25,6 @@ This guide demonstrates how to configure the kubelet's image credential provider
 
 ## {{% heading "prerequisites" %}}
 
-<!-- 
-* You need a Kubernetes cluster with nodes that support kubelet credential
-  provider plugins. This support is available in Kubernetes {{< skew currentVersion >}};
-  Kubernetes v1.24 and v1.25 included this as a beta feature, enabled by default.
-* A working implementation of a credential provider exec plugin. You can build your own plugin or use one provided by cloud providers.
--->
 * 你需要一个 Kubernetes 集群，其节点支持 kubelet 凭据提供程序插件。
   这种支持在 Kubernetes {{< skew currentVersion >}} 中可用；
   Kubernetes v1.24 和 v1.25 将此作为 Beta 特性包含在内，默认启用。
@@ -65,28 +32,13 @@ This guide demonstrates how to configure the kubelet's image credential provider
 
 {{< version-check >}}
 
-<!-- steps -->
 
-<!-- 
-## Installing Plugins on Nodes
-
-A credential provider plugin is an executable binary that will be run by the kubelet. Ensure that the plugin binary exists on
-every node in your cluster and stored in a known directory. The directory will be required later when configuring kubelet flags.
--->
 ## 在节点上安装插件  {#installing-plugins-on-nodes}
 
 凭据提供程序插件是将由 kubelet 运行的可执行二进制文件。
 你需要确保插件可执行文件存在于你的集群的每个节点上，并存储在已知目录中。
 稍后配置 kubelet 标志需要该目录。
 
-<!-- 
-## Configuring the Kubelet
-
-In order to use this feature, the kubelet expects two flags to be set:
-
-* `--image-credential-provider-config` - the path to the credential provider plugin config file.
-* `--image-credential-provider-bin-dir` - the path to the directory where credential provider plugin binaries are located.
--->
 ## 配置 kubelet  {#configuring-the-kubelet}
 
 为了使用这个特性，kubelet 需要设置以下两个标志：
@@ -94,13 +46,6 @@ In order to use this feature, the kubelet expects two flags to be set:
 * `--image-credential-provider-config` —— 凭据提供程序插件配置文件的路径。
 * `--image-credential-provider-bin-dir` —— 凭据提供程序插件二进制可执行文件所在目录的路径。
 
-<!-- 
-### Configure a kubelet credential provider
-
-The configuration file passed into `--image-credential-provider-config` is read by the kubelet to determine which exec plugins
-should be invoked for which container images. Here's an example configuration file you may end up using if you are using the
-[ECR-based plugin](https://github.com/kubernetes/cloud-provider-aws/tree/master/cmd/ecr-credential-provider):
--->
 ### 配置 kubelet 凭据提供程序  {#configure-a-kubelet-credential-provider}
 
 kubelet 会读取通过 `--image-credential-provider-config` 设定的配置文件，
@@ -169,20 +114,6 @@ providers:
         value: example_profile
 ```
 
-<!-- 
-The `providers` field is a list of enabled plugins used by the kubelet. Each entry has a few required fields:
-
-* `name`: the name of the plugin which MUST match the name of the executable binary that exists
-  in the directory passed into `--image-credential-provider-bin-dir`.
-* `matchImages`: a list of strings used to match against images in order to determine
-  if this provider should be invoked. More on this below.
-* `defaultCacheDuration`: the default duration the kubelet will cache credentials in-memory
-  if a cache duration was not specified by the plugin.
-* `apiVersion`: the API version that the kubelet and the exec plugin will use when communicating.
-
-Each credential provider can also be given optional args and environment variables as well.
-Consult the plugin implementors to determine what set of arguments and environment variables are required for a given plugin.
--->
 `providers` 字段是 kubelet 所使用的已启用插件列表。每个条目都有几个必填字段：
 
 * `name`：插件的名称，必须与传入 `--image-credential-provider-bin-dir`
@@ -195,15 +126,6 @@ Consult the plugin implementors to determine what set of arguments and environme
 每个凭据提供程序也可以被赋予可选的参数和环境变量。
 你可以咨询插件实现者以确定给定插件需要哪些参数和环境变量集。
 
-<!-- 
-#### Configure image matching
-
-The `matchImages` field for each credential provider is used by the kubelet to determine whether a plugin should be invoked
-for a given image that a Pod is using. Each entry in `matchImages` is an image pattern which can optionally contain a port and a path.
-Globs can be used in the domain, but not in the port or the path. Globs are supported as subdomains like `*.k8s.io` or `k8s.*.io`,
-and top-level domains such as `k8s.*`. Matching partial subdomains like `app*.k8s.io` is also supported. Each glob can only match
-a single subdomain segment, so `*.io` does NOT match `*.k8s.io`.
--->
 #### 配置镜像匹配  {#configure-image-matching}
 
 kubelet 使用每个凭据提供程序的 `matchImages` 字段来确定是否应该为 Pod
@@ -214,15 +136,6 @@ kubelet 使用每个凭据提供程序的 `matchImages` 字段来确定是否应
 还支持匹配部分子域，如 `app*.k8s.io`。每个通配符只能匹配一个子域段，
 因此 `*.io` 不匹配 `*.k8s.io`。
 
-<!-- 
-A match exists between an image name and a `matchImage` entry when all of the below are true:
-
-* Both contain the same number of domain parts and each part matches.
-* The URL path of match image must be a prefix of the target image URL path.
-* If the matchImages contains a port, then the port must match in the image as well.
-
-Some example values of `matchImages` patterns are:
--->
 当以下条件全部满足时，镜像名称和 `matchImage` 条目之间存在匹配：
 
 * 两者都包含相同数量的域部分并且每个部分都匹配。
@@ -239,11 +152,6 @@ Some example values of `matchImages` patterns are:
 
 ## {{% heading "whatsnext" %}}
 
-<!--
-* Read the details about `CredentialProviderConfig` in the
-  [kubelet configuration API (v1) reference](/docs/reference/config-api/kubelet-config.v1/).
-* Read the [kubelet credential provider API reference (v1)](/docs/reference/config-api/kubelet-credentialprovider.v1/).
--->
 * 阅读 [kubelet 配置 API (v1) 参考](/zh-cn/docs/reference/config-api/kubelet-config.v1/)中有关
   `CredentialProviderConfig` 的详细信息。
 * 阅读 [kubelet 凭据提供程序 API 参考 (v1)](/zh-cn/docs/reference/config-api/kubelet-credentialprovider.v1/)。

@@ -3,33 +3,9 @@ title: " Kubernetes 社区每周聚会笔记- 2015年5月1日 "
 date: 2015-05-11
 slug: weekly-kubernetes-community-hangout
 ---
-<!--
-title: " Weekly Kubernetes Community Hangout Notes - May 1 2015 "
-date: 2015-05-11
-slug: weekly-kubernetes-community-hangout
-url: /blog/2015/05/Weekly-Kubernetes-Community-Hangout
--->
 
-<!--
-Every week the Kubernetes contributing community meet virtually over Google Hangouts. We want anyone who's interested to know what's discussed in this forum.
--->
 每个星期，Kubernetes 贡献者社区几乎都会在谷歌 Hangouts 上聚会。我们希望任何对此感兴趣的人都能了解这个论坛的讨论内容。
 
-<!--
-
-* Simple rolling update - Brendan
-
-    * Rolling update = nice example of why RCs and Pods are good.
-
-    * ...pause… (Brendan needs demo recovery tips from Kelsey)
-
-    * Rolling update has recovery: Cancel update and restart, update continues from where it stopped.
-
-    * New controller  gets name of old controller, so appearance is pure update.
-
-    * Can also name versions in update (won't do rename at the end).
-
--->
 
 * 简单的滚动更新 - Brendan
 
@@ -43,19 +19,6 @@ Every week the Kubernetes contributing community meet virtually over Google Hang
 
     * 还可以在 update 中命名版本(最后不会重命名)。
 
-<!--
-
-* Rocket demo - CoreOS folks
-
-    * 2 major differences between rocket & docker: Rocket is daemonless & pod-centric.
-
-    * Rocket has AppContainer format as native, but also supports docker image format.
-
-    * Can run AppContainer and docker containers in same pod.
-
-    * Changes are close to merged.
-
--->
 
 * Rocket 演示 - CoreOS 的伙计们
 
@@ -67,25 +30,6 @@ Every week the Kubernetes contributing community meet virtually over Google Hang
 
     * 变更接近于合并。
 
-<!--
-
-* demo service accounts and secrets being added to pods - Jordan
-
-    * Problem: It's hard to get a token to talk to the API.
-
-    * New API object: "ServiceAccount"
-
-    * ServiceAccount is namespaced, controller makes sure that at least 1 default service account exists in a namespace.
-
-    * Typed secret "ServiceAccountToken", controller makes sure there is at least 1 default token.
-
-    * DEMO
-
-    *     * Can create new service account with ServiceAccountToken. Controller will create token for it.
-
-    * Can create a pod with service account, pods will have service account secret mounted at /var/run/secrets/kubernetes.io/…
-
--->
 
 * 演示 service accounts 和 secrets 被添加到 pod - Jordan
 
@@ -103,13 +47,6 @@ Every week the Kubernetes contributing community meet virtually over Google Hang
 
     * 可以创建一个带有 service account 的 pod, pod 将在 /var/run/secrets/kubernetes.io/…
 
-<!--
-
-* Kubelet running in a container - Paul
-
-    * Kubelet successfully ran pod w/ mounted secret.
-
--->
 
 * Kubelet 在容器中运行 - Paul
 

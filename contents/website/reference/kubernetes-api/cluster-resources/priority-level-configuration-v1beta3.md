@@ -8,17 +8,6 @@ description: "PriorityLevelConfiguration 表示一个优先级的配置。"
 title: "PriorityLevelConfiguration v1beta3"
 weight: 8
 ---
-<!--
-api_metadata:
-  apiVersion: "flowcontrol.apiserver.k8s.io/v1beta3"
-  import: "k8s.io/api/flowcontrol/v1beta3"
-  kind: "PriorityLevelConfiguration"
-content_type: "api_reference"
-description: "PriorityLevelConfiguration represents the configuration of a priority level."
-title: "PriorityLevelConfiguration v1beta3"
-weight: 8
-auto_generated: true
--->
 
 `apiVersion: flowcontrol.apiserver.k8s.io/v1beta3`
 
@@ -26,9 +15,6 @@ auto_generated: true
 
 ## PriorityLevelConfiguration {#PriorityLevelConfiguration}
 
-<!--
-PriorityLevelConfiguration represents the configuration of a priority level.
--->
 PriorityLevelConfiguration 表示一个优先级的配置。
 
 <hr>
@@ -37,15 +23,6 @@ PriorityLevelConfiguration 表示一个优先级的配置。
 
 - **kind**: PriorityLevelConfiguration
 
-<!--
-- **metadata** (<a href="{{< ref "../common-definitions/object-meta#ObjectMeta" >}}">ObjectMeta</a>)
-
-  `metadata` is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
-
-- **spec** (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfigurationSpec" >}}">PriorityLevelConfigurationSpec</a>)
-
-  `spec` is the specification of the desired behavior of a "request-priority". More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
--->
 - **metadata** (<a href="{{< ref "../common-definitions/object-meta#ObjectMeta" >}}">ObjectMeta</a>)
   
   `metadata` 是标准的对象元数据。更多信息：
@@ -56,11 +33,6 @@ PriorityLevelConfiguration 表示一个优先级的配置。
   `spec` 是 “request-priority” 预期行为的规约。更多信息：
   https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 
-<!--
-- **status** (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfigurationStatus" >}}">PriorityLevelConfigurationStatus</a>)
-
-  `status` is the current status of a "request-priority". More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
--->
 - **status** (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfigurationStatus" >}}">PriorityLevelConfigurationStatus</a>)
   
   `status` 是 “请求优先级” 的当前状况。更多信息：
@@ -68,18 +40,10 @@ PriorityLevelConfiguration 表示一个优先级的配置。
 
 ## PriorityLevelConfigurationSpec {#PriorityLevelConfigurationSpec}
 
-<!--
-PriorityLevelConfigurationSpec specifies the configuration of a priority level.
--->
 PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
 <hr>
 
-<!--
-- **type** (string), required
-
-  `type` indicates whether this priority level is subject to limitation on request execution.  A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels.  A value of `"Limited"` means that (a) requests of this priority level _are_ subject to limits and (b) some of the server's limited capacity is made available exclusively to this priority level. Required.
--->
 - **type** (string)，必需
   
   `type` 指示此优先级是否遵从有关请求执行的限制。
@@ -87,16 +51,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
   取值为 `"Limited"` 意味着 (a) 此优先级的请求遵从这些限制且
   (b) 服务器某些受限的容量仅可用于此优先级。必需。
 
-<!--
-- **limited** (LimitedPriorityLevelConfiguration)
-
-  `limited` specifies how requests are handled for a Limited priority level. This field must be non-empty if and only if `type` is `"Limited"`.
-
-  <a name="LimitedPriorityLevelConfiguration"></a>
-  *LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues:
-   * How are requests for this priority level limited?
-   * What should be done with requests that exceed the limit?*
--->
 - **limited** (LimitedPriorityLevelConfiguration)
   
   `limited` 指定如何为某个受限的优先级处理请求。
@@ -107,15 +61,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
   * 如何限制此优先级的请求？
   * 应如何处理超出此限制的请求？
   
-  <!--
-  - **limited.borrowingLimitPercent** (int32)
-
-    `borrowingLimitPercent`, if present, configures a limit on how many seats this priority level can borrow from other priority levels. The limit is known as this level's BorrowingConcurrencyLimit (BorrowingCL) and is a limit on the total number of seats that this level may borrow at any one time. This field holds the ratio of that limit to the level's nominal concurrency limit. When this field is non-nil, it must hold a non-negative integer and the limit is calculated as follows.
-    
-    BorrowingCL(i) = round( NominalCL(i) * borrowingLimitPercent(i)/100.0 )
-    
-    The value of this field can be more than 100, implying that this priority level can borrow a number of seats that is greater than its own nominal concurrency limit (NominalCL). When this field is left `nil`, the limit is effectively infinite.
-  -->
   
   - **limited.borrowingLimitPercent** (int32)
    
@@ -127,13 +72,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
     该字段值可以大于100，表示该优先级可以大于自己标称并发限制（NominalCL）。当此字段为 `nil` 时，表示无限制。
   
-  <!--
-  - **limited.lendablePercent** (int32)
-
-    `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels. The value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.
-    
-    LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )
-  -->
   
   - **limited.lendablePercent** (int32)
 
@@ -143,14 +81,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
     LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )
   
-  <!--
-  - **limited.limitResponse** (LimitResponse)
-
-    `limitResponse` indicates what to do with requests that can not be executed right now
-
-    <a name="LimitResponse"></a>
-    *LimitResponse defines how to handle requests that can not be executed right now.*
-  -->
 
   - **limited.limitResponse** (LimitResponse)
     
@@ -159,11 +89,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     <a name="LimitResponse"></a>
     **LimitResponse 定义如何处理当前无法立即执行的请求。**
     
-    <!--
-    - **limited.limitResponse.type** (string), required
-
-      `type` is "Queue" or "Reject". "Queue" means that requests that can not be executed upon arrival are held in a queue until they can be executed or a queuing limit is reached. "Reject" means that requests that can not be executed upon arrival are rejected. Required.
-    -->
 
     - **limited.limitResponse.type** (string)，必需
       
@@ -171,14 +96,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
       “Queue” 意味着在到达时无法被执行的请求可以被放到队列中，直到它们被执行或者队列长度超出限制为止。
       “Reject” 意味着到达时无法执行的请求将被拒绝。
     
-    <!--
-    - **limited.limitResponse.queuing** (QueuingConfiguration)
-
-      `queuing` holds the configuration parameters for queuing. This field may be non-empty only if `type` is `"Queue"`.
-
-      <a name="QueuingConfiguration"></a>
-      *QueuingConfiguration holds the configuration parameters for queuing*
-    -->
 
     - **limited.limitResponse.queuing** (QueuingConfiguration)
       
@@ -187,11 +104,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
       <a name="QueuingConfiguration"></a>
       **QueuingConfiguration 保存排队所用的配置参数。**
       
-      <!--
-      - **limited.limitResponse.queuing.handSize** (int32)
-
-        `handSize` is a small positive number that configures the shuffle sharding of requests into queues.  When enqueuing a request at this priority level the request's flow identifier (a string pair) is hashed and the hash value is used to shuffle the list of queues and deal a hand of the size specified here.  The request is put into one of the shortest queues in that hand. `handSize` must be no larger than `queues`, and should be significantly smaller (so that a few heavy flows do not saturate most of the queues).  See the user-facing documentation for more extensive guidance on setting this field.  This field has a default value of 8.
-      -->
 
       - **limited.limitResponse.queuing.handSize** (int32)
         
@@ -202,15 +114,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
         `handSize` 不得大于 `queues`，并且应该明显更小（以便几个大的流量不会使大多数队列饱和）。
         有关设置此字段的更多详细指导，请参阅面向用户的文档。此字段的默认值为 8。
       
-      <!--
-      - **limited.limitResponse.queuing.queueLengthLimit** (int32)
-
-        `queueLengthLimit` is the maximum number of requests allowed to be waiting in a given queue of this priority level at a time; excess requests are rejected.  This value must be positive.  If not specified, it will be defaulted to 50.
-
-      - **limited.limitResponse.queuing.queues** (int32)
-
-        `queues` is the number of queues for this priority level. The queues exist independently at each apiserver. The value must be positive.  Setting it to 1 effectively precludes shufflesharding and thus makes the distinguisher method of associated flow schemas irrelevant.  This field has a default value of 64.
-      -->
 
       - **limited.limitResponse.queuing.queueLengthLimit** (int32)
         
@@ -224,15 +127,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
         将其设置为 1 相当于禁止了混洗分片操作，进而使得对相关流模式的区分方法不再有意义。
         此字段的默认值为 64。
 
-  <!--
-  - **limited.nominalConcurrencyShares** (int32)
-
-    `nominalConcurrencyShares` (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats available at this priority level. This is used both for requests dispatched from this priority level as well as requests dispatched from other priority levels borrowing seats from this level. The server's concurrency limit (ServerCL) is divided among the Limited priority levels in proportion to their NCS values:
-    
-    NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs = sum[limited priority level k] NCS(k)
-    
-    Bigger numbers mean a larger nominal concurrency limit, at the expense of every other Limited priority level. This field has a default value of 30.
-  -->
 
   - **limited.nominalConcurrencyShares** (int32)
 
@@ -247,23 +141,10 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
 ## PriorityLevelConfigurationStatus {#PriorityLevelConfigurationStatus}
 
-<!--
-PriorityLevelConfigurationStatus represents the current state of a "request-priority".
--->
 PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
 
 <hr>
 
-<!--
-- **conditions** ([]PriorityLevelConfigurationCondition)
-
-  *Map: unique values on key type will be kept during a merge*
-  
-  `conditions` is the current state of "request-priority".
-
-  <a name="PriorityLevelConfigurationCondition"></a>
-  *PriorityLevelConfigurationCondition defines the condition of priority level.*
--->
 - **conditions** ([]PriorityLevelConfigurationCondition)
   
   **Map：合并期间保留根据键 type 保留其唯一值**
@@ -273,14 +154,6 @@ PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
   <a name="PriorityLevelConfigurationCondition"></a>
   **PriorityLevelConfigurationCondition 定义优先级的状况。**
   
-  <!--
-  - **conditions.lastTransitionTime** (Time)
-
-    `lastTransitionTime` is the last time the condition transitioned from one status to another.
-
-    <a name="Time"></a>
-    *Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON.  Wrappers are provided for many of the factory methods that the time package offers.*
-  -->
 
   - **conditions.lastTransitionTime** (Time)
     
@@ -290,15 +163,6 @@ PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
     **Time 是对 time.Time 的封装。Time 支持对 YAML 和 JSON 进行正确封包。
     为 time 包的许多函数方法提供了封装器。**
   
-  <!--
-  - **conditions.message** (string)
-
-    `message` is a human-readable message indicating details about last transition.
-
-  - **conditions.reason** (string)
-
-    `reason` is a unique, one-word, CamelCase reason for the condition's last transition.
-  -->
 
   - **conditions.message** (string)
     
@@ -308,15 +172,6 @@ PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
     
     `reason` 是状况上次转换原因的、驼峰格式命名的、唯一的一个词。
   
-  <!--
-  - **conditions.status** (string)
-
-    `status` is the status of the condition. Can be True, False, Unknown. Required.
-
-  - **conditions.type** (string)
-
-    `type` is the type of the condition. Required.
-  -->
 
   - **conditions.status** (string)
     
@@ -328,9 +183,6 @@ PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
 
 ## PriorityLevelConfigurationList {#PriorityLevelConfigurationList}
 
-<!--
-PriorityLevelConfigurationList is a list of PriorityLevelConfiguration objects.
--->
 PriorityLevelConfigurationList 是 PriorityLevelConfiguration 对象的列表。
 
 <hr>
@@ -339,15 +191,6 @@ PriorityLevelConfigurationList 是 PriorityLevelConfiguration 对象的列表。
 
 - **kind**: PriorityLevelConfigurationList
 
-<!--
-- **metadata** (<a href="{{< ref "../common-definitions/list-meta#ListMeta" >}}">ListMeta</a>)
-
-  `metadata` is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
-
-- **items** ([]<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>), required
-
-  `items` is a list of request-priorities.
--->
 - **metadata** (<a href="{{< ref "../common-definitions/list-meta#ListMeta" >}}">ListMeta</a>)
   
   `metadata` 是标准的对象元数据。更多信息：
@@ -357,12 +200,6 @@ PriorityLevelConfigurationList 是 PriorityLevelConfiguration 对象的列表。
   
   `items` 是请求优先级设置的列表。
 
-<!--
-## Operations {#Operations}
-<hr>
-### `get` read the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ## 操作 {#Operations}
 
 <hr>
@@ -373,12 +210,6 @@ PriorityLevelConfigurationList 是 PriorityLevelConfiguration 对象的列表。
 
 GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -389,31 +220,18 @@ GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
 
 401: Unauthorized
 
-<!--
-### `get` read status of the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `get` 读取指定的 PriorityLevelConfiguration 的状态
 
 #### HTTP 请求
 
 GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}/status
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -424,39 +242,18 @@ GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
 
 401: Unauthorized
 
-<!--
-### `list` list or watch objects of kind PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `list` 列出或监视 PriorityLevelConfiguration 类别的对象
 
 #### HTTP 请求
 
 GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
 
-<!--
-#### Parameters
-- **allowWatchBookmarks** (*in query*): boolean
-- **continue** (*in query*): string
-- **fieldSelector** (*in query*): string
-- **labelSelector** (*in query*): string
-- **limit** (*in query*): integer
-- **pretty** (*in query*): string
-- **resourceVersion** (*in query*): string
-- **resourceVersionMatch** (*in query*): string
-- **sendInitialEvents** (*in query*): boolean
-- **timeoutSeconds** (*in query*): integer
-- **watch** (*in query*): boolean
--->
 #### 参数
 
 - **allowWatchBookmarks** (**查询参数**): boolean
@@ -503,33 +300,18 @@ GET /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
   
   <a href="{{< ref "../common-parameters/common-parameters#watch" >}}">watch</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfigurationList" >}}">PriorityLevelConfigurationList</a>): OK
 
 401: Unauthorized
 
-<!--
-### `create` create a PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `create` 创建 PriorityLevelConfiguration
 
 #### HTTP 请求
 
 POST /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
 
-<!--
-#### Parameters
-- **body**: <a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>, required
-- **dryRun** (*in query*): string
-- **fieldManager** (*in query*): string
-- **fieldValidation** (*in query*): string
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **body**: <a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>，必需
@@ -550,9 +332,6 @@ POST /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
@@ -563,26 +342,12 @@ POST /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
 
 401: Unauthorized
 
-<!--
-### `update` replace the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `update` 替换指定的 PriorityLevelConfiguration
 
 #### HTTP 请求
 
 PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **body**: <a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>, required
-- **dryRun** (*in query*): string
-- **fieldManager** (*in query*): string
-- **fieldValidation** (*in query*): string
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -607,9 +372,6 @@ PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
@@ -618,26 +380,12 @@ PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
 
 401: Unauthorized
 
-<!--
-### `update` replace status of the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `update` 替换指定的 PriorityLevelConfiguration 的状态
 
 #### HTTP 请求
 
 PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}/status
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **body**: <a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>, required
-- **dryRun** (*in query*): string
-- **fieldManager** (*in query*): string
-- **fieldValidation** (*in query*): string
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -662,9 +410,6 @@ PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
@@ -673,27 +418,12 @@ PUT /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name
 
 401: Unauthorized
 
-<!--
-### `patch` partially update the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `patch` 部分更新指定的 PriorityLevelConfiguration
 
 #### HTTP 请求
 
 PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **body**: <a href="{{< ref "../common-definitions/patch#Patch" >}}">Patch</a>, required
-- **dryRun** (*in query*): string
-- **fieldManager** (*in query*): string
-- **fieldValidation** (*in query*): string
-- **force** (*in query*): boolean
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -722,9 +452,6 @@ PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{na
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
@@ -733,27 +460,12 @@ PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{na
 
 401: Unauthorized
 
-<!--
-### `patch` partially update status of the specified PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `patch` 部分更新指定的 PriorityLevelConfiguration 的状态
 
 #### HTTP 请求
 
 PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}/status
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **body**: <a href="{{< ref "../common-definitions/patch#Patch" >}}">Patch</a>, required
-- **dryRun** (*in query*): string
-- **fieldManager** (*in query*): string
-- **fieldValidation** (*in query*): string
-- **force** (*in query*): boolean
-- **pretty** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -782,9 +494,6 @@ PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{na
   
   <a href="{{< ref "../common-parameters/common-parameters#pretty" >}}">pretty</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../cluster-resources/priority-level-configuration-v1beta3#PriorityLevelConfiguration" >}}">PriorityLevelConfiguration</a>): OK
@@ -793,26 +502,12 @@ PATCH /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{na
 
 401: Unauthorized
 
-<!--
-### `delete` delete a PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `delete` 删除 PriorityLevelConfiguration
 
 #### HTTP 请求
 
 DELETE /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{name}
 
-<!--
-#### Parameters
-- **name** (*in path*): string, required
-  name of the PriorityLevelConfiguration
-- **body**: <a href="{{< ref "../common-definitions/delete-options#DeleteOptions" >}}">DeleteOptions</a>
-- **dryRun** (*in query*): string
-- **gracePeriodSeconds** (*in query*): integer
-- **pretty** (*in query*): string
-- **propagationPolicy** (*in query*): string
--->
 #### 参数
 
 - **name** (**路径参数**): string，必需
@@ -837,9 +532,6 @@ DELETE /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{n
   
   <a href="{{< ref "../common-parameters/common-parameters#propagationPolicy" >}}">propagationPolicy</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../common-definitions/status#Status" >}}">Status</a>): OK
@@ -848,32 +540,12 @@ DELETE /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations/{n
 
 401: Unauthorized
 
-<!--
-### `deletecollection` delete collection of PriorityLevelConfiguration
-#### HTTP Request
--->
 ### `deletecollection` 删除 PriorityLevelConfiguration 的集合
 
 #### HTTP 请求
 
 DELETE /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
 
-<!--
-#### Parameters
-- **body**: <a href="{{< ref "../common-definitions/delete-options#DeleteOptions" >}}">DeleteOptions</a>
-- **continue** (*in query*): string
-- **dryRun** (*in query*): string
-- **fieldSelector** (*in query*): string
-- **gracePeriodSeconds** (*in query*): integer
-- **labelSelector** (*in query*): string
-- **limit** (*in query*): integer
-- **pretty** (*in query*): string
-- **propagationPolicy** (*in query*): string
-- **resourceVersion** (*in query*): string
-- **resourceVersionMatch** (*in query*): string
-- **sendInitialEvents** (*in query*): boolean
-- **timeoutSeconds** (*in query*): integer
--->
 #### 参数
 
 - **body**: <a href="{{< ref "../common-definitions/delete-options#DeleteOptions" >}}">DeleteOptions</a>
@@ -926,9 +598,6 @@ DELETE /apis/flowcontrol.apiserver.k8s.io/v1beta3/prioritylevelconfigurations
   
   <a href="{{< ref "../common-parameters/common-parameters#timeoutSeconds" >}}">timeoutSeconds</a>
 
-<!--
-#### Response
--->
 #### 响应
 
 200 (<a href="{{< ref "../common-definitions/status#Status" >}}">Status</a>): OK

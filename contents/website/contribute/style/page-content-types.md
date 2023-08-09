@@ -6,25 +6,8 @@ card:
   name: contribute
   weight: 30
 ---
-<!--
-title: Page content types
-content_type: concept
-weight: 80
-card:
-  name: contribute
-  weight: 30
--->
 
-<!-- overview -->
 
-<!--
-The Kubernetes documentation follows several types of page content:
-
-- Concept
-- Task
-- Tutorial
-- Reference
--->
 Kubernetes 文档包含以下几种页面内容类型：
 
 - 概念（Concept）
@@ -32,18 +15,7 @@ Kubernetes 文档包含以下几种页面内容类型：
 - 教程（Tutorial）
 - 参考（Reference）
 
-<!-- body -->
 
-<!--
-## Content sections
-
-Each page content type contains a number of sections defined by
-Markdown comments and HTML headings. You can add content headings to
-your page with the `heading` shortcode. The comments and headings help
-maintain the structure of the page content types.
-
-Examples of Markdown comments defining page content sections:
--->
 ## 内容章节  {#content-sections}
 
 每种页面内容类型都有一些使用 Markdown 注释和 HTML 标题定义的章节。
@@ -53,29 +25,11 @@ Examples of Markdown comments defining page content sections:
 定义页面内容章节的 Markdown 注释示例：
 
 ```markdown
-<!-- overview -->
 ```
 
 ```markdown
-<!-- body -->
 ```
 
-<!--
-To create common headings in your content pages, use the `heading` shortcode with
-a heading string.
-
-Examples of heading strings:
-
-- whatsnext
-- prerequisites
-- objectives
-- cleanup
-- synopsis
-- seealso
-- options
-
-For example, to create a `whatsnext` heading, add the heading shortcode with the "whatsnext" string:
--->
 要在内容页面中创建通用的标题，可以使用 `heading` 短代码加上标题字符串。
 
 标题字符串示例：
@@ -94,20 +48,12 @@ For example, to create a `whatsnext` heading, add the heading shortcode with the
 ## {{%/* heading "whatsnext" */%}}
 ```
 
-<!--
-You can declare a `prerequisites` heading as follows:
--->
 你可以像下面这样声明一个 `prerequisites` 标题：
 
 ```none
 ## {{%/* heading "prerequisites" */%}}
 ```
 
-<!--
-The `heading` shortcode expects one string parameter.
-The heading string parameter matches the prefix of a variable in the `i18n/<lang>.toml` files.
-For example:
--->
 短代码 `heading` 需要一个字符串参数。
 该字符串参数要与 `i18n/<语言>.toml` 文件中以其为前缀的某个变量匹配。
 例如：
@@ -126,37 +72,11 @@ other = "What's next"
 other = "다음 내용"
 ```
 
-<!--
-## Content types
-
-Each content type informally defines its expected page structure.
-Create page content with the suggested page sections.
--->
 ## 内容类型 {#content-types}
 
 每种内容类型都非正式地定义了期望的页面结构组织。
 请按照所建议的页面章节来创建内容页面。
 
-<!--
-### Concept
-
-A concept page explains some aspect of Kubernetes. For example, a concept
-page might describe the Kubernetes Deployment object and explain the role it
-plays as an application once it is deployed, scaled, and updated. Typically, concept
-pages don't include sequences of steps, but instead provide links to tasks or
-tutorials.
-
-To write a new concept page, create a Markdown file in a subdirectory of the
-`/content/en/docs/concepts` directory, with the following characteristics:
-
-Concept pages are divided into three sections:
-
-| Page section   |
-|----------------|
-| overview       |
-| body           |
-| whatsnext      |
--->
 ### 概念 {#concept}
 
 概念页面用来解释 Kubernetes 的某些方面。例如，概念页面可以用来描述 Kubernetes
@@ -174,20 +94,6 @@ Concept pages are divided into three sections:
 | body（正文）      |
 | whatsnext（接下来）|
 
-<!--
-The `overview` and `body` sections appear as comments in the concept page.
-You can add the `whatsnext` section to your page with the `heading` shortcode.
-
-Fill each section with content. Follow these guidelines:
-
-- Organize content with H2 and H3 headings.
-- For `overview`, set the topic's context with a single paragraph.
-- For `body`, explain the concept.
-- For `whatsnext`, provide a bulleted list of topics (5 maximum) to learn more about the concept.
-
-[Annotations](/docs/concepts/overview/working-with-objects/annotations/) is a
-published example of a concept page.
--->
 其中的 `overview` 和 `body` 章节在概念页面中显示为注释。
 你可以使用 `heading` 短代码向页面添加 `wahtsnext` 节。
 
@@ -200,24 +106,6 @@ published example of a concept page.
 
 [注解](/zh-cn/docs/concepts/overview/working-with-objects/annotations/)页面是一个已经上线的概念页面的例子。
 
-<!--
-### Task
-
-A task page shows how to do a single thing, typically by giving a short
-sequence of steps. Task pages have minimal explanation, but often provide links
-to conceptual topics that provide related background and knowledge.
-
-To write a new task page, create a Markdown file in a subdirectory of the
-`/content/en/docs/tasks` directory, with the following characteristics:
-
-| Page section   |
-|----------------|
-| overview       |
-| prerequisites  |
-| steps          |
-| discussion     |
-| whatsnext      |
--->
 ### 任务（Task）  {#task}
 
 任务页面讲解如何完成某项工作，通常包含由为数不多的几个步骤组成的序列。
@@ -234,26 +122,6 @@ To write a new task page, create a Markdown file in a subdirectory of the
 | discussion（讨论）       |
 | whatsnext（接下来）      |
 
-<!--
-The `overview`, `steps`, and `discussion` sections appear as comments in the task page.
-You can add the `prerequisites` and `whatsnext` sections to your page
-with the `heading` shortcode.
-
-Within each section, write your content. Use the following guidelines:
-
-- Use a minimum of H2 headings (with two leading `#` characters). The sections
-  themselves are titled automatically by the template.
-- For `overview`, use a paragraph to set context for the entire topic.
-- For `prerequisites`, use bullet lists when possible. Start adding additional
-  prerequisites below the `include`. The default prerequisites include a running Kubernetes cluster.
-- For `steps`, use numbered lists.
-- For discussion, use normal content to expand upon the information covered
-  in `steps`.
-- For `whatsnext`, give a bullet list of up to 5 topics the reader might be
-  interested in reading next.
-
-An example of a published task topic is [Using an HTTP proxy to access the Kubernetes API](/docs/tasks/extend-kubernetes/http-proxy-access-api/).
--->
 其中的 `overview`、`steps` 和 `discussion` 节在任务页面中显示为注释。
 你可以使用 `heading` 短代码添加 `prerequisites` 和 `whatsnext` 小节。
 
@@ -270,28 +138,6 @@ An example of a published task topic is [Using an HTTP proxy to access the Kuber
 
 已上线的任务主题示例之一是[使用 HTTP 代理访问 Kubernetes API](/zh-cn/docs/tasks/extend-kubernetes/http-proxy-access-api/)。
 
-<!--
-### Tutorial
-
-A tutorial page shows how to accomplish a goal that is larger than a single
-task. Typically a tutorial page has several sections, each of which has a
-sequence of steps. For example, a tutorial might provide a walkthrough of a
-code sample that illustrates a certain feature of Kubernetes. Tutorials can
-include surface-level explanations, but should link to related concept topics
-for deep explanations.
-
-To write a new tutorial page, create a Markdown file in a subdirectory of the
-`/content/en/docs/tutorials` directory, with the following characteristics:
-
-| Page section   |
-|----------------|
-| overview       |
-| prerequisites  |
-| objectives     |
-| lessoncontent  |
-| cleanup        |
-| whatsnext      |
--->
 ### 教程（Tutorial）  {#tutorial}
 
 教程页面描述如果完成一个比单一任务规模更大的目标。通常教程页面会有多个小节，
@@ -311,29 +157,6 @@ Markdown 文件。该文件有以下特点。
 | cleanup（清理工作）      |
 | whatsnext（接下来）      |
 
-<!--
-The `overview`, `objectives`, and `lessoncontent` sections appear as comments in the tutorial page.
-You can add the `prerequisites`, `cleanup`, and `whatsnext` sections to your page
-with the `heading` shortcode.
-
-Within each section, write your content. Use the following guidelines:
-
-- Use a minimum of H2 headings (with two leading `#` characters). The sections
-  themselves are titled automatically by the template.
-- For `overview`, use a paragraph to set context for the entire topic.
-- For `prerequisites`, use bullet lists when possible. Add additional
-  prerequisites below the ones included by default.
-- For `objectives`, use bullet lists.
-- For `lessoncontent`, use a mix of numbered lists and narrative content as
-  appropriate.
-- For `cleanup`, use numbered lists to describe the steps to clean up the
-  state of the cluster after finishing the task.
-- For `whatsnext`, give a bullet list of up to 5 topics the reader might be
-  interested in reading next.
-
-An example of a published tutorial topic is
-[Running a Stateless Application Using a Deployment](/docs/tasks/run-application/run-stateless-application-deployment/).
--->
 教程页面的 `overview`、`objectives` 和 `lessoncontent` 小节显示为注释形式。
 你可以使用 `heading` 短代码根据需要添加 `prerequisites`、`cleanup` 和
 `whatsnext` 小节。
@@ -352,28 +175,6 @@ An example of a published tutorial topic is
 已发布的教程主题的一个例子是
 [使用 Deployment 运行无状态应用](/zh-cn/docs/tasks/run-application/run-stateless-application-deployment/).
 
-<!--
-### Reference
-
-A component tool reference page shows the description and flag options output for
-a Kubernetes component tool. Each page generates from scripts using the component tool commands.
-
-A tool reference page has several possible sections:
-
-| Page section                 |
-|------------------------------|
-| synopsis                     |
-| options                      |
-| options from parent commands |
-| examples                     |
-| seealso                      |
-
-Examples of published tool reference pages are:
-
-- [kubeadm init](/docs/reference/setup-tools/kubeadm/kubeadm-init/)
-- [kube-apiserver](/docs/reference/command-line-tools-reference/kube-apiserver/)
-- [kubectl](/docs/reference/kubectl/kubectl/)
--->
 ### 参考（Reference）  {#reference}
 
 组件工具的参考页面给出的是某个 Kubernetes 组件工具的描述和参数选项输出。
@@ -397,11 +198,6 @@ Examples of published tool reference pages are:
 
 ## {{% heading "whatsnext" %}}
 
-<!--
-- Learn about the [Style guide](/docs/contribute/style/style-guide/)
-- Learn about the [Content guide](/docs/contribute/style/content-guide/)
-- Learn about [content organization](/docs/contribute/style/content-organization/)
--->
 - 了解[样式指南](/zh-cn/docs/contribute/style/style-guide/)
 - 了解[内容指南](/zh-cn/docs/contribute/style/content-guide/)
 - 了解[内容组织](/zh-cn/docs/contribute/style/content-organization/)

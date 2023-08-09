@@ -1,42 +1,14 @@
-<!--
-The file is auto-generated from the Go source code of the component using a generic
-[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
-to generate the reference documentation, please read
-[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
-To update the reference content, please follow the 
-[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
-guide. You can file document formatting bugs against the
-[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
--->
-<!--
-该文件是使用通用[生成器](https://github.com/kubernetes-sigs/reference-docs/) 从组件的 Go 源代码自动生成的。
-要了解如何生成参考文档，请阅读[参与参考文档](/docs/contribute/generate-ref-docs/)。
-要更新参考内容，请按照[贡献上游](/docs/contribute/generate-ref-docs/contribute-upstream/) 指导。
-你可以针对[参考文献](https://github.com/kubernetes-sigs/reference-docs/) 项目归档文档格式错误。
--->
 
-<!--
-Print a list of images kubeadm will use. The configuration file is used in case any images or image repositories are customized
--->
 打印 kubeadm 要使用的镜像列表。配置文件用于自定义镜像或镜像存储库。
 
-<!--
-### Synopsis
--->
 ### 概要
 
-<!--
-Print a list of images kubeadm will use. The configuration file is used in case any images or image repositories are customized
--->
 打印 kubeadm 要使用的镜像列表。配置文件用于自定义镜像或镜像存储库。
 
 ```
 kubeadm config images list [flags]
 ```
 
-<!--
-### Options
--->
 ### 选项
 
    <table style="width: 100%; table-layout: fixed;">
@@ -48,15 +20,11 @@ kubeadm config images list [flags]
 
 <tr>
 <td colspan="2">
-<!-- --allow-missing-template-keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: true -->
 --allow-missing-template-keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值：true
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- 
-If true, ignore any errors in templates when a field or map key is missing in the template. Only applies to golang and jsonpath output formats.
--->
 <p>
 如果设置为 true，则在模板中缺少字段或哈希表的键时忽略模板中的任何错误。
 仅适用于 golang 和 jsonpath 输出格式。
@@ -69,9 +37,6 @@ If true, ignore any errors in templates when a field or map key is missing in th
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Path to a kubeadm configuration file.
--->
 <p>
 kubeadm 配置文件的路径。
 </p>
@@ -79,15 +44,11 @@ kubeadm 配置文件的路径。
 </tr>
 <tr>
 <td colspan="2">
-<!-- -o, --experimental-output string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "text" -->
 -o, --experimental-output string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："text"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--  
-Output format. One of: text|json|yaml|go-template|go-template-file|template|templatefile|jsonpath|jsonpath-as-json|jsonpath-file.
--->
 <p>
 输出格式：text|json|yaml|go-template|go-template-file|template|templatefile|jsonpath|jsonpath-as-json|jsonpath-file 其中之一
 </p>
@@ -99,9 +60,6 @@ Output format. One of: text|json|yaml|go-template|go-template-file|template|temp
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-A set of key=value pairs that describe feature gates for various features. Options are:<br/>PublicKeysECDSA=true|false (ALPHA - default=false)<br/>PublicKeysECDSA=true|false (ALPHA - default=false)<br/>RootlessControlPlane=true|false (ALPHA - default=false)
--->
 <p>
 一组键值对（key=value），用于描述各种特征。选项是：
 <br/>PublicKeysECDSA=true|false (ALPHA - 默认=false)
@@ -116,9 +74,6 @@ A set of key=value pairs that describe feature gates for various features. Optio
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-help for list
--->
 <p>
 list 操作的帮助命令
 </p>
@@ -127,13 +82,11 @@ list 操作的帮助命令
 
 <tr>
 <td colspan="2">
-<!-- --image-repository string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "registry.k8s.io" -->
 --image-repository string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："registry.k8s.io"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!-- Choose a container registry to pull control plane images from -->
 <p>
 选择要从中拉取控制平面镜像的容器仓库
 </p>
@@ -142,17 +95,11 @@ list 操作的帮助命令
 
 <tr>
 <td colspan="2">
-<!--
---kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "stable-1"
--->
 --kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："stable-1"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-Choose a specific Kubernetes version for the control plane.
--->
 <p>
 为控制平面选择一个特定的 Kubernetes 版本
 </p>
@@ -161,17 +108,11 @@ Choose a specific Kubernetes version for the control plane.
 
 <tr>
 <td colspan="2">
-<!--
---show-managed-fields
--->
 --show-managed-fields
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-If true, keep the managedFields when printing objects in JSON or YAML format.
--->
 <p>
 如果为 true，则在以 JSON 或 YAML 格式打印对象时保留 managedFields。
 </p>
@@ -181,9 +122,6 @@ If true, keep the managedFields when printing objects in JSON or YAML format.
 </tbody>
 </table>
 
-<!--
-### Options inherited from parent commands
--->
 ### 从父命令继承的选项
 
    <table style="width: 100%; table-layout: fixed;">
@@ -195,17 +133,11 @@ If true, keep the managedFields when printing objects in JSON or YAML format.
 
 <tr>
 <td colspan="2">
-<!--
---kubeconfig string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "/etc/kubernetes/admin.conf"
--->
 --kubeconfig string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："/etc/kubernetes/admin.conf"
 </td>
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-The kubeconfig file to use when talking to the cluster. If the flag is not set, a set of standard locations can be searched for an existing kubeconfig file.
--->
 <p>
 用于和集群通信的 kubeconfig 文件。如果它没有被设置，那么 kubeadm 将会搜索一个已经存在于标准路径的 kubeconfig 文件。
 </p>
@@ -217,9 +149,6 @@ The kubeconfig file to use when talking to the cluster. If the flag is not set, 
 </tr>
 <tr>
 <td></td><td style="line-height: 130%; word-wrap: break-word;">
-<!--
-[EXPERIMENTAL] The path to the 'real' host root filesystem.
--->
 <p>
 [实验] 到“真实”主机根文件系统的路径。
 </p>
