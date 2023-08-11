@@ -46,7 +46,7 @@ class QADeployment:
         self.tokenizer = AutoTokenizer.from_pretrained(
             BASE_MODEL, trust_remote_code=True)
         self.model = AutoModel.from_pretrained(
-            BASE_MODEL, trust_remote_code=True).quantize(8).half().cuda()
+            BASE_MODEL, trust_remote_code=True).half().cuda()
         self.model = self.model.eval()
 
     # TODO: support history.
