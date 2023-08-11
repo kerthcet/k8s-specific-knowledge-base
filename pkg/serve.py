@@ -54,7 +54,7 @@ class QADeployment:
         result, _ = self.model.chat(self.tokenizer, query, history=[])
         print(f"Primitive results: {result}")
 
-        search_results = self.db.similarity_search(query, k=10)
+        search_results = self.db.similarity_search(query, k=5)
         embedding_results = []
         for r in search_results:
             embedding_results.append(r.page_content)
