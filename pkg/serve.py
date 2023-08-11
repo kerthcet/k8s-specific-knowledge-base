@@ -54,13 +54,13 @@ class QADeployment:
         result, _ = self.model.chat(self.tokenizer, query, history=[])
         print(f"Primitive results: {result}")
 
-        search_results = self.db.similarity_search(query, k=5)
+        search_results = self.db.similarity_search(query, k=10)
         embedding_results = []
         for r in search_results:
             embedding_results.append(r.page_content)
 
         prompt = PROMPT.format(
-            context="\n".join(embedding_results),
+            context="\n\n".join(embedding_results),
             question=query,
             )
         print(f"Prompt: {prompt}")

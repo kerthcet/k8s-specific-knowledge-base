@@ -4,7 +4,7 @@ import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.text_splitter import MarkdownHeaderTextSplitter
 from langchain.vectorstores import FAISS
-from ray.data import read_text, read_binary_files
+from ray.data import read_binary_files
 from ray.data import ActorPoolStrategy
 from ray.data.datasource import FileExtensionFilter
 
@@ -19,8 +19,8 @@ def split_text(text: Dict[str, str]) -> List[Dict[str, str]]:
     # This parameter can be modified based on your documents and use case.
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "(?<=\。)"],
-        chunk_size=500,
-        chunk_overlap=50,
+        chunk_size=1000,
+        chunk_overlap=100,
         length_function=len,
     )
 
@@ -31,6 +31,7 @@ def split_text(text: Dict[str, str]) -> List[Dict[str, str]]:
         # Handle data
         r = r.replace("\n", " ")
         r = r.replace("Kubernetes权威指南从 Docker 到Kubernetes 实践全接触（第 5版）", "")
+        r = r.replace("Kubernetes 权威指南从 Docker 到Kubernetes 实践全接触（第 5版）", "")
         final_results.append(r)
 
     return [{"text": r.replace("\n", " ")} for r in result]
@@ -43,6 +44,7 @@ def split_markdown(text: Dict[str, str]) -> List[Dict[str, str]]:
             ("##", "Header 2"),
             ("###", "Header 3"),
             ("####", "Header 4"),
+            ("#####", "Header 5"),
         ]
     )
 
@@ -51,9 +53,11 @@ def split_markdown(text: Dict[str, str]) -> List[Dict[str, str]]:
 
     final_results = []
     for content in contents:
-        for i in split_text(content):
-            final_results.append(i)
-
+        if len(content["text"]) > 1000:
+            for i in split_text(content):
+                final_results.append(i)
+        else:
+            final_results.append(content)
     return final_results
 
 
