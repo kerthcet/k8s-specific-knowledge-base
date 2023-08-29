@@ -27,7 +27,7 @@ PROMPT = PromptTemplate(
 
 
 @serve.deployment(
-    ray_actor_options={"num_gpus": 1},
+    ray_actor_options={"num_gpus": 0.5},
     autoscaling_config={"min_replicas": 1, "max_replicas": 10},
 )
 # We didn't use pipeline for issue below:
@@ -46,7 +46,7 @@ class QADeployment:
         self.tokenizer = AutoTokenizer.from_pretrained(
             BASE_MODEL, trust_remote_code=True)
         self.model = AutoModel.from_pretrained(
-            BASE_MODEL, trust_remote_code=True).half().cuda()
+            BASE_MODEL, trust_remote_code=True).quantize(8).half().cuda()
         self.model = self.model.eval()
 
     # TODO: support history.
