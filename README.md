@@ -14,7 +14,7 @@ It's not ready for production, but we'll target for this.
 - [LangChain](https://github.com/langchain-ai/langchain)  to build LLM applications.
 - [Ray](https://github.com/ray-project/ray) for accelerating and serving.
 - [ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B) as a base model.
-- [multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) for embedding in semantic search.
+- [BAAI/bge-base-zh-v1.5](https://huggingface.co/BAAI/bge-base-zh) for embedding in semantic search.
 - [FAISS](https://github.com/facebookresearch/faiss) as a vector database.
 
 ## 📦 Corpus Including
